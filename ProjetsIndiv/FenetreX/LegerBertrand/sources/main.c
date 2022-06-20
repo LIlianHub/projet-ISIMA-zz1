@@ -5,14 +5,17 @@
 /*  exemple de création de fenêtres */
 /************************************/
 
+int i;
+int j;
+
 int main(int argc, char **argv) {
   (void)argc;
   (void)argv;
 
-  SDL_Window 
-    *window_1 = NULL,                     // Future fenêtre de gauche
-    *window_2 = NULL;                     // Future fenêtre de droite
+  SDL_Window *windows [100];
 
+
+  
   /* Initialisation de la SDL  + gestion de l'échec possible */
   if (SDL_Init(SDL_INIT_VIDEO) != 0) {
     SDL_Log("Error : SDL initialisation - %s\n", 
@@ -20,44 +23,28 @@ int main(int argc, char **argv) {
     exit(EXIT_FAILURE);
   }
 
-  /* Création de la fenêtre de gauche */
-  window_1 = SDL_CreateWindow(
-			      "Fenêtre à gauche",                    // codage en utf8, donc accents possibles
-			      0, 0,                                  // coin haut gauche en haut gauche de l'écran
-			      400, 300,                              // largeur = 400, hauteur = 300
-			      SDL_WINDOW_RESIZABLE);                 // redimensionnable
+  for (i = 0 ; i<100 ; i++){
 
-  if (window_1 == NULL) {
-    SDL_Log("Error : SDL window 1 creation - %s\n", 
-            SDL_GetError());                 // échec de la création de la fenêtre
-    SDL_Quit();                              // On referme la SDL       
-    exit(EXIT_FAILURE);
-  }
-  /* Création de la fenêtre de droite */
-  window_2 = SDL_CreateWindow(
-			      "Fenêtre à droite",                    // codage en utf8, donc accents possibles
-			      400, 0,                                // à droite de la fenêtre de gauche
-			      500, 300,                              // largeur = 500, hauteur = 300
-			      0);
-
-  if (window_2 == NULL) {
-    /* L'init de la SDL : OK
-       fenêtre 1 :OK
-       fenêtre 2 : échec */
-    SDL_Log("Error : SDL window 2 creation - %s\n", 
-            SDL_GetError());                 // échec de la création de la deuxième fenêtre 
-    SDL_DestroyWindow(window_1);             // la première fenétre (qui elle a été créée) doit être détruite
-    SDL_Quit();
-    exit(EXIT_FAILURE);
+    windows[i] = SDL_CreateWindow(
+				  "Top to right",
+				  0+ 10*i ,0 + 10*i,
+				  400,300,
+				  0
+				  );
+    if(windows[i] == NULL) {
+      SDL_Log("Error : SDL window %d ceation - %s\n",i,SDL_GetError());
+      SDL_Quit();
+      exit(EXIT_FAILURE);
+    }
+    
   }
 
-  /* Normalement, on devrait ici remplir les fenêtres... */
-  SDL_Delay(2000);                           // Pause exprimée  en ms
-
-  /* et on referme tout ce qu'on a ouvert en ordre inverse de la création */
-  SDL_DestroyWindow(window_2);               // la fenêtre 2  
-  SDL_DestroyWindow(window_1);               // la fenêtre 1     
-
+  for (i = 0 ; i < 100 ; i++){
+    
+    SDL_DestroyWindow(windows[i]);
+    
+  }
+  
   SDL_Quit();                                // la SDL
 
   return 0;
