@@ -62,6 +62,7 @@ Avancé | Membre | Tâche
 
 
 # Xfenetré
+
 ## BALLEJOS Lilian
 
 ### Explication et Code
@@ -147,12 +148,75 @@ Mise en place d'un programme qui récupère les dimensions de l'écran principal
 
 ### Vidéo
 
-<p align="center"><iframe width="560" height="315" src="https://www.youtube.com/embed/PmCJ4XlQqXs" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe></p>
+<p align="center"><iframe width="80%" height="315" src="https://www.youtube.com/embed/PmCJ4XlQqXs" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe></p>
 
 ## LEGER Bertrand
 
 ## CORNUEZ Charlotte
 
+# Animation Forme
 
+## BALLEJOS Lilian
 
+### Explication et Code
 
+Mise en place d'un programme qui créée une fenêtre blanche et fais apparaitre deux ellipses qui se croisent à intervales réguliers et forment des ronds.
+Pour faire cela il a suffit de changer le rayon des cercles sur la composantes X et Y en le décalant de 10 de taille. Ensuite on inverse le rayon de la composante X et Y entre les deux ellipses afin de les inverser entre elles ! De plus on joue avec les composantes de couleur pour changer la couleur des carrés qui forment les ellipses.
+
+```c
+void draw(SDL_Renderer *renderer, int largeur, int hauteur)
+{
+    /*Tableau de rectangle assez petit pour sembler etre des points*/
+    SDL_Rect *rectangles = (SDL_Rect *)malloc(sizeof(SDL_Rect) * NBR_RECTANGLE);
+    SDL_Rect *rectangles2 = (SDL_Rect *)malloc(sizeof(SDL_Rect) * NBR_RECTANGLE);
+    int cercleTailleX = 100;
+    int cercleTailleY = 200; /*taille des cercles pas la même pour avoir alternance ellispse et cercle*/
+    int couleurR = 0;
+    int couleurG = 20; /*couleur varie*/
+    int couleurB = 10;
+    float interation = 0;
+    while (interation < 1000)
+    {
+        SDL_SetRenderDrawColor(renderer, 255, 255, 255, 255);                // fond blanc
+        SDL_RenderClear(renderer);                                           // efface le rendu précédent
+        SDL_SetRenderDrawColor(renderer, couleurR, couleurG, couleurB, 255); // couleur rectangle
+        for (int i = 0; i < NBR_RECTANGLE; i++)
+        {
+            float valCos = cosf(i);
+            float valSin = sinf(i);
+            rectangles[i].x = cercleTailleX * valCos + largeur / 2;
+            rectangles[i].y = cercleTailleY * valSin + hauteur / 2;
+            rectangles[i].w = TAILLE_RECT;
+            rectangles[i].h = TAILLE_RECT;
+            SDL_RenderFillRect(renderer, &rectangles[i]); // on applique le rectangle
+        }
+        for (int i = 0; i < NBR_RECTANGLE; i++)
+        {
+            float valCos = cosf(i);
+            float valSin = sinf(i); /*on inverse les largeur x et y avec le premier pour avoir une belle forme*/
+            rectangles[i].x = cercleTailleY * valCos + largeur / 2;
+            rectangles[i].y = cercleTailleX * valSin + hauteur / 2;
+            rectangles[i].w = TAILLE_RECT;
+            rectangles[i].h = TAILLE_RECT;
+            SDL_RenderFillRect(renderer, &rectangles[i]); // on applique le rectangle
+        }
+
+        cercleTailleX = (cercleTailleX + 10) % 300;
+        cercleTailleY = (cercleTailleY + 10) % 400;
+        couleurR = (couleurR + 5) % 200;
+        couleurG = (couleurG + 5) % 200; // modulo 200 pour eviter le blanc en 255
+        couleurB = (couleurB + 5) % 200;
+        SDL_RenderPresent(renderer); // on charge le rendu
+        SDL_Delay(75);
+        interation++;
+    }
+
+    free(rectangles);
+    free(rectangles2);
+}
+
+```
+
+### Vidéo
+
+<p align="center"><iframe width="80%" height="315" src="https://www.youtube.com/embed/9enCd_bTOAw" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe></p>
