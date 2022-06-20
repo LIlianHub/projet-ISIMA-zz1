@@ -52,7 +52,7 @@ int main(int argc, char **argv) {
   }
 
   /* Normalement, on devrait ici remplir les fenêtres... */
-  SDL_Delay(2000);                           // Pause exprimée  en ms
+  SDL_Delay(4000);                           // Pause exprimée  en ms
 
   /* et on referme tout ce qu'on a ouvert en ordre inverse de la création */
   SDL_DestroyWindow(window_2);               // la fenêtre 2  
