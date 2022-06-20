@@ -327,11 +327,19 @@
                   <li>
                     <a href="#fonctionnement" class="toc-h2 toc-link" data-title="Fonctionnement">Fonctionnement</a>
                   </li>
+              </ul>
+          </li>
+          <li>
+            <a href="#xfenetre" class="toc-h1 toc-link" data-title="Xfenetré">Xfenetré</a>
+              <ul class="toc-list-h2">
                   <li>
-                    <a href="#test2" class="toc-h2 toc-link" data-title="test2">test2</a>
+                    <a href="#ballejos-lilian" class="toc-h2 toc-link" data-title="BALLEJOS Lilian">BALLEJOS Lilian</a>
                   </li>
                   <li>
-                    <a href="#video" class="toc-h2 toc-link" data-title="Vidéo">Vidéo</a>
+                    <a href="#leger-bertrand" class="toc-h2 toc-link" data-title="LEGER Bertrand">LEGER Bertrand</a>
+                  </li>
+                  <li>
+                    <a href="#cornuez-charlotte" class="toc-h2 toc-link" data-title="CORNUEZ Charlotte">CORNUEZ Charlotte</a>
                   </li>
               </ul>
           </li>
@@ -359,23 +367,142 @@
 <h1 id='todo-list'>TODO List</h1><h2 id='fonctionnement'>Fonctionnement</h2>
 <p>Vous trouverez ici le programme de tout ce que l&#39;on va faire durant ces 2 semaines jour par jour</p>
 <h3 id='20-06-22-lundi'>20/06/22 (Lundi)</h3>
-<ul>
-<li>[X] BALLEJOS Lilian -&gt; Mise en Place du site</li>
-<li>[X] COMMUN -&gt; Mise en Place du GitLab</li>
-<li>[X] BALLEJOS Lilian -&gt; Début du programme Xfenetre</li>
-<li>[X] CORNUEZ Charlotte -&gt; Début du programme Xfenetre</li>
-<li>[X] LEGER Bertrand -&gt; Début du programme Xfenetre</li>
-</ul>
-<h2 id='test2'>test2</h2><h3 id='code-en-c'>Code en C</h3><div class="highlight"><pre class="highlight c tab-c"><code>    <span class="cm">/*test*/</span>
-  <span class="cp">#include</span> <span class="cpf">&lt;stdio.h&gt;</span><span class="cp">
-</span>  <span class="kt">int</span> <span class="nf">main</span><span class="p">()</span> <span class="p">{</span>
-   <span class="c1">// printf() displays the string inside quotation</span>
-   <span class="n">printf</span><span class="p">(</span><span class="s">"Hello, World!"</span><span class="p">);</span>
-   <span class="k">return</span> <span class="mi">0</span><span class="p">;</span>
-<span class="p">}</span>
-</code></pre></div><h2 id='video'>Vidéo</h2>
-<p align="center"><iframe width="80%" height="315" src="https://www.youtube.com/embed/4Ak6OyehqJc" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe></p>
+<table><thead>
+<tr>
+<th>Avancé</th>
+<th>Membre</th>
+<th>Tâche</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>✔️</td>
+<td>BALLEJOS Lilian</td>
+<td>Mise en place du site</td>
+</tr>
+<tr>
+<td>✔️</td>
+<td>Commun</td>
+<td>Mise en place d&#39;un GitLab organisé</td>
+</tr>
+<tr>
+<td>✔️</td>
+<td>BALLEJOS Lilian</td>
+<td>Xfenetré</td>
+</tr>
+<tr>
+<td>✔️</td>
+<td>LEGER BERTRAND</td>
+<td>Xfenetré</td>
+</tr>
+<tr>
+<td>✔️</td>
+<td>CORNUEZ Charlotte</td>
+<td>Xfenetré</td>
+</tr>
+<tr>
+<td>✔️</td>
+<td>BALLEJOS Lilian</td>
+<td>Animation Forme</td>
+</tr>
+</tbody></table>
+<h3 id='21-06-22-mardi'>21/06/22 (Mardi)</h3>
+<table><thead>
+<tr>
+<th>Avancé</th>
+<th>Membre</th>
+<th>Tâche</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>✔️</td>
+<td>BALLEJOS Lilian</td>
+<td>Jeu de la vie</td>
+</tr>
+<tr>
+<td>❌</td>
+<td>BALLEJOS Lilian</td>
+<td>Frame</td>
+</tr>
+</tbody></table>
+<h1 id='xfenetre'>Xfenetré</h1><h2 id='ballejos-lilian'>BALLEJOS Lilian</h2><h3 id='explication-et-code'>Explication et Code</h3>
+<p>Mise en place d&#39;un programme qui récupère les dimensions de l&#39;écran principal et crée une animation de sinusoïde avec les fenêtres générées.</p>
+<div class="highlight"><pre class="highlight c tab-c"><code><span class="cm">/*Taille ecran*/</span>
 
+  <span class="n">SDL_DisplayMode</span> <span class="n">current</span><span class="p">;</span>
+  <span class="n">SDL_GetCurrentDisplayMode</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">current</span><span class="p">);</span>
+  <span class="kt">int</span> <span class="n">width</span> <span class="o">=</span> <span class="n">current</span><span class="p">.</span><span class="n">w</span><span class="p">;</span>
+  <span class="kt">int</span> <span class="n">height</span> <span class="o">=</span> <span class="n">current</span><span class="p">.</span><span class="n">h</span><span class="p">;</span>
+  <span class="c1">//printf("%d %d\n", width, height);</span>
+  <span class="kt">int</span> <span class="n">milieu</span> <span class="o">=</span> <span class="n">height</span> <span class="o">/</span> <span class="mi">2</span> <span class="o">-</span> <span class="n">TAILLE_FENETRE</span><span class="p">;</span> <span class="c1">// milieu ecran axe y</span>
+  <span class="kt">int</span> <span class="n">nbr_element</span> <span class="o">=</span> <span class="n">width</span> <span class="o">/</span> <span class="n">TAILLE_FENETRE</span><span class="p">;</span> <span class="c1">// nb d'element a generer</span>
+
+  <span class="cm">/*PLacement et creation fenetre*/</span>
+
+  <span class="n">SDL_Window</span> <span class="o">**</span><span class="n">tabWindow</span><span class="p">;</span>
+  <span class="n">tabWindow</span> <span class="o">=</span> <span class="p">(</span><span class="n">SDL_Window</span> <span class="o">**</span><span class="p">)</span><span class="n">malloc</span><span class="p">(</span><span class="k">sizeof</span><span class="p">(</span><span class="n">SDL_Window</span> <span class="o">*</span><span class="p">)</span> <span class="o">*</span> <span class="n">nbr_element</span><span class="p">);</span>
+
+  <span class="k">for</span> <span class="p">(</span><span class="kt">int</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">nbr_element</span><span class="p">;</span> <span class="n">i</span><span class="o">++</span><span class="p">)</span>
+  <span class="p">{</span>
+    <span class="n">tabWindow</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">SDL_CreateWindow</span><span class="p">(</span>
+        <span class="s">"Fenetre"</span><span class="p">,</span>                  <span class="c1">// codage en utf8, donc accents possibles</span>
+        <span class="n">i</span> <span class="o">*</span> <span class="n">TAILLE_FENETRE</span><span class="p">,</span> <span class="n">milieu</span><span class="p">,</span> <span class="c1">// a coté de sa voisine et au milieu de l'ecran en y</span>
+        <span class="n">TAILLE_FENETRE</span><span class="p">,</span> <span class="n">TAILLE_FENETRE</span><span class="p">,</span>
+        <span class="mi">0</span><span class="p">);</span> <span class="c1">// non redimensionnable</span>
+
+    <span class="k">if</span> <span class="p">(</span><span class="n">tabWindow</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">==</span> <span class="nb">NULL</span><span class="p">)</span>
+    <span class="p">{</span>
+      <span class="n">SDL_Log</span><span class="p">(</span><span class="s">"Error : SDL window %d creation - %s</span><span class="se">\n</span><span class="s">"</span><span class="p">,</span>
+              <span class="n">i</span><span class="p">,</span> <span class="n">SDL_GetError</span><span class="p">());</span> <span class="c1">// échec de la création de la fenêtre</span>
+      <span class="n">SDL_Quit</span><span class="p">();</span>                 <span class="c1">// On referme la SDL</span>
+      <span class="n">exit</span><span class="p">(</span><span class="n">EXIT_FAILURE</span><span class="p">);</span>
+    <span class="p">}</span>
+  <span class="p">}</span>
+
+  <span class="cm">/*ANimation 1*/</span>
+  <span class="cm">/*on créé la courbe cosinus*/</span>
+  <span class="k">for</span> <span class="p">(</span><span class="kt">int</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">nbr_element</span><span class="p">;</span> <span class="n">i</span><span class="o">++</span><span class="p">)</span>
+  <span class="p">{</span>
+    <span class="cm">/*cos a chaque point "I * TAILLE_FENETRE*/</span>
+    <span class="kt">float</span> <span class="n">val_cos</span> <span class="o">=</span> <span class="n">cosf</span><span class="p">((</span><span class="n">i</span><span class="p">)</span> <span class="o">*</span> <span class="n">TAILLE_FENETRE</span><span class="p">);</span>
+    <span class="cm">/*cos au carré pour osciller entre 0 et 1 et pas -1 et 1 puis d'amplitude de taille "hauteur ecran / 2 qu'on recentre au milieu avec + milieu /2"*/</span>
+    <span class="n">SDL_SetWindowPosition</span><span class="p">(</span><span class="n">tabWindow</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="n">i</span> <span class="o">*</span> <span class="n">TAILLE_FENETRE</span><span class="p">,</span> <span class="p">(</span><span class="n">val_cos</span> <span class="o">*</span> <span class="n">val_cos</span> <span class="o">*</span> <span class="n">milieu</span><span class="p">)</span> <span class="o">+</span> <span class="n">milieu</span> <span class="o">/</span> <span class="mi">2</span><span class="p">);</span>
+    <span class="n">SDL_Delay</span><span class="p">(</span><span class="mi">100</span><span class="p">);</span>
+  <span class="p">}</span>
+
+  <span class="cm">/*Animation 2*/</span>
+  <span class="cm">/*on fait osciller en changeant la valeur x des points avec une variante*/</span>
+  <span class="kt">int</span> <span class="n">variante</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+  <span class="k">while</span> <span class="p">(</span><span class="n">variante</span> <span class="o">&lt;</span> <span class="mi">100</span><span class="p">)</span>
+  <span class="p">{</span>
+    <span class="k">for</span> <span class="p">(</span><span class="kt">int</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">nbr_element</span><span class="p">;</span> <span class="n">i</span><span class="o">++</span><span class="p">)</span>
+    <span class="p">{</span>
+      <span class="kt">float</span> <span class="n">val_cos</span> <span class="o">=</span> <span class="n">cosf</span><span class="p">((</span><span class="n">i</span> <span class="o">+</span> <span class="n">variante</span><span class="p">)</span> <span class="o">*</span> <span class="n">TAILLE_FENETRE</span><span class="p">);</span>
+      <span class="n">SDL_SetWindowPosition</span><span class="p">(</span><span class="n">tabWindow</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="n">i</span> <span class="o">*</span> <span class="n">TAILLE_FENETRE</span><span class="p">,</span> <span class="p">(</span><span class="n">val_cos</span> <span class="o">*</span> <span class="n">val_cos</span> <span class="o">*</span> <span class="n">milieu</span><span class="p">)</span> <span class="o">+</span> <span class="n">milieu</span> <span class="o">/</span> <span class="mi">2</span><span class="p">);</span>
+    <span class="p">}</span>
+    <span class="n">variante</span><span class="o">++</span><span class="p">;</span>
+    <span class="n">printf</span><span class="p">(</span><span class="s">"iteration n°%d</span><span class="se">\n</span><span class="s">"</span><span class="p">,</span> <span class="n">variante</span><span class="p">);</span>
+    <span class="n">SDL_Delay</span><span class="p">(</span><span class="mi">100</span><span class="p">);</span>
+  <span class="p">}</span>
+
+  <span class="cm">/*ANimation 3*/</span>
+  <span class="cm">/*on replace au milieu*/</span>
+  <span class="k">for</span> <span class="p">(</span><span class="kt">int</span> <span class="n">i</span> <span class="o">=</span> <span class="n">nbr_element</span> <span class="o">-</span> <span class="mi">1</span><span class="p">;</span> <span class="n">i</span> <span class="o">&gt;=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">i</span><span class="o">--</span><span class="p">)</span>
+  <span class="p">{</span>
+    <span class="n">SDL_SetWindowPosition</span><span class="p">(</span><span class="n">tabWindow</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="n">i</span> <span class="o">*</span> <span class="n">TAILLE_FENETRE</span><span class="p">,</span> <span class="n">milieu</span><span class="p">);</span>
+    <span class="n">SDL_Delay</span><span class="p">(</span><span class="mi">100</span><span class="p">);</span>
+  <span class="p">}</span>
+
+  <span class="cm">/*Supression fenetre*/</span>
+  <span class="k">for</span> <span class="p">(</span><span class="kt">int</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">nbr_element</span><span class="p">;</span> <span class="n">i</span><span class="o">++</span><span class="p">)</span>
+  <span class="p">{</span>
+    <span class="n">SDL_DestroyWindow</span><span class="p">(</span><span class="n">tabWindow</span><span class="p">[</span><span class="n">i</span><span class="p">]);</span>
+    <span class="n">printf</span><span class="p">(</span><span class="s">"clear fenetre %d</span><span class="se">\n</span><span class="s">"</span><span class="p">,</span> <span class="n">i</span><span class="p">);</span>
+  <span class="p">}</span>
+
+  <span class="n">free</span><span class="p">(</span><span class="n">tabWindow</span><span class="p">);</span>
+</code></pre></div><h3 id='video'>Vidéo</h3>
+<p align="center"><iframe width="560" height="315" src="https://www.youtube.com/embed/PmCJ4XlQqXs" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe></p>
+<h2 id='leger-bertrand'>LEGER Bertrand</h2><h2 id='cornuez-charlotte'>CORNUEZ Charlotte</h2>
       </div>
       <div class="dark-box">
           <div class="lang-selector">
