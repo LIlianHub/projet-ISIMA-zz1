@@ -36,8 +36,8 @@ int main(int argc, char **argv) {
   /* Création de la fenêtre de droite */
   window_2 = SDL_CreateWindow(
       "Fenêtre à droite",                    // codage en utf8, donc accents possibles
-      400, 0,                                // à droite de la fenêtre de gauche
-      500, 300,                              // largeur = 500, hauteur = 300
+      800, 100,                                // à droite de la fenêtre de gauche
+      200, 200,                              // largeur = 500, hauteur = 300
       0);
 
   if (window_2 == NULL) {
@@ -62,3 +62,7 @@ int main(int argc, char **argv) {
 
   return 0;
 }
+
+
+
+
