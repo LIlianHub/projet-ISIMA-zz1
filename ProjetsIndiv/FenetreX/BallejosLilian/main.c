@@ -27,7 +27,7 @@ int main(int argc, char **argv)
   int milieu = height / 2 - TAILLE_FENETRE;
   int nbr_element = width / TAILLE_FENETRE;
 
-  /*Fenetre*/
+  /*PLacement fenetre*/
 
   SDL_Window *tabWindow[nbr_element];
   for (int i = 0; i < nbr_element; i++)
