@@ -6,7 +6,7 @@ int main(int argc, char **argv){
     (void)argc;
     (void)argv;
 
-    int i,j = 0;
+    int i,j = 0, etoile = 0;
 
     
 
@@ -32,7 +32,7 @@ int main(int argc, char **argv){
 
 
 /* Création des fenêtres */
-    for (i =0; i<15; i++){
+    for (i =0; i<14; i++){
         TabWindows[i]= SDL_CreateWindow(
             "Fenêtres U",                    // codage en utf8, donc accents possibles
             width/3, height/3 + j,                             // coin haut gauche en haut gauche de l'écran
@@ -53,7 +53,7 @@ int main(int argc, char **argv){
     int k = j - height/50;
 
 
-    for (i =15; i<30; i++){
+    for (i =14; i<29; i++){
         TabWindows[i]= SDL_CreateWindow(
             "Fenêtres U",                    // codage en utf8, donc accents possibles
             width/3 + (i-15)*25 ,height/3 + k,                              // coin haut gauche en haut gauche de l'écran
@@ -70,7 +70,7 @@ int main(int argc, char **argv){
     }
     }
 
-    for (i =30; i<45; i++){
+    for (i =29; i<44; i++){
         TabWindows[i]= SDL_CreateWindow(
             "Fenêtres U",                    // codage en utf8, donc accents possibles
             width/3 + (15*25), height/3 + k,                             // coin haut gauche en haut gauche de l'écran
@@ -89,8 +89,43 @@ int main(int argc, char **argv){
 
 
     }
+    
+/*Mise en place d'une étoile*/
+    for (etoile; etoile<45; etoile++){
+        SDL_SetWindowPosition(TabWindows[etoile],width/2,height/2);
+    }
+    SDL_Delay(100);
+    for (etoile = 0; etoile<44; etoile+=4){
+        for (int x = width/2; x>0; x--){
+            SDL_SetWindowPosition(TabWindows[etoile],x,(width/height)*x);
+            
+            SDL_Delay(1);
+        }
+        for (int x = width/2; x<width; x++){
+            SDL_SetWindowPosition(TabWindows[etoile+3],x,(width/height)*x);
+            
+            SDL_Delay(1);
+        }
+        for (int y = width/2; y<width; y++){
+            SDL_SetWindowPosition(TabWindows[etoile+2],y,((height-2*width)/width)*y+width);
 
-    SDL_Delay(6000);
+            SDL_Delay(1);
+        }
+        for (int y= width/2; y>0; y--){
+            SDL_SetWindowPosition(TabWindows[etoile+4],y,((height-2*width)/width)*y+width);
+            printf("%d \n",((height-2*width)/width)*y+width);
+            SDL_Delay(1);
+        }
+
+
+        
+        
+
+        }
+        
+    
+    
+    SDL_Delay(2000);
 
 /* Fermeture des fenêtres */
 
