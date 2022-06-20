@@ -23,7 +23,7 @@ meta:
 ---
 
 # Accueil
-## Membre du Groupe 31
+## Membres du Groupe 31
 
 Bienvenue sur le site web des membres du groupe 31 du Projet ZZ1 2022, nous sommes
 
@@ -31,23 +31,26 @@ Bienvenue sur le site web des membres du groupe 31 du Projet ZZ1 2022, nous somm
 * CORNUEZ Charlotte
 * LEGER Bertrand
 
+# Hébergement du projet
+
+## Les programmes
+
+Les programmes se trouvent tous dans le GitLab ISIMA de BALLEJOS Lilian à ce lien: [ici](https://gitlab.isima.fr/liballejos/projetzz1)
 
 # TODO List
 ## Fonctionnement
 
-Vous trouverez ici les tout le programme de travail que nous allons effectuer chacun de notre côté durant ces 2 semaines
+Vous trouverez ici le programme de tout ce que l'on va faire durant ces 2 semaines jour par jour
 
-### 19/06/22
-- [ ] BALLEJOS Lilian -> Préparer le site
-- [x] Etre motivé
+### 20/06/22 (Lundi)
+- [X] BALLEJOS Lilian -> Mise en Place du site
+- [X] COMMUN -> Mise en Place du GitLab
+- [X] BALLEJOS Lilian -> Début du programme Xfenetre
+- [X] CORNUEZ Charlotte -> Début du programme Xfenetre
+- [X] LEGER Bertrand -> Début du programme Xfenetre
 
-# Exo 1
 
-## test
-remplissage random afin de voir si ça marche remplissage random afin de voir si ça marcheremplissage random afin de voir si ça marcheremplissage random afin de voir si ça marcheremplissage random afin de voir si ça marcheremplissage random afin de voir si ça marche
-remplissage random afin de voir si ça marcheremplissage random afin de voir si ça marcheremplissage random afin de voir si ça marcheremplissage random afin de voir si ça marcheremplissage random afin de voir si ça marcheremplissage random afin de voir si ça marcheremplissage random afin de voir si ça marcheremplissage random afin de voir si ça marcheremplissage random afin de voir si ça marche
 
-remplissage random afin de voir si ça marcheremplissage random afin de voir si ça marcheremplissage random afin de voir si ça marcheremplissage random afin de voir si ça marcheremplissage random afin de voir si ça marcheremplissage random afin de voir si ça marcheremplissage random afin de voir si ça marcheremplissage random afin de voir si ça marcheremplissage random afin de voir si ça marcheremplissage random afin de voir si ça marcheremplissage random afin de voir si ça marcheremplissage random afin de voir si ça marcheremplissage random afin de voir si ça marcheremplissage random afin de voir si ça marcheremplissage random afin de voir si ça marcheremplissage random afin de voir si ça marcheremplissage random afin de voir si ça marcheremplissage random afin de voir si ça marcheremplissage random afin de voir si ça marche
 
 ## test2
 ### Code en C
@@ -65,13 +68,5 @@ remplissage random afin de voir si ça marcheremplissage random afin de voir si 
 ## Vidéo
 
 <p align="center"><iframe width="80%" height="315" src="https://www.youtube.com/embed/4Ak6OyehqJc" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe></p>
-
-
-
-## test3
-remplissage random afin de voir si ça marche remplissage random afin de voir si ça marcheremplissage random afin de voir si ça marcheremplissage random afin de voir si ça marcheremplissage random afin de voir si ça marcheremplissage random afin de voir si ça marche
-remplissage random afin de voir si ça marcheremplissage random afin de voir si ça marcheremplissage random afin de voir si ça marcheremplissage random afin de voir si ça marcheremplissage random afin de voir si ça marcheremplissage random afin de voir si ça marcheremplissage random afin de voir si ça marcheremplissage random afin de voir si ça marcheremplissage random afin de voir si ça marche
-
-remplissage random afin de voir si ça marcheremplissage random afin de voir si ça marcheremplissage random afin de voir si ça marcheremplissage random afin de voir si ça marcheremplissage random afin de voir si ça marcheremplissage random afin de voir si ça marcheremplissage random afin de voir si ça marcheremplissage random afin de voir si ça marcheremplissage random afin de voir si ça marcheremplissage random afin de voir si ça marcheremplissage random afin de voir si ça marcheremplissage random afin de voir si ça marcheremplissage random afin de voir si ça marcheremplissage random afin de voir si ça marcheremplissage random afin de voir si ça marcheremplissage random afin de voir si ça marcheremplissage random afin de voir si ça marcheremplissage random afin de voir si ça marcheremplissage random afin de voir si ça marche
 
 
