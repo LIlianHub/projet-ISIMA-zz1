@@ -92,12 +92,12 @@ int main(int argc, char **argv){
     
 /*Mise en place d'une étoile*/
     for (etoile; etoile<45; etoile++){
-        SDL_SetWindowPosition(TabWindows[etoile],width/2,height/2);
+        SDL_SetWindowPosition(TabWindows[etoile],(width-200)/2,(height-200)/2);
     }
-    SDL_Delay(100);
+    SDL_Delay(1000);
     for (etoile = 0; etoile<44; etoile+=4){
-        for (int x = width/2; x>0; x--){
-            SDL_SetWindowPosition(TabWindows[etoile],x,(width/height)*x);
+        for (int x = (width-200)/2; x>0; x--){
+            SDL_SetWindowPosition(TabWindows[etoile],x,((width-200)/(height-200))*x);
             
             SDL_Delay(1);
         }
