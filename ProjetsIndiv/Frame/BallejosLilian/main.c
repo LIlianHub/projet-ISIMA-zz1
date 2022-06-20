@@ -82,10 +82,9 @@ void placementTexture(SDL_Texture *my_texture, SDL_Window *window,
     SDL_RenderCopy(renderer, my_texture,
                    &source,
                    &destination); // Création de l'élément à afficher
-    SDL_RenderPresent(renderer);  // Affichage
 }
 
-void anim(SDL_Texture *my_texture,
+void anim(SDL_Texture *ciel,
           SDL_Window *window,
           SDL_Renderer *renderer,
           SDL_Texture *sol,
@@ -110,11 +109,12 @@ void anim(SDL_Texture *my_texture,
     int offset_x = source2.w / 6,             // 6 frame par ligne
         offset_y = source2.h / 4 + source2.h; // on se place sur la deuxieme ligne de l'image
 
-    float zoom2 = 2;                                             // zoom, car ces images sont un peu petites
+    float zoom2 = 1;                                             // zoom, car ces images sont un peu petites
     destination2.w = offset_x * zoom2;                           // Largeur du sprite à l'écran
     destination2.h = offset_y * zoom2;                           // Hauteur du sprite à l'écran
     destination2.y = (window_dimensions2.h - destination2.h) / 2; // La course se fait en milieu d'écran (en vertical)
-    destination2.x = 100;
+
+    printf("-->%d %d\n", destination2.w, destination2.h);
 
     printf("%d %d\n", offset_x, offset_y);
 
@@ -128,7 +128,7 @@ void anim(SDL_Texture *my_texture,
         window, &window_dimensions.w,
         &window_dimensions.h); // Récupération des dimensions de la fenêtre
 
-    SDL_QueryTexture(my_texture, NULL, NULL,
+    SDL_QueryTexture(ciel, NULL, NULL,
                      &source.w,
                      &source.h); // Récupération des dimensions de l'image
 
@@ -137,10 +137,10 @@ void anim(SDL_Texture *my_texture,
     destination.h = source.h * zoom; // On applique le zoom sur la hauteur
     destination.x = -source.w / 2;   // au depart a droite
 
-    /*animation*/
-    int nb_it = 300; // Nombre d'iteration
 
-    for (int i = 0; i < nb_it; ++i)
+    /*animation*/
+    int speed = 4; // vitesse de déplacement
+    for (int x = 0; x < (window_dimensions.w - destination2.w); x += speed)
     {
         if (destination.x > 0) // on atteind le bout de l'image
         {
@@ -150,14 +150,17 @@ void anim(SDL_Texture *my_texture,
         {
             destination.x += 10;
         }
-        destination2.x += offset_x * zoom2;
+        destination2.x = x;
         state2.x += offset_x;                    // On passe à la vignette suivante dans l'image
         state2.x %= (source2.w / 6) * nb_images; // La vignette suivante sur 3 cases
+        state2.y = offset_y;
+
+        //printf("%d %d\n", state2.x, state2.y);
 
         SDL_RenderClear(renderer);                                   // Effacer l'image précédente
-        SDL_RenderCopy(renderer, my_texture, &source, &destination); // Préparation de l'affichage
+        SDL_RenderCopy(renderer, ciel, &source, &destination); // Préparation de l'affichage
         placementTexture(sol, window, renderer);                     // Afficher le sol
-        SDL_RenderCopy(renderer, mario, &state2, &destination2);     // mario
+        SDL_RenderCopy(renderer, mario, &state2, &destination2);     // personnage
         SDL_RenderPresent(renderer);                                 // Affichage de la nouvelle image
         SDL_Delay(30);                                               // Pause en ms
     }
