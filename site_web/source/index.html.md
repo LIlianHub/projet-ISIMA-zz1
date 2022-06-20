@@ -1,12 +1,6 @@
 ---
 title: Projet ZZ1 Groupe 31
 
-language_tabs: # must be one of https://git.io/vQNgJ
-  - shell
-  - ruby
-  - python
-  - javascript
-
 toc_footers:
   - Projet ZZ1
   - BALLEJOS Lilian
@@ -70,7 +64,7 @@ remplissage random afin de voir si ça marcheremplissage random afin de voir si 
 
 ## Vidéo
 
-<p align="center"><iframe width="560" height="315" src="https://www.youtube.com/embed/4Ak6OyehqJc" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe></p>
+<p align="center"><iframe width="80%" height="315" src="https://www.youtube.com/embed/4Ak6OyehqJc" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe></p>
 
 
 
