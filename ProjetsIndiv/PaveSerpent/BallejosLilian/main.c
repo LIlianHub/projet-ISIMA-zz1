@@ -4,7 +4,7 @@
 #include <string.h>
 
 #define NBR_RECTANGLE 50
-#define TAILLE_RECT 5
+#define TAILLE_RECT 10
 
 /*********************************************************************************************************************/
 /*                              Programme d'exemple de création de rendu + dessin                                    */
@@ -49,17 +49,18 @@ void draw(SDL_Renderer *renderer, int largeur, int hauteur)
 {
     /*Tableau de rectangle assez petit pour sembler etre des points*/
     SDL_Rect *rectangles = (SDL_Rect *)malloc(sizeof(SDL_Rect) * NBR_RECTANGLE);
+    SDL_Rect *rectangles2 = (SDL_Rect *)malloc(sizeof(SDL_Rect) * NBR_RECTANGLE);
     int cercleTailleX = 100;
-    int cercleTailleY = 200;
-    int couleurR= 0;
-    int couleurG= 20;
-    int couleurB= 10;
+    int cercleTailleY = 200; /*taille des cercles pas la même pour avoir alternance ellispse et cercle*/
+    int couleurR = 0;
+    int couleurG = 20; /*couleur varie*/
+    int couleurB = 10;
     float interation = 0;
     while (interation < 1000)
     {
-        SDL_SetRenderDrawColor(renderer, 255, 255, 255, 255); // fond blanc
-        SDL_RenderClear(renderer);                            // efface le rendu précédent
-        SDL_SetRenderDrawColor(renderer, couleurR, couleurG, couleurB, 255);     // couleur rectangle
+        SDL_SetRenderDrawColor(renderer, 255, 255, 255, 255);                // fond blanc
+        SDL_RenderClear(renderer);                                           // efface le rendu précédent
+        SDL_SetRenderDrawColor(renderer, couleurR, couleurG, couleurB, 255); // couleur rectangle
         for (int i = 0; i < NBR_RECTANGLE; i++)
         {
             float valCos = cosf(i);
@@ -70,10 +71,21 @@ void draw(SDL_Renderer *renderer, int largeur, int hauteur)
             rectangles[i].h = TAILLE_RECT;
             SDL_RenderFillRect(renderer, &rectangles[i]); // on applique le rectangle
         }
+        for (int i = 0; i < NBR_RECTANGLE; i++)
+        {
+            float valCos = cosf(i);
+            float valSin = sinf(i); /*on inverse les largeur x et y avec le premier pour avoir une belle forme*/
+            rectangles[i].x = cercleTailleY * valCos + largeur / 2;
+            rectangles[i].y = cercleTailleX * valSin + hauteur / 2;
+            rectangles[i].w = TAILLE_RECT;
+            rectangles[i].h = TAILLE_RECT;
+            SDL_RenderFillRect(renderer, &rectangles[i]); // on applique le rectangle
+        }
+
         cercleTailleX = (cercleTailleX + 10) % 300;
         cercleTailleY = (cercleTailleY + 10) % 400;
         couleurR = (couleurR + 5) % 200;
-        couleurG = (couleurG + 5) % 200; //modulo 200 pour eviter le blanc en 255
+        couleurG = (couleurG + 5) % 200; // modulo 200 pour eviter le blanc en 255
         couleurB = (couleurB + 5) % 200;
         SDL_RenderPresent(renderer); // on charge le rendu
         SDL_Delay(75);
@@ -81,6 +93,7 @@ void draw(SDL_Renderer *renderer, int largeur, int hauteur)
     }
 
     free(rectangles);
+    free(rectangles2);
 }
 
 int main(int argc, char **argv)
