@@ -112,7 +112,7 @@ int main(int argc, char **argv){
             SDL_Delay(1);
         }
         for (int y= width/2; y>0; y--){
-            SDL_SetWindowPosition(TabWindows[etoile+4],y,((height-2*width)/width)*y+width);
+            SDL_SetWindowPosition(TabWindows[etoile+1],y,((height-2*width)/width)*y+width);
             printf("%d \n",((height-2*width)/width)*y+width);
             SDL_Delay(1);
         }
