@@ -52,7 +52,7 @@ int main(int argc, char **argv)
   for (int i = 0; i < nbr_element; i++)
   {
     float val_cos = cosf((i) * TAILLE_FENETRE);
-    SDL_SetWindowPosition(tabWindow[i], i * TAILLE_FENETRE, val_cos * val_cos * height);
+    SDL_SetWindowPosition(tabWindow[i], i * TAILLE_FENETRE, (val_cos * val_cos * milieu) + milieu/2);
     SDL_Delay(100);
   }
 
@@ -63,7 +63,7 @@ int main(int argc, char **argv)
     for (int i = 0; i < nbr_element; i++)
     {
       float val_cos = cosf((i + variante) * TAILLE_FENETRE);
-      SDL_SetWindowPosition(tabWindow[i], i * TAILLE_FENETRE, val_cos * val_cos * height);
+      SDL_SetWindowPosition(tabWindow[i], i * TAILLE_FENETRE, (val_cos * val_cos * milieu) + milieu/2);
     }
     variante++;
     printf("iteration n°%d\n", variante);
@@ -78,7 +78,7 @@ int main(int argc, char **argv)
     SDL_Delay(100);
   }
 
-
+  /*Supression fenetre*/
   for (int i = 0; i < nbr_element; i++)
   {
     SDL_DestroyWindow(tabWindow[i]);
