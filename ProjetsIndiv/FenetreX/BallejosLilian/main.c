@@ -1,35 +1,8 @@
 #include <SDL2/SDL.h>
 #include <stdio.h>
+#include <math.h>
 
-SDL_Window *GenereTabWindow(int nb)
-{
-  SDL_Window *tabWindow = (SDL_Window *)malloc(nb * sizeof(SDL_Window));
-  int espace = 100;
-  for (int i = 0; i < nb; i++)
-  {
-    tabWindow[i] = SDL_CreateWindow(
-        "Fenetre",             // codage en utf8, donc accents possibles
-        0 + i * espace, 0,     // coin haut gauche en haut gauche de l'écran
-        espace, espace,        // largeur = 400, hauteur = 300
-        SDL_WINDOW_RESIZABLE); // redimensionnable
-
-    if (tabWindow[i] == NULL)
-    {
-      SDL_Log("Error : SDL window 1 creation - %s\n",
-              SDL_GetError()); // échec de la création de la fenêtre
-      SDL_Quit();              // On referme la SDL
-      exit(EXIT_FAILURE);
-    }
-  }
-}
-
-void clearFenetre(SDL_Window *tab, int nb)
-{
-  for (int i = 0; i < nb; i++)
-  {
-    SDL_DestroyWindow(tab[i]);
-  }
-}
+#define TAILLE_FENETRE 100
 
 int main(int argc, char **argv)
 {
@@ -44,13 +17,55 @@ int main(int argc, char **argv)
     exit(EXIT_FAILURE);
   }
 
-  SDL_Window *tab = NULL;
-  int nb = 5;
-  tab = GenereTabWindow(nb);
+  /*Taille ecran*/
 
-  SDL_Delay(300000); // Pause exprimée  en ms
+  SDL_DisplayMode current;
+  SDL_GetCurrentDisplayMode(0, &current);
+  int width = current.w;
+  int height = current.h;
+  printf("%d %d\n", width, height);
+  int milieu = height / 2 - TAILLE_FENETRE;
+  int nbr_element = width / TAILLE_FENETRE;
 
-  clearFenetre(tab, nb);
+
+  /*Fenetre*/
+
+  SDL_Window * tabWindow[nbr_element];
+  for (int i = 0; i < nbr_element; i++)
+  {
+    tabWindow[i] = SDL_CreateWindow(
+        "Fenetre",             // codage en utf8, donc accents possibles
+        0 + i * TAILLE_FENETRE, milieu,     // coin haut gauche en haut gauche de l'écran
+        TAILLE_FENETRE, TAILLE_FENETRE,        
+        0); // redimensionnable
+
+    if (tabWindow[i] == NULL)
+    {
+      SDL_Log("Error : SDL window %d creation - %s\n",
+              i,SDL_GetError()); // échec de la création de la fenêtre
+      SDL_Quit();              // On referme la SDL
+      exit(EXIT_FAILURE);
+    }
+  }
+
+  /*Animation*/
+  int iteration = 1000;
+  while(iteration > 0){
+    for (int i = 0; i < nbr_element; i++)
+    {
+      SDL_SetWindowPosition(tabWindow[i], milieu, cos(i) * 10);
+    }
+    iteration--;
+    printf("interation : %d\n", iteration);
+    SDL_Delay(100);
+  }
+
+
+  for (int i = 0; i < nbr_element; i++)
+  {
+    SDL_DestroyWindow(tabWindow[i]);
+    printf("clear fenetre %d\n",i);
+  }
 
   SDL_Quit(); // la SDL
 
