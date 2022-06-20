@@ -1,11 +1,11 @@
 Programme:objets/main.o objets/fonctionsSDL.o objets/fenetres.o
-	gcc -o Programme objets/main.o objets/fonctionsSDL.o objets/fenetres.o -g
+	gcc -o Programme objets/main.o objets/fonctionsSDL.o objets/fenetres.o -g -lSDL2_image -lSDL2_ttf -lSDL2_gfx -lm -lSDL2
 
 objets/main.o:sources/main.c headers/fonctionsSDL.h headers/fenetres.h
-	gcc -c sources/main.c -Wall -Wextra -o objets/main.o -g
+	gcc -c sources/main.c -Wall -Wextra -o objets/main.o -g -lSDL2_image -lSDL2_ttf -lSDL2_gfx -lm -lSDL2
 
 objets/fonctionsSDL.o:sources/fonctionsSDL.c headers/fonctionsSDL.h
-	gcc -c sources/fonctionsSDL.c -Wall -Wextra -o objets/fonctionsSDL.o -g
+	gcc -c sources/fonctionsSDL.c -Wall -Wextra -o objets/fonctionsSDL.o -g -lSDL2_image -lSDL2_ttf -lSDL2_gfx -lm -lSDL2
 
 objets/fenetres.o:sources/fenetres.c headers/fenetres.h
-	gcc -c sources/fenetres.c -Wall -Wextra -o objets/fenetres.o -g
+	gcc -c sources/fenetres.c -Wall -Wextra -o objets/fenetres.o -g -lSDL2_image -lSDL2_ttf -lSDL2_gfx -lm -lSDL2
