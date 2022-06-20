@@ -343,6 +343,14 @@
                   </li>
               </ul>
           </li>
+          <li>
+            <a href="#animation-forme" class="toc-h1 toc-link" data-title="Animation Forme">Animation Forme</a>
+              <ul class="toc-list-h2">
+                  <li>
+                    <a href="#ballejos-lilian-2" class="toc-h2 toc-link" data-title="BALLEJOS Lilian">BALLEJOS Lilian</a>
+                  </li>
+              </ul>
+          </li>
       </ul>
         <ul class="toc-footer">
             <li>Projet ZZ1</li>
@@ -501,8 +509,64 @@
 
   <span class="n">free</span><span class="p">(</span><span class="n">tabWindow</span><span class="p">);</span>
 </code></pre></div><h3 id='video'>Vidéo</h3>
-<p align="center"><iframe width="560" height="315" src="https://www.youtube.com/embed/PmCJ4XlQqXs" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe></p>
-<h2 id='leger-bertrand'>LEGER Bertrand</h2><h2 id='cornuez-charlotte'>CORNUEZ Charlotte</h2>
+<p align="center"><iframe width="80%" height="315" src="https://www.youtube.com/embed/PmCJ4XlQqXs" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe></p>
+<h2 id='leger-bertrand'>LEGER Bertrand</h2><h2 id='cornuez-charlotte'>CORNUEZ Charlotte</h2><h1 id='animation-forme'>Animation Forme</h1><h2 id='ballejos-lilian-2'>BALLEJOS Lilian</h2><h3 id='explication-et-code-2'>Explication et Code</h3>
+<p>Mise en place d&#39;un programme qui créée une fenêtre blanche et fais apparaitre deux ellipses qui se croisent à intervales réguliers et forment des ronds.
+Pour faire cela il a suffit de changer le rayon des cercles sur la composantes X et Y en le décalant de 10 de taille. Ensuite on inverse le rayon de la composante X et Y entre les deux ellipses afin de les inverser entre elles ! De plus on joue avec les composantes de couleur pour changer la couleur des carrés qui forment les ellipses.</p>
+<div class="highlight"><pre class="highlight c tab-c"><code><span class="kt">void</span> <span class="nf">draw</span><span class="p">(</span><span class="n">SDL_Renderer</span> <span class="o">*</span><span class="n">renderer</span><span class="p">,</span> <span class="kt">int</span> <span class="n">largeur</span><span class="p">,</span> <span class="kt">int</span> <span class="n">hauteur</span><span class="p">)</span>
+<span class="p">{</span>
+    <span class="cm">/*Tableau de rectangle assez petit pour sembler etre des points*/</span>
+    <span class="n">SDL_Rect</span> <span class="o">*</span><span class="n">rectangles</span> <span class="o">=</span> <span class="p">(</span><span class="n">SDL_Rect</span> <span class="o">*</span><span class="p">)</span><span class="n">malloc</span><span class="p">(</span><span class="k">sizeof</span><span class="p">(</span><span class="n">SDL_Rect</span><span class="p">)</span> <span class="o">*</span> <span class="n">NBR_RECTANGLE</span><span class="p">);</span>
+    <span class="n">SDL_Rect</span> <span class="o">*</span><span class="n">rectangles2</span> <span class="o">=</span> <span class="p">(</span><span class="n">SDL_Rect</span> <span class="o">*</span><span class="p">)</span><span class="n">malloc</span><span class="p">(</span><span class="k">sizeof</span><span class="p">(</span><span class="n">SDL_Rect</span><span class="p">)</span> <span class="o">*</span> <span class="n">NBR_RECTANGLE</span><span class="p">);</span>
+    <span class="kt">int</span> <span class="n">cercleTailleX</span> <span class="o">=</span> <span class="mi">100</span><span class="p">;</span>
+    <span class="kt">int</span> <span class="n">cercleTailleY</span> <span class="o">=</span> <span class="mi">200</span><span class="p">;</span> <span class="cm">/*taille des cercles pas la même pour avoir alternance ellispse et cercle*/</span>
+    <span class="kt">int</span> <span class="n">couleurR</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+    <span class="kt">int</span> <span class="n">couleurG</span> <span class="o">=</span> <span class="mi">20</span><span class="p">;</span> <span class="cm">/*couleur varie*/</span>
+    <span class="kt">int</span> <span class="n">couleurB</span> <span class="o">=</span> <span class="mi">10</span><span class="p">;</span>
+    <span class="kt">float</span> <span class="n">interation</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+    <span class="k">while</span> <span class="p">(</span><span class="n">interation</span> <span class="o">&lt;</span> <span class="mi">1000</span><span class="p">)</span>
+    <span class="p">{</span>
+        <span class="n">SDL_SetRenderDrawColor</span><span class="p">(</span><span class="n">renderer</span><span class="p">,</span> <span class="mi">255</span><span class="p">,</span> <span class="mi">255</span><span class="p">,</span> <span class="mi">255</span><span class="p">,</span> <span class="mi">255</span><span class="p">);</span>                <span class="c1">// fond blanc</span>
+        <span class="n">SDL_RenderClear</span><span class="p">(</span><span class="n">renderer</span><span class="p">);</span>                                           <span class="c1">// efface le rendu précédent</span>
+        <span class="n">SDL_SetRenderDrawColor</span><span class="p">(</span><span class="n">renderer</span><span class="p">,</span> <span class="n">couleurR</span><span class="p">,</span> <span class="n">couleurG</span><span class="p">,</span> <span class="n">couleurB</span><span class="p">,</span> <span class="mi">255</span><span class="p">);</span> <span class="c1">// couleur rectangle</span>
+        <span class="k">for</span> <span class="p">(</span><span class="kt">int</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">NBR_RECTANGLE</span><span class="p">;</span> <span class="n">i</span><span class="o">++</span><span class="p">)</span>
+        <span class="p">{</span>
+            <span class="kt">float</span> <span class="n">valCos</span> <span class="o">=</span> <span class="n">cosf</span><span class="p">(</span><span class="n">i</span><span class="p">);</span>
+            <span class="kt">float</span> <span class="n">valSin</span> <span class="o">=</span> <span class="n">sinf</span><span class="p">(</span><span class="n">i</span><span class="p">);</span>
+            <span class="n">rectangles</span><span class="p">[</span><span class="n">i</span><span class="p">].</span><span class="n">x</span> <span class="o">=</span> <span class="n">cercleTailleX</span> <span class="o">*</span> <span class="n">valCos</span> <span class="o">+</span> <span class="n">largeur</span> <span class="o">/</span> <span class="mi">2</span><span class="p">;</span>
+            <span class="n">rectangles</span><span class="p">[</span><span class="n">i</span><span class="p">].</span><span class="n">y</span> <span class="o">=</span> <span class="n">cercleTailleY</span> <span class="o">*</span> <span class="n">valSin</span> <span class="o">+</span> <span class="n">hauteur</span> <span class="o">/</span> <span class="mi">2</span><span class="p">;</span>
+            <span class="n">rectangles</span><span class="p">[</span><span class="n">i</span><span class="p">].</span><span class="n">w</span> <span class="o">=</span> <span class="n">TAILLE_RECT</span><span class="p">;</span>
+            <span class="n">rectangles</span><span class="p">[</span><span class="n">i</span><span class="p">].</span><span class="n">h</span> <span class="o">=</span> <span class="n">TAILLE_RECT</span><span class="p">;</span>
+            <span class="n">SDL_RenderFillRect</span><span class="p">(</span><span class="n">renderer</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">rectangles</span><span class="p">[</span><span class="n">i</span><span class="p">]);</span> <span class="c1">// on applique le rectangle</span>
+        <span class="p">}</span>
+        <span class="k">for</span> <span class="p">(</span><span class="kt">int</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">NBR_RECTANGLE</span><span class="p">;</span> <span class="n">i</span><span class="o">++</span><span class="p">)</span>
+        <span class="p">{</span>
+            <span class="kt">float</span> <span class="n">valCos</span> <span class="o">=</span> <span class="n">cosf</span><span class="p">(</span><span class="n">i</span><span class="p">);</span>
+            <span class="kt">float</span> <span class="n">valSin</span> <span class="o">=</span> <span class="n">sinf</span><span class="p">(</span><span class="n">i</span><span class="p">);</span> <span class="cm">/*on inverse les largeur x et y avec le premier pour avoir une belle forme*/</span>
+            <span class="n">rectangles</span><span class="p">[</span><span class="n">i</span><span class="p">].</span><span class="n">x</span> <span class="o">=</span> <span class="n">cercleTailleY</span> <span class="o">*</span> <span class="n">valCos</span> <span class="o">+</span> <span class="n">largeur</span> <span class="o">/</span> <span class="mi">2</span><span class="p">;</span>
+            <span class="n">rectangles</span><span class="p">[</span><span class="n">i</span><span class="p">].</span><span class="n">y</span> <span class="o">=</span> <span class="n">cercleTailleX</span> <span class="o">*</span> <span class="n">valSin</span> <span class="o">+</span> <span class="n">hauteur</span> <span class="o">/</span> <span class="mi">2</span><span class="p">;</span>
+            <span class="n">rectangles</span><span class="p">[</span><span class="n">i</span><span class="p">].</span><span class="n">w</span> <span class="o">=</span> <span class="n">TAILLE_RECT</span><span class="p">;</span>
+            <span class="n">rectangles</span><span class="p">[</span><span class="n">i</span><span class="p">].</span><span class="n">h</span> <span class="o">=</span> <span class="n">TAILLE_RECT</span><span class="p">;</span>
+            <span class="n">SDL_RenderFillRect</span><span class="p">(</span><span class="n">renderer</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">rectangles</span><span class="p">[</span><span class="n">i</span><span class="p">]);</span> <span class="c1">// on applique le rectangle</span>
+        <span class="p">}</span>
+
+        <span class="n">cercleTailleX</span> <span class="o">=</span> <span class="p">(</span><span class="n">cercleTailleX</span> <span class="o">+</span> <span class="mi">10</span><span class="p">)</span> <span class="o">%</span> <span class="mi">300</span><span class="p">;</span>
+        <span class="n">cercleTailleY</span> <span class="o">=</span> <span class="p">(</span><span class="n">cercleTailleY</span> <span class="o">+</span> <span class="mi">10</span><span class="p">)</span> <span class="o">%</span> <span class="mi">400</span><span class="p">;</span>
+        <span class="n">couleurR</span> <span class="o">=</span> <span class="p">(</span><span class="n">couleurR</span> <span class="o">+</span> <span class="mi">5</span><span class="p">)</span> <span class="o">%</span> <span class="mi">200</span><span class="p">;</span>
+        <span class="n">couleurG</span> <span class="o">=</span> <span class="p">(</span><span class="n">couleurG</span> <span class="o">+</span> <span class="mi">5</span><span class="p">)</span> <span class="o">%</span> <span class="mi">200</span><span class="p">;</span> <span class="c1">// modulo 200 pour eviter le blanc en 255</span>
+        <span class="n">couleurB</span> <span class="o">=</span> <span class="p">(</span><span class="n">couleurB</span> <span class="o">+</span> <span class="mi">5</span><span class="p">)</span> <span class="o">%</span> <span class="mi">200</span><span class="p">;</span>
+        <span class="n">SDL_RenderPresent</span><span class="p">(</span><span class="n">renderer</span><span class="p">);</span> <span class="c1">// on charge le rendu</span>
+        <span class="n">SDL_Delay</span><span class="p">(</span><span class="mi">75</span><span class="p">);</span>
+        <span class="n">interation</span><span class="o">++</span><span class="p">;</span>
+    <span class="p">}</span>
+
+    <span class="n">free</span><span class="p">(</span><span class="n">rectangles</span><span class="p">);</span>
+    <span class="n">free</span><span class="p">(</span><span class="n">rectangles2</span><span class="p">);</span>
+<span class="p">}</span>
+
+</code></pre></div><h3 id='video-2'>Vidéo</h3>
+<p align="center"><iframe width="80%" height="315" src="https://www.youtube.com/embed/9enCd_bTOAw" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe></p>
+
       </div>
       <div class="dark-box">
           <div class="lang-selector">
