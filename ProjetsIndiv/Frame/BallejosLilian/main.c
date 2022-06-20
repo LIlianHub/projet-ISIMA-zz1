@@ -91,28 +91,16 @@ void anim(SDL_Texture *my_texture,
           SDL_Texture *sol,
           SDL_Texture *mario)
 {
-    SDL_Rect
-        source = {0},            // Rectangle définissant la zone de la texture à récupérer
-        window_dimensions = {0}, // Rectangle définissant la fenêtre, on n'utilisera que largeur et hauteur
-        destination = {0};       // Rectangle définissant où la zone_source doit être déposée dans le renderer
-
+    /* perso*/
     SDL_Rect
         source2 = {0},            // Rectangle définissant la zone totale de la planche
         window_dimensions2 = {0}, // Rectangle définissant la fenêtre, on n'utilisera que largeur et hauteur
         destination2 = {0},       // Rectangle définissant où la zone_source doit être déposée dans le renderer
         state2 = {0};             // Rectangle de la vignette en cours dans la planche
 
-    SDL_GetWindowSize(
-        window, &window_dimensions.w,
-        &window_dimensions.h); // Récupération des dimensions de la fenêtre
-
     SDL_GetWindowSize(window, // Récupération des dimensions de la fenêtre
                       &window_dimensions2.w,
                       &window_dimensions2.h);
-
-    SDL_QueryTexture(my_texture, NULL, NULL,
-                     &source.w,
-                     &source.h); // Récupération des dimensions de l'image
 
     SDL_QueryTexture(mario, // Récupération des dimensions de l'image
                      NULL, NULL,
@@ -122,20 +110,32 @@ void anim(SDL_Texture *my_texture,
     int offset_x = source2.w / 6,             // 6 frame par ligne
         offset_y = source2.h / 4 + source2.h; // on se place sur la deuxieme ligne de l'image
 
+    float zoom2 = 2;                                             // zoom, car ces images sont un peu petites
+    destination2.w = offset_x * zoom2;                           // Largeur du sprite à l'écran
+    destination2.h = offset_y * zoom2;                           // Hauteur du sprite à l'écran
+    destination2.y = (window_dimensions2.h - destination2.h) / 2; // La course se fait en milieu d'écran (en vertical)
+    destination2.x = 100;
+
+    printf("%d %d\n", offset_x, offset_y);
+
     /* fond */
+    SDL_Rect
+        source = {0},            // Rectangle définissant la zone de la texture à récupérer
+        window_dimensions = {0}, // Rectangle définissant la fenêtre, on n'utilisera que largeur et hauteur
+        destination = {0};       // Rectangle définissant où la zone_source doit être déposée dans le renderer
+
+    SDL_GetWindowSize(
+        window, &window_dimensions.w,
+        &window_dimensions.h); // Récupération des dimensions de la fenêtre
+
+    SDL_QueryTexture(my_texture, NULL, NULL,
+                     &source.w,
+                     &source.h); // Récupération des dimensions de l'image
+
     float zoom = 1.5;                // Facteur de zoom entre l'image source et l'image affichée pour fond
     destination.w = source.w * zoom; // On applique le zoom sur la largeur
     destination.h = source.h * zoom; // On applique le zoom sur la hauteur
     destination.x = -source.w / 2;   // au depart a droite
-
-    /*sprite mario*/
-
-    float zoom2 = 2;                   // zoom, car ces images sont un peu petites
-    destination2.w = offset_x * zoom2; // Largeur du sprite à l'écran
-    destination2.h = offset_y * zoom2; // Hauteur du sprite à l'écran
-    destination2.y =                   // La course se fait en milieu d'écran (en vertical)
-        (window_dimensions.h - destination2.h) / 2;
-    destination2.x = 100;
 
     /*animation*/
     int nb_it = 300; // Nombre d'iteration
@@ -150,14 +150,14 @@ void anim(SDL_Texture *my_texture,
         {
             destination.x += 10;
         }
-        destination2.x += offset_x;
+        destination2.x += offset_x * zoom2;
         state2.x += offset_x;                    // On passe à la vignette suivante dans l'image
         state2.x %= (source2.w / 6) * nb_images; // La vignette suivante sur 3 cases
 
         SDL_RenderClear(renderer);                                   // Effacer l'image précédente
         SDL_RenderCopy(renderer, my_texture, &source, &destination); // Préparation de l'affichage
         placementTexture(sol, window, renderer);                     // Afficher le sol
-        SDL_RenderCopy(renderer, mario, &state2, &destination2);      // mario
+        SDL_RenderCopy(renderer, mario, &state2, &destination2);     // mario
         SDL_RenderPresent(renderer);                                 // Affichage de la nouvelle image
         SDL_Delay(30);                                               // Pause en ms
     }
