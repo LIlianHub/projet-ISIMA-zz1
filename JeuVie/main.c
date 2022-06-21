@@ -1,7 +1,7 @@
 #include <SDL2/SDL.h>
 #include <stdio.h>
 #include <SDL2/SDL_ttf.h>
-#include "animation.h"
+#include "Animation.h"
 #include "Algorithme.h"
 
 /************************************/
@@ -10,27 +10,12 @@
 
 #define NB_LIGNE 25
 #define NB_COLONNE 25
+#define TAILLE_MASQUE 9
 
 int main(int argc, char **argv)
 {
     (void)argc;
     (void)argv;
-
-    /*A suppimer*/
-
-    int **tab = malloc(sizeof(int *) * NB_LIGNE);
-    for (int i = 0; i < NB_LIGNE; i++)
-    {
-        tab[i] = calloc(NB_COLONNE, sizeof(int));
-    }
-
-    for (int i = 0; i < NB_LIGNE; i++)
-    {
-        tab[i][i] = 1;
-    }
-
-    int masque1[9] = {1};
-    int masque2[9] = {0, 1, 1, 1, 0, 1, 0, 1, 1};
 
     /*Création Pointeur*/
 
@@ -80,14 +65,23 @@ int main(int argc, char **argv)
         end_sdl(0, "Couldn't initialize SDL TTF", window, renderer, policeTitre);
     policeTitre = TTF_OpenFont("fonts/arial.ttf", 20);
 
+    /* partie jeu de la vie*/
+
+    int masqueVie[TAILLE_MASQUE] = {0, 1, 0, 0, 0, 0, 1, 0, 0};
+    int masqueMort[TAILLE_MASQUE] = {1, 0, 0, 0, 0, 0, 0, 0, 0};
+    int **tableau1 = creer_tableau(NB_LIGNE, NB_COLONNE);
+    int **tableau2 = creer_tableau(NB_LIGNE, NB_COLONNE);
+
+
+
+
     /*Evenement*/
 
     SDL_bool
-        program_on = SDL_TRUE, 
-        paused = SDL_FALSE,
-        modeJeu = SDL_FALSE, //FALSE : LIMITE true tor
-        enJeu = SDL_FALSE;  
-    SDL_Event event;           
+        program_on = SDL_TRUE,
+        modeJeu = SDL_FALSE, // FALSE : LIMITE true tor
+        enJeu = SDL_FALSE;
+    SDL_Event event;
 
     while (program_on)
     {
@@ -102,14 +96,27 @@ int main(int argc, char **argv)
                 switch (event.key.keysym.sym)
                 {
                 case SDLK_SPACE:
-                    paused = !paused;
+                    enJeu = !enJeu;
                     break;
-                case SDLK_c: //changement mode
+                case SDLK_c: // changement mode
                     modeJeu = !modeJeu;
                     break;
-                case SDLK_w: //changement mode
-                    if(!enJeu){
-                        EcritureConfig(tab,NB_LIGNE,NB_COLONNE);
+                case SDLK_w: // save config
+                    if (!enJeu)
+                    {
+                        EcritureConfig(tableau1, NB_LIGNE, NB_COLONNE);
+                    }
+                    break;
+                case SDLK_v: // clear
+                    if (!enJeu)
+                    {
+                        ClearTab(tableau1, NB_LIGNE, NB_COLONNE);
+                    }
+                    break;
+                case SDLK_x: // lecture save
+                    if (!enJeu)
+                    {
+                        LectureFichier(tableau1, NB_LIGNE, NB_COLONNE);
                     }
                     break;
                 default:
@@ -120,9 +127,8 @@ int main(int argc, char **argv)
                 if (SDL_GetMouseState(NULL, NULL) &
                     SDL_BUTTON(SDL_BUTTON_LEFT))
                 { // clique droit
-                    // printf("suuh\n");
                     if (!enJeu)
-                        ChangeEtat(tab, FenetreW, FenetreH, event.motion.x, event.motion.y, NB_LIGNE, NB_COLONNE, enJeu);
+                        ChangeEtat(tableau1, FenetreW, FenetreH, event.motion.x, event.motion.y, NB_LIGNE, NB_COLONNE, enJeu);
                 }
                 break;
             default: // Les évènements qu'on n'a pas envisagé
@@ -130,15 +136,19 @@ int main(int argc, char **argv)
             }
         }
         // fonction
-        if (!paused)
+        if (enJeu)
         {
-            Affichage(window, renderer, FenetreW, FenetreH, policeTitre, masque1, masque2, modeJeu, tab, NB_LIGNE, NB_COLONNE);
-            SDL_RenderPresent(renderer);
         }
+
+        Affichage(window, renderer, FenetreW, FenetreH, policeTitre, masqueVie, masqueMort, modeJeu, tableau1, NB_LIGNE, NB_COLONNE);
+        SDL_RenderPresent(renderer);
+
         SDL_Delay(50); // depend pour fps avec horloge
     }
 
     // Fermeture
+    liberer_tableau(tableau1, NB_LIGNE);
+    liberer_tableau(tableau2, NB_LIGNE);
     end_sdl(1, "Normal ending", window, renderer, policeTitre);
     return EXIT_SUCCESS;
 
