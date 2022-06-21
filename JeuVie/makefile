@@ -1,5 +1,4 @@
-SRC=src/main.c
-SRC+= src/AlgoVie.c
+SRC=AlgoVie.c
 EXE=exec
 
 CC=gcc
