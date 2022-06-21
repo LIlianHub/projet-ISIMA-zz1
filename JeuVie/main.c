@@ -2,6 +2,7 @@
 #include <stdio.h>
 #include <SDL2/SDL_ttf.h>
 #include "animation.h"
+#include "Algorithme.h"
 
 /************************************/
 /*  exemple de création de fenêtres */
@@ -81,17 +82,16 @@ int main(int argc, char **argv)
 
     /*Evenement*/
 
-    int modeJeu = 0; // thor ou limité
-    int enJeu = 0;
-
     SDL_bool
-        program_on = SDL_TRUE, // Booléen pour dire que le programme doit continuer
-        paused = SDL_FALSE;    // Booléen pour dire que le programme est en pause
-    SDL_Event event;           // Evènement à traiter
+        program_on = SDL_TRUE, 
+        paused = SDL_FALSE,
+        modeJeu = SDL_FALSE, //FALSE : LIMITE true tor
+        enJeu = SDL_FALSE;  
+    SDL_Event event;           
 
     while (program_on)
     {
-        while(SDL_PollEvent(&event)) // partie event
+        while (SDL_PollEvent(&event)) // partie event
         {
             switch (event.type)
             {              // En fonction de la valeur du type de cet évènement
@@ -104,6 +104,14 @@ int main(int argc, char **argv)
                 case SDLK_SPACE:
                     paused = !paused;
                     break;
+                case SDLK_c: //changement mode
+                    modeJeu = !modeJeu;
+                    break;
+                case SDLK_w: //changement mode
+                    if(!enJeu){
+                        EcritureConfig(tab,NB_LIGNE,NB_COLONNE);
+                    }
+                    break;
                 default:
                     break;
                 }
@@ -112,15 +120,15 @@ int main(int argc, char **argv)
                 if (SDL_GetMouseState(NULL, NULL) &
                     SDL_BUTTON(SDL_BUTTON_LEFT))
                 { // clique droit
-                    //printf("suuh\n");
-                    if(!enJeu)
+                    // printf("suuh\n");
+                    if (!enJeu)
                         ChangeEtat(tab, FenetreW, FenetreH, event.motion.x, event.motion.y, NB_LIGNE, NB_COLONNE, enJeu);
                 }
                 break;
             default: // Les évènements qu'on n'a pas envisagé
                 break;
             }
-        }            
+        }
         // fonction
         if (!paused)
         {

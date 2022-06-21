@@ -150,7 +150,7 @@ void Affichage(SDL_Window *window, SDL_Renderer *renderer, int FenetreW, int Fen
     }
 }
 
-void ChangeEtat(int **tab, int FenetreW, int FenetreH, int x, int y, int nbLigne, int nbColonne, int enJeu)
+void ChangeEtat(int **tab, int FenetreW, int FenetreH, int x, int y, int nbLigne, int nbColonne, SDL_bool enJeu)
 {
     if (x > 0 && x < FenetreW && y > 25 && y < FenetreH)
     {

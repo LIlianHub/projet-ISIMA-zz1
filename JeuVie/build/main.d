@@ -1,1 +1,1 @@
-build/main.o: main.c animation.h
+build/main.o: main.c animation.h Algorithme.h
