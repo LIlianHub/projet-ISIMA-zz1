@@ -1,0 +1,34 @@
+#include <stdio.h>
+#include <stdlib.h>
+
+void SauvFichier(FILE * f, int tab[4][4], int ligne, int colonne)
+{
+  int i,j;
+
+  for ( i = 0 ; i < ligne ; i++ ){
+
+    for ( j = 0 ; j < colonne ; j++ ){
+
+      fprintf(f,"%d ",tab[i][j]);
+      
+      
+    }
+    fputc('\n',f);
+  }
+
+  
+  
+}
+
+
+
+int main (){
+
+  FILE *f = fopen("file.txt","w");
+  
+  int tab[4][4] = {{1,0,1,0},{0,1,0,1},{1,0,1,0},{0,1,0,1}};
+  SauvFichier(f,tab,4,4);
+
+  fclose(f);
+  return 0;
+}

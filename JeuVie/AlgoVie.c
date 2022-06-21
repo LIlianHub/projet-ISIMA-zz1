@@ -29,6 +29,7 @@ void liberer_tableau(int ** tableau, int nb_lignes)
 }
 
 
+/*Afficher un tableau*/
 
 void afficher_tableau(int ** tableau, int nb_lignes, int nb_colonnes)
 {
@@ -46,6 +47,8 @@ void afficher_tableau(int ** tableau, int nb_lignes, int nb_colonnes)
 
 
 
+/*Renvoie le nombre de voisins d'une case d'un tableau ( en considérant qu'on ne l'utilisera que sur
+ *des non-côtés )*/
 
 int nbvoisins(int ** moment_t, int ligne, int colonne){
 
@@ -66,8 +69,11 @@ int nbvoisins(int ** moment_t, int ligne, int colonne){
   return nbre;
 }
 
+/* 1 Itération du jeu de la vie 
+ *Besoin de mettre une couche 0 autour du tableau, donc prévoir une dimension en plus à
+ *l'initialisation*/
 
-/*Besoin de mettre une couche 0 autour du tableau donc prévoir une dimension en plus à l'initialisation*/
+
 void iterationReel(int **moment_t , int ** moment_t1, int nb_lignes, int nb_colonnes,
 		   int masqueVie[TAILLE_MASQUE],
 		   int masqueMort[TAILLE_MASQUE])
