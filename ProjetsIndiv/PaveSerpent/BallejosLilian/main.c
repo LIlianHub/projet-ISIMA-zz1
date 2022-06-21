@@ -3,12 +3,10 @@
 #include <stdio.h>
 #include <string.h>
 
-#define NBR_RECTANGLE 50
-#define TAILLE_RECT 10
+/*Modifiable pour plus de rectangle ou des formes plus grosses*/
+#define NBR_RECTANGLE 100
+#define TAILLE_RECT 2
 
-/*********************************************************************************************************************/
-/*                              Programme d'exemple de création de rendu + dessin                                    */
-/*********************************************************************************************************************/
 void end_sdl(char ok,            // fin normale : ok = 0 ; anormale ok = 1
              char const *msg,    // message à afficher
              SDL_Window *window, // fenêtre à fermer
@@ -45,9 +43,10 @@ void end_sdl(char ok,            // fin normale : ok = 0 ; anormale ok = 1
     }
 }
 
+/*Fonction de dessin*/
 void draw(SDL_Renderer *renderer, int largeur, int hauteur)
 {
-    /*Tableau de rectangle assez petit pour sembler etre des points*/
+    /*Tableau de rectangle*/
     SDL_Rect *rectangles = (SDL_Rect *)malloc(sizeof(SDL_Rect) * NBR_RECTANGLE);
     SDL_Rect *rectangles2 = (SDL_Rect *)malloc(sizeof(SDL_Rect) * NBR_RECTANGLE);
     int cercleTailleX = 100;
@@ -55,9 +54,25 @@ void draw(SDL_Renderer *renderer, int largeur, int hauteur)
     int couleurR = 0;
     int couleurG = 20; /*couleur varie*/
     int couleurB = 10;
-    float interation = 0;
-    while (interation < 1000)
+
+    SDL_bool program_on = SDL_TRUE;
+    SDL_Event event;
+
+    while (program_on)
     {
+
+        while (SDL_PollEvent(&event))
+        {
+            switch (event.type)
+            {
+            case SDL_QUIT:
+                program_on = SDL_FALSE;
+                break;
+
+            default:
+                break;
+            }
+        }
         SDL_SetRenderDrawColor(renderer, 255, 255, 255, 255);                // fond blanc
         SDL_RenderClear(renderer);                                           // efface le rendu précédent
         SDL_SetRenderDrawColor(renderer, couleurR, couleurG, couleurB, 255); // couleur rectangle
@@ -89,9 +104,7 @@ void draw(SDL_Renderer *renderer, int largeur, int hauteur)
         couleurB = (couleurB + 5) % 200;
         SDL_RenderPresent(renderer); // on charge le rendu
         SDL_Delay(75);
-        interation++;
     }
-
     free(rectangles);
     free(rectangles2);
 }
@@ -106,8 +119,8 @@ int main(int argc, char **argv)
 
     SDL_DisplayMode screen;
 
-    /*********************************************************************************************************************/
-    /*                         Initialisation de la SDL  + gestion de l'échec possible                                   */
+    /*Allocation SDL*/
+
     if (SDL_Init(SDL_INIT_VIDEO) != 0)
         end_sdl(0, "ERROR SDL INIT", window, renderer);
 
@@ -128,11 +141,8 @@ int main(int argc, char **argv)
     if (renderer == NULL)
         end_sdl(0, "ERROR RENDERER CREATION", window, renderer);
 
-    /*********************************************************************************************************************/
-    /*                                     On dessine dans le renderer                                                   */
-    /*********************************************************************************************************************/
-    /*             Cette partie pourrait avantageusement être remplacée par la boucle évènementielle                     */
-    draw(renderer, screen.w * 0.66, screen.h * 0.66); // appel de la fonction qui crée l'image
+    /*Appel de la fonction de dessin*/
+    draw(renderer, screen.w * 0.66, screen.h * 0.66);
 
     /* on referme proprement la SDL */
     end_sdl(1, "Normal ending", window, renderer);
