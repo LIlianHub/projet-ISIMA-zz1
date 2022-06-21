@@ -53,7 +53,7 @@ void draw(SDL_Renderer* renderer) {                                 // Je pense 
   SDL_Rect rectangle;                                                             
   
   SDL_SetRenderDrawColor(renderer,                                                
-                         37, 25, 133,                                  // mode Red, Green, Blue (tous dans 0..255)
+                         37, 25, 133,                               // mode Red, Green, Blue (tous dans 0..255)
                          255);                                      // 0 = transparent ; 255 = opaque
   rectangle.x = 0;
   // x haut gauche du rectangle
@@ -63,24 +63,38 @@ void draw(SDL_Renderer* renderer) {                                 // Je pense 
 
   SDL_RenderFillRect(renderer, &rectangle);                         
 
-  SDL_SetRenderDrawColor(renderer, 0, 0, 0, 255);                   
+  SDL_SetRenderDrawColor(renderer, 224, 222, 238, 255);                   
   
-  srand(time(NULL));   // Initialisation
-  int pos_x_deb = rand()% 600;
-  int pos_y_deb = 0;
-  int pos_x_fin = pos_x_deb - 30;
-  int pos_y_fin = rand()% 600;
-  
-  SDL_RenderDrawLine(renderer,                                      
-                     pos_x_deb, pos_y_deb,                                      // x,y du point de la première extrémité
-                     pos_x_fin, pos_y_fin);                                     // x,y seconde extrémité
+  srand(time(NULL));
 
-  drawCircle(renderer,pos_x_fin,pos_y_fin,30,20);
-  drawCircle(renderer,pos_x_fin,pos_y_fin,20,10);
-  drawCircle(renderer,pos_x_fin,pos_y_fin,15,7);
+  /*int orientationPluie = rand()%600;
+  // Initialisation
+  int pos_x_deb = rand()% 600;
+  int pos_y_deb = rand()% 600;
+  int pos_x_fin = pos_x_deb - 50;
+  int pos_y_fin = pos_y_deb + rand()%600 ;*/
+
+  for(int m = 0; m < 20; m++){
+    int pos_x_deb = rand()% 600;
+    int pos_y_deb = rand()% 600;
+    int pos_x_fin = pos_x_deb - rand()%50;
+    int pos_y_fin = pos_y_deb + rand()%600 ;
+
+    
+    SDL_RenderDrawLine(renderer,                                      
+		       pos_x_deb, pos_y_deb,                                      // x,y du point de la première extrémité
+		       pos_x_fin, pos_y_fin);                                     // x,y seconde extrémité
   
+  drawCircle(renderer,pos_x_fin,pos_y_fin,35,23);
+  drawCircle(renderer,pos_x_fin,pos_y_fin,20,17);
+  drawCircle(renderer,pos_x_fin,pos_y_fin,7,5);
+  }
 
 }
+
+
+
+
 
 int main(int argc, char** argv) {
   (void)argc;
@@ -92,7 +106,8 @@ int main(int argc, char** argv) {
   SDL_DisplayMode screen;
 
   /*********************************************************************************************************************/  
-  /*                         Initialisation de la SDL  + gestion de l'échec possible                                   */
+  /*                         Initialisation de la SDL  + gestion de l'échec possible*/
+  
   if (SDL_Init(SDL_INIT_VIDEO) != 0) end_sdl(0, "ERROR SDL INIT", window, renderer);
 
   SDL_GetCurrentDisplayMode(0, &screen);
