@@ -7,6 +7,9 @@
 /*  exemple de création de fenêtres */
 /************************************/
 
+#define NB_LIGNE 25
+#define NB_COLONNE 25
+
 int main(int argc, char **argv)
 {
     (void)argc;
@@ -14,13 +17,19 @@ int main(int argc, char **argv)
 
     /*A suppimer*/
 
-    int **tab = malloc(sizeof(int *) * 10);
-    for (int i = 0; i < 10; i++)
+    int **tab = malloc(sizeof(int *) * NB_LIGNE);
+    for (int i = 0; i < NB_LIGNE; i++)
     {
-        tab[i] = calloc(10, sizeof(int));
+        tab[i] = calloc(NB_COLONNE, sizeof(int));
     }
 
-    tab[5][5] = 1;
+    for (int i = 0; i < NB_LIGNE; i++)
+    {
+        tab[i][i] = 1;
+    }
+
+    int masque1[9] = {1};
+    int masque2[9] = {0, 1, 1, 1, 0, 1, 0, 1, 1};
 
     /*Création Pointeur*/
 
@@ -42,8 +51,8 @@ int main(int argc, char **argv)
 
     SDL_DisplayMode infoEcran;
     SDL_GetCurrentDisplayMode(0, &infoEcran);
-    int FenetreW = infoEcran.w * 0.7;
-    int FenetreH = infoEcran.h * 0.7;
+    int FenetreW = 800;
+    int FenetreH = 825;
 
     window = SDL_CreateWindow("Jeu de la Vie",
                               SDL_WINDOWPOS_CENTERED,
@@ -61,16 +70,19 @@ int main(int argc, char **argv)
     if (renderer == NULL)
         end_sdl(0, "ERROR RENDERER CREATION", window, renderer, policeTitre);
 
+    SDL_SetRenderDrawBlendMode(renderer, SDL_BLENDMODE_BLEND);
+    // le render mode couleur alpha
+
     /*Création de la police*/
 
-    
     if (TTF_Init() < 0)
         end_sdl(0, "Couldn't initialize SDL TTF", window, renderer, policeTitre);
-    policeTitre = TTF_OpenFont("fonts/arial.ttf", FenetreW/20); //police responsive
+    policeTitre = TTF_OpenFont("fonts/arial.ttf", 20);
 
     /*Evenement*/
 
-    int ChoixMenu = 0;
+    int modeJeu = 0; // thor ou limité
+    int enJeu = 0;
 
     SDL_bool
         program_on = SDL_TRUE, // Booléen pour dire que le programme doit continuer
@@ -79,7 +91,7 @@ int main(int argc, char **argv)
 
     while (program_on)
     {
-        if (SDL_PollEvent(&event)) // partie event
+        while(SDL_PollEvent(&event)) // partie event
         {
             switch (event.type)
             {              // En fonction de la valeur du type de cet évènement
@@ -88,40 +100,37 @@ int main(int argc, char **argv)
                 break;
             case SDL_KEYDOWN: // Appuie touche
                 switch (event.key.keysym.sym)
-                {                     // la touche appuyée est ...
-                case SDLK_p:          // 'p'
-                case SDLK_SPACE:      // ou 'SPC'
-                    paused = !paused; // basculement pause/unpause
+                {
+                case SDLK_SPACE:
+                    paused = !paused;
                     break;
-                default: // Une touche appuyée qu'on ne traite pas
+                default:
                     break;
                 }
                 break;
             case SDL_MOUSEBUTTONDOWN: // Click souris
                 if (SDL_GetMouseState(NULL, NULL) &
                     SDL_BUTTON(SDL_BUTTON_LEFT))
-                { // Si c'est un click gauche
-                    printf("clique gauche\n");
-                }
-                else if (SDL_GetMouseState(NULL, NULL) &
-                         SDL_BUTTON(SDL_BUTTON_RIGHT))
-                { // Si c'est un click droit
-                    printf("clique droit\n");
+                { // clique droit
+                    //printf("suuh\n");
+                    if(!enJeu)
+                        ChangeEtat(tab, FenetreW, FenetreH, event.motion.x, event.motion.y, NB_LIGNE, NB_COLONNE, enJeu);
                 }
                 break;
             default: // Les évènements qu'on n'a pas envisagé
                 break;
             }
-        }
-
+        }            
         // fonction
-        GenereMenu(window, renderer, FenetreW, FenetreH, policeTitre);
-        SDL_RenderPresent(renderer);
-        SDL_Delay(10); // depend pour fps avec horloge
+        if (!paused)
+        {
+            Affichage(window, renderer, FenetreW, FenetreH, policeTitre, masque1, masque2, modeJeu, tab, NB_LIGNE, NB_COLONNE);
+            SDL_RenderPresent(renderer);
+        }
+        SDL_Delay(50); // depend pour fps avec horloge
     }
 
     // Fermeture
-
     end_sdl(1, "Normal ending", window, renderer, policeTitre);
     return EXIT_SUCCESS;
 
