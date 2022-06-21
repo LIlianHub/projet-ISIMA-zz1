@@ -11,7 +11,7 @@ void end_sdl(char ok,            // fin normale : ok = 0 ; anormale ok = 1
              SDL_Texture *sol,
              SDL_Texture *ciel,
              SDL_Texture *oiseau)
-{ // renderer à fermer
+{
     char msg_formated[255];
     int l;
 
@@ -61,6 +61,7 @@ void end_sdl(char ok,            // fin normale : ok = 0 ; anormale ok = 1
     }
 }
 
+// placement fond
 void placementTexture(SDL_Texture *my_texture, SDL_Window *window,
                       SDL_Renderer *renderer)
 {
@@ -90,6 +91,7 @@ void anim(SDL_Texture *ciel,
           SDL_Texture *sol,
           SDL_Texture *oiseau)
 {
+
     /* perso*/
     SDL_Rect
         source2 = {0},            // Rectangle définissant la zone totale de la planche
@@ -111,19 +113,15 @@ void anim(SDL_Texture *ciel,
     int offset_x = source2.w / nb_images, // 5 frame par ligne
         offset_y = source2.h / 3;         // 3 lignes
 
-
     state2.x = 0;
     state2.y = 0; // premiere ligne
     state2.w = offset_x;
     state2.h = offset_y;
 
-
-
     printf("offeset %d %d\n", offset_x, offset_y);
 
-    float zoom2 = 1;                                              // zoom, car ces images sont un peu petites
-    destination2.w = offset_x * zoom2;                            // Largeur du sprite à l'écran
-    destination2.h = offset_y * zoom2;                            // Hauteur du sprite à l'écran
+    destination2.w = offset_x;
+    destination2.h = offset_y;
     destination2.y = (window_dimensions2.h / 2) - destination2.h; // La course se fait en milieu d'écran (en vertical)
 
     printf("destination H et W %d %d\n", destination2.w, destination2.h);
@@ -147,10 +145,28 @@ void anim(SDL_Texture *ciel,
     destination.h = source.h * zoom; // On applique le zoom sur la hauteur
     destination.x = -source.w / 2;   // au depart a droite
 
-    /*animation*/
-    int speed = 4; // vitesse de déplacement
-    for (int x = 0; x < (window_dimensions.w - destination2.w); x += speed)
+    int speed = 10; // vitesse de déplacement
+    int x = 0; //depart oiseau
+    SDL_bool program_on = SDL_TRUE;
+    SDL_Event event;
+
+    while (program_on)
     {
+
+        while (SDL_PollEvent(&event))
+        {
+            switch (event.type)
+            {
+            case SDL_QUIT:
+                program_on = SDL_FALSE;
+                break;
+
+            default:
+                break;
+            }
+        }
+        /*animation*/
+        x += speed;
         if (destination.x > 0) // on atteind le bout de l'image
         {
             destination.x = -source.w / 2;
@@ -166,12 +182,14 @@ void anim(SDL_Texture *ciel,
         printf("etat %d %d\n", state2.x, state2.y);
         printf("destination %d %d\n", destination2.x, destination2.y);
 
-        SDL_RenderClear(renderer); // Effacer l'image précédente
-        SDL_RenderCopy(renderer, ciel, &source, &destination); // Préparation de l'affichage
-        placementTexture(sol, window, renderer);                     // Afficher le sol
+        SDL_RenderClear(renderer);                                // Effacer l'image précédente
+        SDL_RenderCopy(renderer, ciel, &source, &destination);    // Préparation de l'affichage
+        placementTexture(sol, window, renderer);                  // Afficher le sol
         SDL_RenderCopy(renderer, oiseau, &state2, &destination2); // personnage
         SDL_RenderPresent(renderer);                              // Affichage de la nouvelle image
-        SDL_Delay(30);                                            // Pause en ms
+        SDL_Delay(30);
+        if(x > window_dimensions.w)
+            program_on = !program_on;
     }
 }
 
@@ -233,13 +251,6 @@ int main(int argc, char **argv)
     /*Affichage*/
 
     anim(ciel, window, renderer, sol, oiseau);
-    SDL_Delay(2000);
-
-    SDL_RenderClear(renderer); // Effacer la fenêtre
-
-    SDL_Delay(2000);
-
-    /* on referme proprement la SDL */
 
     end_sdl(1, "Normal ending", window, renderer, sol, ciel, oiseau);
     return EXIT_SUCCESS;
