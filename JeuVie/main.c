@@ -1,55 +1,32 @@
 #include <SDL2/SDL.h>
 #include <stdio.h>
+#include <SDL2/SDL_ttf.h>
+#include "animation.h"
 
 /************************************/
 /*  exemple de création de fenêtres */
 /************************************/
-
-void end_sdl(char ok,            // fin normale : ok = 0 ; anormale ok = 1
-             char const *msg,    // message à afficher
-             SDL_Window *window, // fenêtre à fermer
-             SDL_Renderer *renderer)
-{
-    char msg_formated[255];
-    int l;
-
-    if (!ok)
-    { // Affichage de ce qui ne va pas
-        strncpy(msg_formated, msg, 250);
-        l = strlen(msg_formated);
-        strcpy(msg_formated + l, " : %s\n");
-
-        SDL_Log(msg_formated, SDL_GetError());
-    }
-
-    if (renderer != NULL)
-    {
-        SDL_DestroyRenderer(renderer);
-        renderer = NULL;
-    }
-    if (window != NULL)
-    {
-        SDL_DestroyWindow(window);
-        window = NULL;
-    }
-
-    SDL_Quit();
-
-    if (!ok)
-    { // On quitte si cela ne va pas
-        exit(EXIT_FAILURE);
-    }
-}
 
 int main(int argc, char **argv)
 {
     (void)argc;
     (void)argv;
 
-    /*CRéation Pointeur*/
+    /*A suppimer*/
+
+    int **tab = malloc(sizeof(int *) * 10);
+    for (int i = 0; i < 10; i++)
+    {
+        tab[i] = calloc(10, sizeof(int));
+    }
+
+    tab[5][5] = 1;
+
+    /*Création Pointeur*/
 
     SDL_Window *window = NULL;
     SDL_Renderer *renderer = NULL;
+    TTF_Font *policeTitre = NULL;
 
     /*ALlocation Element*/
 
@@ -76,17 +53,24 @@ int main(int argc, char **argv)
                               SDL_WINDOW_OPENGL);
 
     if (window == NULL)
-        end_sdl(0, "ERROR WINDOW CREATION", window, renderer);
+        end_sdl(0, "ERROR WINDOW CREATION", window, renderer, policeTitre);
 
     /* Création du renderer */
     renderer = SDL_CreateRenderer(window, -1,
                                   SDL_RENDERER_ACCELERATED | SDL_RENDERER_PRESENTVSYNC);
     if (renderer == NULL)
-        end_sdl(0, "ERROR RENDERER CREATION", window, renderer);
+        end_sdl(0, "ERROR RENDERER CREATION", window, renderer, policeTitre);
+
+    /*Création de la police*/
+
+    
+    if (TTF_Init() < 0)
+        end_sdl(0, "Couldn't initialize SDL TTF", window, renderer, policeTitre);
+    policeTitre = TTF_OpenFont("fonts/arial.ttf", FenetreW/20); //police responsive
 
     /*Evenement*/
 
-    int ChoixMenu = 0; // Menu
+    int ChoixMenu = 0;
 
     SDL_bool
         program_on = SDL_TRUE, // Booléen pour dire que le programme doit continuer
@@ -131,12 +115,14 @@ int main(int argc, char **argv)
         }
 
         // fonction
+        GenereMenu(window, renderer, FenetreW, FenetreH, policeTitre);
+        SDL_RenderPresent(renderer);
         SDL_Delay(10); // depend pour fps avec horloge
     }
 
     // Fermeture
 
-    end_sdl(1, "Normal ending", window, renderer);
+    end_sdl(1, "Normal ending", window, renderer, policeTitre);
     return EXIT_SUCCESS;
 
     return 0;

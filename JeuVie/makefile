@@ -1,4 +1,5 @@
 SRC=main.c
+SRC+= animation.c
 EXE=exec
 
 CC=gcc
