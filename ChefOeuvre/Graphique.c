@@ -71,22 +71,12 @@ void end_sdl(char ok,
     }
 }
 
-/*void ChangeEtat(int **tab, int FenetreW, int FenetreH, int x, int y, int nbLigne, int nbColonne, SDL_bool enJeu)
+/*passage indice du plateau au coordonnées de la fenetre*/
+void PassageTableauCoor(int i, int j, int *x, int *y)
 {
-    if (x > 0 && x < FenetreW && y > 25 && y < FenetreH)
-    {
-
-        int colonneTab = x / (FenetreW / nbColonne);
-        int ligneTab = (y - 25) / (FenetreH / nbLigne);
-        if (!enJeu)
-        {
-            if (tab[ligneTab][colonneTab] == 1)
-                tab[ligneTab][colonneTab] = 0;
-            else
-                tab[ligneTab][colonneTab] = 1;
-        }
-    }
-}*/
+    *x = j * (FENETREWIDTH / DIMENSION_TAB_JEU);
+    *y = i * ((FENETREHEIGHT - TAILLE_MENU) / DIMENSION_TAB_JEU) + TAILLE_MENU;
+}
 
 /*AffichageLogoMenu*/
 
@@ -246,13 +236,18 @@ void GestionEvenement(SDL_Window *window, SDL_Renderer *renderer, TTF_Font *font
     /*Variable utile*/
     SDL_bool activation = SDL_TRUE;
     SDL_Event event;
-    SDL_Rect etats[25]; // les explosions pour la mort
+    /*Gestion animation explosion*/
+    SDL_Rect etats[25];
     GenereTabExplosion(etats, explosion);
 
     int test_explo = 0;
     SDL_Rect test = {400, 440, FENETREWIDTH * TAILLE_EXPLOSION / DIMENSION_TAB_JEU, (FENETREHEIGHT - TAILLE_MENU) * TAILLE_EXPLOSION / DIMENSION_TAB_JEU};
 
-    //score en fonction du temps qui passe
+    int x = 0, y = 0;
+    PassageTableauCoor(1, 2, &x, &y);
+    printf("-> %d %d <--\n", x, y);
+
+    // score en fonction du temps qui passe
     int score = 0;
     long timeDebut = SDL_GetTicks();
 
@@ -290,17 +285,17 @@ void GestionEvenement(SDL_Window *window, SDL_Renderer *renderer, TTF_Font *font
                 break;
             }
         }
-        
-        //Calcul du score en fonction du temps ecoulé
-        score = (SDL_GetTicks() - timeDebut) / 1000; //en mili sec donc /1000 pour sec
+
+        // Calcul du score en fonction du temps ecoulé
+        score = (SDL_GetTicks() - timeDebut) / 1000; // en mili sec donc /1000 pour sec
 
         AffichageGrillage(renderer, pomme, plateau);
         AffichageMenu(renderer, font, logoMenu, meilleurScore, score);
         if (test_explo < 25)
         {
             Explosion(renderer, explosion, test, test_explo, etats);
-            printf("%d\n", test_explo);
             test_explo++;
+            test_explo %=  24;
         }
         SDL_RenderPresent(renderer);
         SDL_Delay(50); // depend pour fps avec horloge
