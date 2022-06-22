@@ -161,13 +161,23 @@ void AffichageMenu(SDL_Renderer *renderer, TTF_Font *police, SDL_Texture *logo, 
     AffichageScore(renderer, police, score, meilleurScore);
 }
 
-void AffichageGrillage(SDL_Renderer *renderer)
+/*Grille*/
+
+void AffichagePomme(SDL_Renderer *renderer, SDL_Texture *pomme, SDL_Rect pos, int ** plateau)
+{
+    SDL_Rect image = {0};
+    SDL_QueryTexture(pomme, NULL, NULL, &image.w, &image.h);
+    SDL_RenderCopy(renderer, pomme, &image, &pos);
+}
+
+void AffichageGrillage(SDL_Renderer *renderer, SDL_Texture * pomme, int ** plateau)
 {
     SDL_Rect element_grillage;
     element_grillage.x = 0;
     element_grillage.y = TAILLE_MENU;
     element_grillage.w = FENETREWIDTH / DIMENSION_TAB_JEU;
     element_grillage.h = (FENETREHEIGHT - TAILLE_MENU) / DIMENSION_TAB_JEU;
+
     SDL_bool variation = SDL_FALSE;
     for (int i = 0; i < DIMENSION_TAB_JEU; i++)
     {
@@ -184,6 +194,10 @@ void AffichageGrillage(SDL_Renderer *renderer)
                 variation = SDL_TRUE;
             }
             SDL_RenderFillRect(renderer, &element_grillage);
+
+            if(plateau[i][j]){
+                AffichagePomme(renderer, pomme, element_grillage, plateau);
+            }
             element_grillage.x += element_grillage.w;
         }
         element_grillage.x = 0;
@@ -240,7 +254,7 @@ void GestionEvenement(SDL_Window *window, SDL_Renderer *renderer, TTF_Font *font
         }
         // fonction
         score++;
-        AffichageGrillage(renderer, font);
+        AffichageGrillage(renderer, pomme, plateau);
         AffichageMenu(renderer, font, logoMenu, meilleurScore, score);
         SDL_RenderPresent(renderer);
         SDL_Delay(50); // depend pour fps avec horloge

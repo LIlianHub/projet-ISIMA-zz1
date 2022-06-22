@@ -77,6 +77,19 @@ int main(int argc, char **argv)
     int **position = NULL;
     int **plateau = NULL;
 
+    // a supprimer
+
+    plateau = (int **)malloc(sizeof(int*) * DIMENSION_TAB_JEU);
+    for (int j = 0; j < DIMENSION_TAB_JEU; j++)
+    {
+        plateau[j] = (int *)calloc(DIMENSION_TAB_JEU, sizeof(int));
+    }
+
+    for (int i = 0; i < DIMENSION_TAB_JEU; i++)
+    {
+        plateau[i][i] = 1;
+    }
+
     /*Recupération meilleur score*/
 
     int meilleurScore = 10;
