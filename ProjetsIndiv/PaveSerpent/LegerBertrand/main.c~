@@ -5,13 +5,6 @@
 #include <time.h>
 #include <stdlib.h>
 
-
-/*Principe
- *faire afficher une fenêtre, mettre le fond de la fenêtre en bleu fonçé 
- *faire apparaître des lignes, représentant la pluie, qui apparaissent aléatoirement
- *rajouter des cercles au point d'impact pour faire un effet d'eau touchant de l'eau*/
-
-
 /*********************************************************************************************************************/
 /*                              Programme d'exemple de création de rendu + dessin                                    */
 /*********************************************************************************************************************/
@@ -56,7 +49,7 @@ void drawCircle(SDL_Renderer* renderer, int centre_x, int centre_y, int rayon_x,
 }
 
 
-void draw(SDL_Renderer* renderer) {                                
+void draw(SDL_Renderer* renderer) {                                 // Je pense que vous allez faire moins laid :)
   SDL_Rect rectangle;                                                             
   
   SDL_SetRenderDrawColor(renderer,                                                
