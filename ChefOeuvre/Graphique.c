@@ -1,9 +1,9 @@
 #include <SDL2/SDL.h>
 #include <stdio.h>
 #include <SDL2/SDL_ttf.h>
+#include <SDL2/SDL_image.h>
 
 #include "Config.h"
-
 
 /*LIbération Propre de la SDL*/
 
@@ -11,7 +11,10 @@ void end_sdl(char ok,
              char const *msg,
              SDL_Window *window,
              SDL_Renderer *renderer,
-             TTF_Font *font)
+             TTF_Font *font,
+             SDL_Texture *logo,
+             SDL_Texture *pomme,
+             SDL_Texture *explosion)
 {
     char msg_formated[255];
     int l;
@@ -41,6 +44,23 @@ void end_sdl(char ok,
         TTF_CloseFont(font);
         font = NULL;
     }
+    if (logo != NULL)
+    {
+        SDL_DestroyTexture(logo);
+        logo = NULL;
+    }
+
+    if (pomme != NULL)
+    {
+        SDL_DestroyTexture(pomme);
+        pomme = NULL;
+    }
+
+    if (explosion != NULL)
+    {
+        SDL_DestroyTexture(explosion);
+        explosion = NULL;
+    }
 
     TTF_Quit();
     SDL_Quit();
@@ -68,38 +88,121 @@ void end_sdl(char ok,
     }
 }*/
 
+/*AffichageLogoMenu*/
+
+void AffichageLogo(SDL_Renderer *renderer, SDL_Texture *my_texture)
+{
+    SDL_Rect boite_logo, image;
+
+    boite_logo.x = 0;
+    boite_logo.y = 0;
+    boite_logo.w = FENETREWIDTH / 3;
+    boite_logo.h = TAILLE_MENU;
+
+    image.x = 0;
+    image.y = 0;
+    SDL_QueryTexture(my_texture, NULL, NULL, &image.w, &image.h);
+
+    SDL_RenderCopy(renderer, my_texture, &image, &boite_logo);
+}
+
+/*voir les tests*/
+void AffichageScore(SDL_Renderer *renderer, TTF_Font *police, int score, int meilleurScore)
+{
+    SDL_Color colorBest = {255, 0, 0, 255};
+    SDL_Color colorScore = {255, 255, 255, 255};
+    SDL_Surface *surfaceBest = NULL;
+    SDL_Surface *surfaceScore = NULL;
+    SDL_Texture *text_best = NULL;
+    SDL_Texture *text_score = NULL;
+
+    char score_formated[255];
+    char best_formated[255];
+
+    sprintf(score_formated, "%d", score);
+    sprintf(best_formated, "%d", meilleurScore);
+
+    surfaceBest = TTF_RenderText_Blended(police, best_formated, colorBest);
+    surfaceScore = TTF_RenderText_Blended(police, score_formated, colorScore);
+
+    text_best = SDL_CreateTextureFromSurface(renderer, surfaceBest);
+    text_score = SDL_CreateTextureFromSurface(renderer, surfaceScore);
+
+    SDL_FreeSurface(surfaceBest);
+    SDL_FreeSurface(surfaceScore);
+
+    SDL_Rect posBest = {0};
+    SDL_Rect posScore = {0};
+
+    SDL_QueryTexture(text_best, NULL, NULL, &posBest.w, &posBest.h);
+    SDL_QueryTexture(text_score, NULL, NULL, &posScore.w, &posScore.h);
+
+    posBest.x = 5 * (FENETREWIDTH / 6) - posBest.w / 2;
+    posScore.x = FENETREWIDTH / 2 - posScore.w / 2;
+
+    SDL_RenderCopy(renderer, text_best, NULL, &posBest);
+    SDL_RenderCopy(renderer, text_score, NULL, &posScore);
+
+    SDL_DestroyTexture(text_best);
+    SDL_DestroyTexture(text_score);
+}
 
 /*Menu en haut*/
-void AffichageMenu(SDL_Renderer * renderer, TTF_Font * police){
+void AffichageMenu(SDL_Renderer *renderer, TTF_Font *police, SDL_Texture *logo, int meilleurScore, int score)
+{
     SDL_Rect fond_menu;
     fond_menu.x = 0;
-    fond_menu.y = TAILLE_MENU;
+    fond_menu.y = 0;
     fond_menu.w = FENETREWIDTH;
-    fond_menu.h = FENETREHEIGHT;
+    fond_menu.h = TAILLE_MENU;
     SDL_SetRenderDrawColor(renderer, 183, 170, 119, 255);
     SDL_RenderFillRect(renderer, &fond_menu);
-
+    AffichageLogo(renderer, logo);
+    AffichageScore(renderer, police, score, meilleurScore);
 }
 
-
-
-
-/* Affichage Graphique*/
-
-void AffichageGraphique(SDL_Window *window, SDL_Renderer *renderer, TTF_Font *font, int **position, int **plateau)
+void AffichageGrillage(SDL_Renderer *renderer)
 {
-
-
+    SDL_Rect element_grillage;
+    element_grillage.x = 0;
+    element_grillage.y = TAILLE_MENU;
+    element_grillage.w = FENETREWIDTH / DIMENSION_TAB_JEU;
+    element_grillage.h = (FENETREHEIGHT - TAILLE_MENU) / DIMENSION_TAB_JEU;
+    SDL_bool variation = SDL_FALSE;
+    for (int i = 0; i < DIMENSION_TAB_JEU; i++)
+    {
+        for (int j = 0; j < DIMENSION_TAB_JEU; j++)
+        {
+            if (variation)
+            {
+                SDL_SetRenderDrawColor(renderer, 67, 99, 7, 255);
+                variation = SDL_FALSE;
+            }
+            else
+            {
+                SDL_SetRenderDrawColor(renderer, 181, 223, 103, 255);
+                variation = SDL_TRUE;
+            }
+            SDL_RenderFillRect(renderer, &element_grillage);
+            element_grillage.x += element_grillage.w;
+        }
+        element_grillage.x = 0;
+        element_grillage.y += element_grillage.h;
+        variation = !variation;
+    }
 }
-
 
 /*Boucle Principale de Gestion d'événement*/
 
-void GestionEvenement(SDL_Window *window, SDL_Renderer *renderer, TTF_Font *font, int **position, int **plateau, int meilleurScore)
+void GestionEvenement(SDL_Window *window, SDL_Renderer *renderer, TTF_Font *font,
+                      int **position, int **plateau,
+                      int meilleurScore, SDL_Texture *logoMenu,
+                      SDL_Texture *pomme, SDL_Texture *explosion)
 {
     /*Variable utile*/
     SDL_bool activation = SDL_TRUE;
     SDL_Event event;
+    int score = 0;
 
     while (activation)
     {
@@ -128,6 +231,7 @@ void GestionEvenement(SDL_Window *window, SDL_Renderer *renderer, TTF_Font *font
                 if (SDL_GetMouseState(NULL, NULL) &
                     SDL_BUTTON(SDL_BUTTON_LEFT))
                 { // clique droit
+                    printf("%d %d\n", event.button.x, event.button.y);
                 }
                 break;
             default: // poubelle à événement inutile
@@ -135,13 +239,10 @@ void GestionEvenement(SDL_Window *window, SDL_Renderer *renderer, TTF_Font *font
             }
         }
         // fonction
-
-        
-        AffichageMenu(renderer, font);
+        score++;
+        AffichageGrillage(renderer, font);
+        AffichageMenu(renderer, font, logoMenu, meilleurScore, score);
         SDL_RenderPresent(renderer);
         SDL_Delay(50); // depend pour fps avec horloge
     }
 }
-
-
-
