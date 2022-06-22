@@ -5,6 +5,10 @@
 #define NBREWINDOWS 400
 
 
+/*Principe :
+ *j'ouvre des fenêtres sur les côtés de l'écran en partant du milieu de la hauteur et du côté gauche
+ *et droite, elle disparaisse. Puis j'ouvre des fenêtres et je les fais spiraler grâce au cosinus et
+ *en augmentant le rayon du cercle à chaque itération, je finis par fermer toutes mes fenêtres*/
 
 int main(int argc, char **argv) {
 

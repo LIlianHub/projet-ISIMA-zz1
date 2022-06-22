@@ -9,7 +9,7 @@
 int main(int argc, char **argv) {
 
   int i=0;
-  //int j;
+  int j;
   
   (void)argc;
   (void)argv;
@@ -76,20 +76,11 @@ int main(int argc, char **argv) {
   
   SDL_Delay(300);
   
-  /* for (j = 0 ; j < i ; j++){
-    
-    SDL_DestroyWindow(windows[j]);
-    if(j<i-1){
-      SDL_DestroyWindow(windows[200+j]);
-    }
-    SDL_Delay(75);  
-    }*/
-
   /*Animation 2 :
    *Je fais tourner fenêtres grâce aux coordonnées du cercle trigonométrique
    *A chaque itération le rayon du cercle va grandir*/
 
-  /*int b;
+  int b;
   
   for ( b = 0 ; b <= 100 ; b++ ){ 
     
@@ -121,20 +112,20 @@ int main(int argc, char **argv) {
     float pos_y = sinf(b)*25*(b/4) + position_y_left;
     
     SDL_SetWindowPosition(windows[b],pos_x,pos_y);
-    printf("Youpi : %d",b);
+
     SDL_Delay(75);
   }
-  printf("YOOOOO");
+
   SDL_Delay(3000);
-  printf("YOLOOOOO");
+
   for (b = 100 ; b>=0; b--){
-    printf("YOUUUUPIIIII");
+ 
     SDL_DestroyWindow(windows[b]);
     SDL_Delay(20);
     
-    }*/
+    }
 
-  SDL_Delay(5000);
+  SDL_Delay(2000);
   
   SDL_Quit();            // quitte la SDL
 
