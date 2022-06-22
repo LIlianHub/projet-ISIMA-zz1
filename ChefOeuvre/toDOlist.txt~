@@ -1,0 +1,12 @@
+	*Faire l'algorithme du snake
+	*rendu graphique de la fenêtre du jeu
+	*gestion des pommes
+	*rajout mur à chaque récupération de pommes
+	*menu (fonctionnalités :
+				choix classique/avec Markov
+				choix couleur Serpent, couleur jeu etc...)
+	*markov :
+		->position de la pomme à t+1 en fonction de la tête du serpent
+		->pourcentage de chance d'accélaration en fonction du nombre de pomme/itération
+		(->nombre de hp par game et en fonction du nombre de vie et du nombre de pomme/itération ça changerai le pourcentage de chance d'accélération)
+	
