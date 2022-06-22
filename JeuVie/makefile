@@ -1,4 +1,5 @@
-SRC=$(wildcard *.c)  # en commentaire, je ne suis pas un grand amateur
+SRC=main.c
+SRC+= Animation.c Algorithme.c
 EXE=exec
 
 CC=gcc
