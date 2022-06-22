@@ -1,104 +1,77 @@
-#include <stdlib.h>
+#include <SDL2/SDL.h>
 #include <stdio.h>
+#include <SDL2/SDL_ttf.h>
 
-#define TAILLE_TABLEAU 10
+#include "Config.h"
+#include "Graphique.h"
 
-SDL_bool
-  program_on = SDL_TRUE,                          // Booléen pour dire que le programme doit continuer
-  paused = SDL_FALSE;                             // Booléen pour dire que le programme est en pause
-SDL_Event event;
 
-/*Création tableau*/
+/*PARTIE MAIN*/
+/* Uniquement les libérations et allocations de structures*/
 
-int ** creer_tableau(int nb_lignes, int nb_colonnes)
+int main(int argc, char **argv)
 {
-    int ** tableau = (int**)malloc(nb_lignes * sizeof(int *));
-    int i;
-    for (i = 0; i < nb_lignes; i++)
+    (void)argc;
+    (void)argv;
+
+    /* PARTIE ALLOCATION*/
+
+    //Création Pointeur
+
+    SDL_Window *window = NULL;
+    SDL_Renderer *renderer = NULL;
+    TTF_Font *policeTitre = NULL;
+
+
+    //Initialisation de la SDL  + gestion de l'échec possible
+    if (SDL_Init(SDL_INIT_VIDEO) != 0)
     {
-        tableau[i] = (int *)calloc(nb_colonnes, sizeof(int));
-    }
-    return tableau;
-}
-
-/*LIberation tableau*/
-
-void liberer_tableau(int ** tableau, int nb_lignes)
-{
-    int i;
-    for (i = 0; i < nb_lignes; i++)
-    {
-        free(tableau[i]);
-    }
-    free(tableau);
-}
-
-
-
-void afficher_tableau(int ** tableau, int nb_lignes, int nb_colonnes)
-{
-    int i, j;
-    for (i = 0; i < nb_lignes; i++)
-    {
-        for (j = 0; j < nb_colonnes; j++)
-        {
-            printf("%d ", tableau[i][j]);
-        }
-        printf("\n");
-    }
-}
-
-/* Création du serpent au milieu du cadre */
-
-void InitialisationSerpent(int ** tableau, int taille){  
-    int i = taille/2,j;
-
-    for(j = taille/2 - 2; j<3; j++){
-        tableau[i][j] = 1;
-    }
-    tableau[i][3]=2;
-
-}
-
-/* Création des probabilités de changement de place de la pomme */
-
-void MarkovPomme(int ** probapomme){
-    int a,b,c,d,e,f,g,h,i;
-    int j,k;
-
-    //remplir le tableau avec les probabilités
-
-}
-
-
-int main(){
-
-    int ** cadre = creer_tableau(TAILLE_TABLEAU, TAILLE_TABLEAU);
-    int ** probapomme = creer_tableau(4,4);
-    int tailleserpent = 4
-    MarkovPomme(probapomme);
-    InitialisationSerpent(cadre, TAILLE_TABLEAU);
-
-    while(program_on){
-        if(SDL_PollEvent(&event)) {   // Tant que la file des évènements stockés n'est pas vide et qu'on n'a pas terminé le programme Défiler l'élément en tête de file dans 'event'
-            switch(event.type){
-                case SDLK_UP:         //Cas flèche du haut
-
-
-                case SDLK_DOWN:         //Cas flèche du bas
-
-                case SDLK_RIGHT:        //Cas flèche droite
-
-                case SDLK_LEFT:         //Cas flèche gauche
-
-                
-
-            }
-
+        SDL_Log("Error : SDL initialisation - %s\n",
+                SDL_GetError()); // l'initialisation de la SDL a échoué
+        exit(EXIT_FAILURE);
     }
 
+    //Création de la fenêtre de gauche
+    window = SDL_CreateWindow("Jeu de la Vie",
+                              SDL_WINDOWPOS_CENTERED,
+                              SDL_WINDOWPOS_CENTERED,
+                              FENETREWIDTH,
+                              FENETREHEIGHT,
+                              SDL_WINDOW_OPENGL);
+
+    if (window == NULL)
+        end_sdl(0, "ERROR WINDOW CREATION", window, renderer, policeTitre);
+
+    //Création du renderer
+    renderer = SDL_CreateRenderer(window, -1,
+                                  SDL_RENDERER_ACCELERATED | SDL_RENDERER_PRESENTVSYNC);
+    if (renderer == NULL)
+        end_sdl(0, "ERROR RENDERER CREATION", window, renderer, policeTitre);
+
+    //Le render mode couleur alpha pour la transparence
+    SDL_SetRenderDrawBlendMode(renderer, SDL_BLENDMODE_BLEND);
+
+    //Création police
+    if (TTF_Init() < 0)
+        end_sdl(0, "Couldn't initialize SDL TTF", window, renderer, policeTitre);
+    policeTitre = TTF_OpenFont("fonts/arial.ttf", 20);
+
+    //Allocation des Tableaux
+
+    int ** position = NULL;
+    int ** plateau = NULL;
 
 
+    /*Appel de la fonction qui gère les événments*/
 
-    return 0;
+    GestionEvenement(window, renderer, policeTitre, &position, &plateau);
+
+
+    /* LIBERATION*/
+
+    //Liberation des tableaux
+
+    //LIbération SDL
+    end_sdl(1, "Normal ending", window, renderer, policeTitre);
+    return EXIT_SUCCESS;
 }
