@@ -261,3 +261,15 @@ void VieTore(int B[TAILLE_MASQUE], int S[TAILLE_MASQUE], int NbLignes, int NbCol
     TAB1 = TAB2;
     TAB1 = TabInt;
 }
+
+
+int TestStagne(int ligne, int colonne){
+    int retour = 1;
+    for(int i = 0; i < ligne; i++){
+        for(int j = 0; j < colonne; j++){
+            if(TAB1[i][j] != TAB2[i][j])
+                retour = 0;
+        }
+    }
+    return retour;
+}

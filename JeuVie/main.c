@@ -73,6 +73,12 @@ int main(int argc, char **argv)
     TAB2 = creer_tableau(NB_LIGNE, NB_COLONNE);
     TAB1[12][12] = 1;
 
+    /*Gestion Vitesse*/
+
+    int GestionVitesse = 50;
+    int stagne = 0;
+    
+
     /*Evenement*/
 
     SDL_bool
@@ -118,6 +124,18 @@ int main(int argc, char **argv)
                         LectureFichier(TAB1, NB_LIGNE, NB_COLONNE);
                     }
                     break;
+                case SDLK_LEFT: // ralentissement
+                    if (enJeu)
+                    {
+                        GestionVitesse += 0.1 * GestionVitesse;
+                    }
+                    break;
+                case SDLK_RIGHT: // ACCELERATION
+                    if (enJeu)
+                    {
+                        GestionVitesse -= 0.1 * GestionVitesse;
+                    }
+                    break;
                 default:
                     break;
                 }
@@ -149,10 +167,15 @@ int main(int argc, char **argv)
             }
         }
 
+        if(!stagne){
+            stagne = TestStagne(NB_LIGNE, NB_COLONNE);
+            
+        }
 
-        Affichage(window,renderer,FenetreW, FenetreH, policeTitre, masqueVie, masqueMort, modeJeu, TAB1, NB_LIGNE, NB_COLONNE);
+        printf("stagne = %d\n", stagne);
+        Affichage(window,renderer,FenetreW, FenetreH, policeTitre, masqueVie, masqueMort, modeJeu, TAB1, NB_LIGNE, NB_COLONNE, stagne);
         SDL_RenderPresent(renderer);
-        SDL_Delay(50); // depend pour fps avec horloge
+        SDL_Delay(GestionVitesse); // depend pour fps avec horloge
     }
 
     // Fermeture

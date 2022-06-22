@@ -48,7 +48,7 @@ void end_sdl(char ok,            // fin normale : ok = 0 ; anormale ok = 1
 
 /*Menu*/
 
-void Affichage(SDL_Window *window, SDL_Renderer *renderer, int FenetreW, int FenetreH, TTF_Font *FontTitre, int masque1[9], int masque2[9], int mode, int **tab, int TabW, int TabH)
+void Affichage(SDL_Window *window, SDL_Renderer *renderer, int FenetreW, int FenetreH, TTF_Font *FontTitre, int masque1[9], int masque2[9], int mode, int **tab, int TabW, int TabH, int stagne)
 {
     SDL_RenderClear(renderer);
 
@@ -148,14 +148,40 @@ void Affichage(SDL_Window *window, SDL_Renderer *renderer, int FenetreW, int Fen
         pos4.y += (FenetreH - 25) / TabH;
         pos4.x = 0;
     }
+
+    /*info stagne*/
+
+    if (stagne)
+    {
+
+        SDL_Surface *text_surface3 = NULL; // la surface  (uniquement transitoire)
+
+        SDL_Color color2 = {255,0,0,255};
+
+        text_surface3 = TTF_RenderText_Blended(FontTitre, "On stagne !", color2); // création du texte dans la surface
+
+        if (text_surface3 == NULL)
+            end_sdl(0, "Can't create text surface", window, renderer, FontTitre);
+
+        SDL_Texture *text_texture3 = NULL;                                     // la texture qui contient le texte
+        text_texture3 = SDL_CreateTextureFromSurface(renderer, text_surface3); // transfert de la surface à la texture
+        if (text_texture3 == NULL)
+            end_sdl(0, "Can't create texture from surface", window, renderer, FontTitre);
+        SDL_FreeSurface(text_surface3); // la texture ne sert plus à rien
+
+        SDL_Rect pos3 = {5, 0, 0, 0};
+        SDL_QueryTexture(text_texture3, NULL, NULL, &pos3.w, &pos3.h); // récupération de la taille (w, h) du texte
+        SDL_RenderCopy(renderer, text_texture3, NULL, &pos3);          // Ecriture du texte dans le renderer
+        SDL_DestroyTexture(text_texture3);                             // On n'a plus besoin de la texture avec le texte
+    }
 }
 
 void ChangeEtat(int **tab, int FenetreW, int FenetreH, int x, int y, int nbLigne, int nbColonne, SDL_bool enJeu)
 {
     if (x > 0 && x < FenetreW && y > 25 && y < FenetreH)
     {
-        printf("%d et %d\n", x,y - 25);
-    
+        printf("%d et %d\n", x, y - 25);
+
         int colonneTab = x / (FenetreW / nbColonne);
         int ligneTab = (y - 25) / (FenetreH / nbLigne);
         if (!enJeu)

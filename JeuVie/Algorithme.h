@@ -15,6 +15,6 @@ void iterationReelLimite(int nb_lignes, int nb_colonnes,
                    int masqueVie[TAILLE_MASQUE],
                    int masqueMort[TAILLE_MASQUE]);
 void VieTore(int B[TAILLE_MASQUE], int S[TAILLE_MASQUE], int NbLignes,int NbColonnes);
-
+int TestStagne(int ligne, int colonne);
 
 #endif
