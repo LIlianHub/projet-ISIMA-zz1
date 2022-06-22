@@ -1,1 +1,1 @@
-build/Algorithme.o: Algorithme.c
+build/Algorithme.o: Algorithme.c Algorithme.h

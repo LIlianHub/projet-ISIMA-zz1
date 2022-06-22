@@ -1,8 +1,7 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include <string.h>
-
-#define TAILLE_MASQUE 9
+#include "Algorithme.h"
 
 void EcritureConfig(int **tab, int ligne, int colonne)
 {
@@ -111,9 +110,9 @@ int nbvoisinsLimite(int **moment_t, int ligne, int colonne, int nb_lignes, int n
     return nbre;
 }
 
-void iterationReelLimite(int **moment_t, int **moment_t1, int nb_lignes, int nb_colonnes,
-                   int masqueVie[TAILLE_MASQUE],
-                   int masqueMort[TAILLE_MASQUE])
+void iterationReelLimite(int nb_lignes, int nb_colonnes,
+                         int masqueVie[TAILLE_MASQUE],
+                         int masqueMort[TAILLE_MASQUE])
 {
     int i, j, m;
     int resultat = 0;
@@ -123,13 +122,13 @@ void iterationReelLimite(int **moment_t, int **moment_t1, int nb_lignes, int nb_
         for (j = 0; j < nb_colonnes; j++)
         {
 
-            if (moment_t[i][j] == 1)
+            if (TAB1[i][j] == 1)
             {
 
                 for (m = 0; m < TAILLE_MASQUE; m++)
                 {
 
-                    if (masqueVie[m] == 1 && nbvoisinsLimite(moment_t, i, j, nb_lignes, nb_colonnes) == m)
+                    if (masqueVie[m] == 1 && nbvoisinsLimite(TAB1, i, j, nb_lignes, nb_colonnes) == m)
                     {
 
                         resultat += 1; // son nombre de voisin est dans le masque de la Vie, il survit
@@ -137,7 +136,7 @@ void iterationReelLimite(int **moment_t, int **moment_t1, int nb_lignes, int nb_
                 }
                 if (resultat != 0)
                 {
-                    moment_t1[i][j] = 1;
+                    TAB2[i][j] = 1;
                 }
             }
             else
@@ -145,7 +144,7 @@ void iterationReelLimite(int **moment_t, int **moment_t1, int nb_lignes, int nb_
                 for (m = 0; m < TAILLE_MASQUE; m++)
                 {
 
-                    if (masqueMort[m] == 1 && nbvoisinsLimite(moment_t, i, j, nb_lignes, nb_colonnes) == m)
+                    if (masqueMort[m] == 1 && nbvoisinsLimite(TAB1, i, j, nb_lignes, nb_colonnes) == m)
                     {
 
                         resultat += 1; // son nombre de voisin est dans le masque de la Mort, il ressuscite
@@ -153,99 +152,112 @@ void iterationReelLimite(int **moment_t, int **moment_t1, int nb_lignes, int nb_
                 }
                 if (resultat != 0)
                 {
-                    moment_t1[i][j] = 1;
+                    TAB2[i][j] = 1;
                 }
             }
         }
     }
-    int **tmp = moment_t;
-    moment_t = moment_t1;
-    moment_t1 = tmp;
+    int **tmp = TAB1;
+    TAB1 = TAB2;
+    TAB2 = tmp;
 }
-
 
 /*tor*/
 
-
-int NbVoisinsTor(int ** TabT1, int nbLignes, int nbColonnes, int i, int j){
+int NbVoisinsTor(int **TabT1, int nbLignes, int nbColonnes, int i, int j)
+{
     int nbV;
 
-    if(i==0){
-        if(j==0){
-                nbV = TabT1[i+1][j] + TabT1[i+1][j+1] + TabT1[i][j+1] + TabT1[nbLignes-1][0] + TabT1[nbLignes-1][1] + TabT1[nbLignes-1][nbColonnes-1] + TabT1[0][nbColonnes-1]
-                            + TabT1[1][nbColonnes-1];
-                            printf("%d \n", nbV);
+    if (i == 0)
+    {
+        if (j == 0)
+        {
+            nbV = TabT1[i + 1][j] + TabT1[i + 1][j + 1] + TabT1[i][j + 1] + TabT1[nbLignes - 1][0] + TabT1[nbLignes - 1][1] + TabT1[nbLignes - 1][nbColonnes - 1] + TabT1[0][nbColonnes - 1] + TabT1[1][nbColonnes - 1];
         }
-        else{
-                if(j==nbColonnes-1){
-                nbV = TabT1[0][j-1] + TabT1[1][j-1] + TabT1[1][j] + TabT1[nbLignes-1][j-1] + TabT1[nbLignes-1][j] + TabT1[0][0] + TabT1[1][0] + TabT1[nbLignes-1][nbColonnes-1];
-                }
-                else{
-                nbV = TabT1[i][j-1]+TabT1[i][j+1]+TabT1[i+1][j-1]+TabT1[i+1][j]+TabT1[i+1][j+1]+TabT1[nbLignes-1][j]+TabT1[nbLignes-1][j-1]+TabT1[nbLignes-1][j+1];
-                }
+        else
+        {
+            if (j == nbColonnes - 1)
+            {
+                nbV = TabT1[0][j - 1] + TabT1[1][j - 1] + TabT1[1][j] + TabT1[nbLignes - 1][j - 1] + TabT1[nbLignes - 1][j] + TabT1[0][0] + TabT1[1][0] + TabT1[nbLignes - 1][nbColonnes - 1];
+            }
+            else
+            {
+                nbV = TabT1[i][j - 1] + TabT1[i][j + 1] + TabT1[i + 1][j - 1] + TabT1[i + 1][j] + TabT1[i + 1][j + 1] + TabT1[nbLignes - 1][j] + TabT1[nbLignes - 1][j - 1] + TabT1[nbLignes - 1][j + 1];
+            }
         }
     }
-    else{
-        if(i==nbLignes-1){
-            if(j==0){
-                nbV = TabT1[i-1][j] + TabT1[i-1][j+1] + TabT1[i][j+1] + TabT1[0][j] + TabT1[0][j+1] + TabT1[i][nbColonnes-1] + TabT1[i-1][nbColonnes-1] + TabT1[0][nbColonnes-1];
+    else
+    {
+        if (i == nbLignes - 1)
+        {
+            if (j == 0)
+            {
+                nbV = TabT1[i - 1][j] + TabT1[i - 1][j + 1] + TabT1[i][j + 1] + TabT1[0][j] + TabT1[0][j + 1] + TabT1[i][nbColonnes - 1] + TabT1[i - 1][nbColonnes - 1] + TabT1[0][nbColonnes - 1];
             }
-            else{
-                if(j==nbColonnes-1){
-                    printf("baba\n");
-                    nbV = TabT1[i][j-1]+TabT1[i-1][j-1]+TabT1[i-1][j]+TabT1[i-1][0]+TabT1[i][0]+TabT1[0][j-1]+TabT1[0][j]+TabT1[0][0];
-                }
-                else{
-                nbV = TabT1[i][j-1]+TabT1[i][j+1]+TabT1[i-1][j-1]+TabT1[i-1][j]+TabT1[i-1][j+1]+TabT1[0][j-1]+TabT1[0][j]+TabT1[0][j+1];
-                }
-            }
-        }
-        else{
-            if(j==0){
-                nbV = TabT1[i][j-1]+TabT1[i][j+1]+TabT1[i+1][j-1]+TabT1[i+1][j]+TabT1[i+1][j+1]+TabT1[i][nbColonnes-1]+TabT1[i+1][nbColonnes-1]+TabT1[i-1][nbColonnes-1];
-            }
-            else{
-                if(j==nbColonnes-1){
-                     nbV = TabT1[i][j-1]+TabT1[i][j+1]+TabT1[i-1][j-1]+TabT1[i-1][j]+TabT1[i-1][j+1]+TabT1[i][0]+TabT1[i+1][0]+TabT1[i-1][0];
-                }
-                else{
-                    nbV = TabT1[i][j-1]+TabT1[i][j+1]+TabT1[i-1][j-1]+TabT1[i-1][j]+TabT1[i-1][j+1]+TabT1[i+1][j-1]+TabT1[i+1][j]+TabT1[i-1][j+1];
-                }
+            else
+            {
+                if (j == nbColonnes - 1)
+                {
 
+                    nbV = TabT1[i][j - 1] + TabT1[i - 1][j - 1] + TabT1[i - 1][j] + TabT1[i - 1][0] + TabT1[i][0] + TabT1[0][j - 1] + TabT1[0][j] + TabT1[0][0];
+                }
+                else
+                {
+                    nbV = TabT1[i][j - 1] + TabT1[i][j + 1] + TabT1[i - 1][j - 1] + TabT1[i - 1][j] + TabT1[i - 1][j + 1] + TabT1[0][j - 1] + TabT1[0][j] + TabT1[0][j + 1];
+                }
             }
         }
-    
+        else
+        {
+            if (j == 0)
+            {
+                nbV = TabT1[i][j - 1] + TabT1[i][j + 1] + TabT1[i + 1][j - 1] + TabT1[i + 1][j] + TabT1[i + 1][j + 1] + TabT1[i][nbColonnes - 1] + TabT1[i + 1][nbColonnes - 1] + TabT1[i - 1][nbColonnes - 1];
+            }
+            else
+            {
+                if (j == nbColonnes - 1)
+                {
+                    nbV = TabT1[i][j - 1] + TabT1[i][j + 1] + TabT1[i - 1][j - 1] + TabT1[i - 1][j] + TabT1[i - 1][j + 1] + TabT1[i][0] + TabT1[i + 1][0] + TabT1[i - 1][0];
+                }
+                else
+                {
+                    nbV = TabT1[i][j - 1] + TabT1[i][j + 1] + TabT1[i - 1][j - 1] + TabT1[i - 1][j] + TabT1[i - 1][j + 1] + TabT1[i + 1][j - 1] + TabT1[i + 1][j] + TabT1[i - 1][j + 1];
+                }
+            }
+        }
     }
     return nbV;
 }
 
-void VieTore(int ** TabT1, int ** TabTplus1, int B[TAILLE_MASQUE], int S[TAILLE_MASQUE], int NbLignes,int NbColonnes){
-    int i,j, NbV;
-    int ** TabInt;
+void VieTore(int B[TAILLE_MASQUE], int S[TAILLE_MASQUE], int NbLignes, int NbColonnes)
+{
+    int i, j, NbV;
+    int **TabInt;
 
-    for (i=0;i<NbLignes; i++){
-        printf("%d ggg\n",i);
-        for(j=0;j<NbColonnes;j++){
-            printf("%dloijij \n",j);
-                NbV = NbVoisinsTor(TabT1,NbLignes,NbColonnes,i,j);
-                //printf("%d hhhh\n", NbV);
-                if(TabT1[i][j]==1){             //Cas où la cellule est vivante donc masque de mort
-                    if(NbV==B[NbV]){
-                        TabTplus1[i][j]= 0;
-                    }
+    for (i = 0; i < NbLignes; i++)
+    {
+        for (j = 0; j < NbColonnes; j++)
+        {
+            NbV = NbVoisinsTor(TAB1, NbLignes, NbColonnes, i, j);
+            // printf("%d hhhh\n", NbV);
+            if (TAB1[i][j] == 1)
+            { // Cas où la cellule est vivante donc masque de mort
+                if (NbV == B[NbV])
+                {
+                    TAB2[i][j] = 0;
                 }
-                
-                else{                           //Cas où la cellule est morte donc masque de vie
-                    if(NbV==S[NbV]){
-                        TabTplus1[i][j]= 1;
-                    }
+            }
+
+            else
+            { // Cas où la cellule est morte donc masque de vie
+                if (NbV == S[NbV])
+                {
+                    TAB2[i][j] = 1;
                 }
-
-
+            }
         }
     }
-    TabInt = TabT1;
-    TabT1 = TabTplus1;
-    TabTplus1 = TabInt;
-
+    TabInt = TAB1;
+    TAB1 = TAB2;
+    TAB1 = TabInt;
 }
