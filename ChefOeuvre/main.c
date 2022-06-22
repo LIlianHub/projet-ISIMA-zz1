@@ -61,10 +61,16 @@ int main(int argc, char **argv)
     int ** position = NULL;
     int ** plateau = NULL;
 
+    /*Recupération meilleur score*/
+
+    int meilleurScore = 10;
+
 
     /*Appel de la fonction qui gère les événments*/
 
-    GestionEvenement(window, renderer, policeTitre, &position, &plateau);
+    GestionEvenement(window, renderer, policeTitre, &position, &plateau, meilleurScore);
+
+    
 
 
     /* LIBERATION*/

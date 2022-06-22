@@ -4,52 +4,6 @@
 
 #include "Config.h"
 
-/*Boucle Principale de Gestion d'événement*/
-
-void GestionEvenement(SDL_Window *window, SDL_Renderer *renderer, TTF_Font *font, int **position, int **plateau)
-{
-    /*Variable utile*/
-    SDL_bool activation = SDL_TRUE;
-    SDL_Event event;
-
-    while (activation)
-    {
-        while (SDL_PollEvent(&event)) // on vide la pile d'evenement
-        {
-            switch (event.type)
-            {
-            case SDL_QUIT: // ON quitte
-                activation = SDL_FALSE;
-                break;
-
-            case SDL_KEYDOWN:
-                switch (event.key.keysym.sym)
-                {
-                case SDLK_SPACE:
-                    break;
-                case SDLK_LEFT:
-                    break;
-                case SDLK_RIGHT:
-                    break;
-                default:
-                    break;
-                }
-                break;
-            case SDL_MOUSEBUTTONDOWN: // Click souris
-                if (SDL_GetMouseState(NULL, NULL) &
-                    SDL_BUTTON(SDL_BUTTON_LEFT))
-                { // clique droit
-                }
-                break;
-            default: // poubelle à événement inutile
-                break;
-            }
-        }
-        // fonction
-        SDL_RenderPresent(renderer);
-        SDL_Delay(50); // depend pour fps avec horloge
-    }
-}
 
 /*LIbération Propre de la SDL*/
 
@@ -113,3 +67,81 @@ void end_sdl(char ok,
         }
     }
 }*/
+
+
+/*Menu en haut*/
+void AffichageMenu(SDL_Renderer * renderer, TTF_Font * police){
+    SDL_Rect fond_menu;
+    fond_menu.x = 0;
+    fond_menu.y = TAILLE_MENU;
+    fond_menu.w = FENETREWIDTH;
+    fond_menu.h = FENETREHEIGHT;
+    SDL_SetRenderDrawColor(renderer, 183, 170, 119, 255);
+    SDL_RenderFillRect(renderer, &fond_menu);
+
+}
+
+
+
+
+/* Affichage Graphique*/
+
+void AffichageGraphique(SDL_Window *window, SDL_Renderer *renderer, TTF_Font *font, int **position, int **plateau)
+{
+
+
+}
+
+
+/*Boucle Principale de Gestion d'événement*/
+
+void GestionEvenement(SDL_Window *window, SDL_Renderer *renderer, TTF_Font *font, int **position, int **plateau, int meilleurScore)
+{
+    /*Variable utile*/
+    SDL_bool activation = SDL_TRUE;
+    SDL_Event event;
+
+    while (activation)
+    {
+        while (SDL_PollEvent(&event)) // on vide la pile d'evenement
+        {
+            switch (event.type)
+            {
+            case SDL_QUIT: // ON quitte
+                activation = SDL_FALSE;
+                break;
+
+            case SDL_KEYDOWN:
+                switch (event.key.keysym.sym)
+                {
+                case SDLK_SPACE:
+                    break;
+                case SDLK_LEFT:
+                    break;
+                case SDLK_RIGHT:
+                    break;
+                default:
+                    break;
+                }
+                break;
+            case SDL_MOUSEBUTTONDOWN: // Click souris
+                if (SDL_GetMouseState(NULL, NULL) &
+                    SDL_BUTTON(SDL_BUTTON_LEFT))
+                { // clique droit
+                }
+                break;
+            default: // poubelle à événement inutile
+                break;
+            }
+        }
+        // fonction
+
+        
+        AffichageMenu(renderer, font);
+        SDL_RenderPresent(renderer);
+        SDL_Delay(50); // depend pour fps avec horloge
+    }
+}
+
+
+
