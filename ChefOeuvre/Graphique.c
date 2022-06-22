@@ -208,15 +208,16 @@ void AffichageGrillage(SDL_Renderer *renderer, SDL_Texture *pomme, int **plateau
 }
 
 /*explosion de defaite*/
-void GenereTabExplosion(SDL_Rect etats[25], SDL_Texture *explosion){
+void GenereTabExplosion(SDL_Rect etats[25], SDL_Texture *explosion)
+{
     SDL_Rect planche = {0};
     SDL_QueryTexture(explosion, NULL, NULL, &planche.w, &planche.h);
     int offsetX = planche.w / 5;
-    int offsetY = planche.h / 5; //5 lignes et 5 colonnes
+    int offsetY = planche.h / 5; // 5 lignes et 5 colonnes
     int indice = 0;
-    for(int i = 0; i < 5; i++)
+    for (int i = 0; i < 5; i++)
     {
-        for(int j = 0; j < 5; j++)
+        for (int j = 0; j < 5; j++)
         {
             etats[indice].w = offsetX;
             etats[indice].h = offsetY;
@@ -225,7 +226,6 @@ void GenereTabExplosion(SDL_Rect etats[25], SDL_Texture *explosion){
             indice++;
         }
     }
-
 }
 
 void Explosion(SDL_Renderer *renderer, SDL_Texture *explosion, SDL_Rect pos, int etat, SDL_Rect etats[25])
@@ -234,7 +234,6 @@ void Explosion(SDL_Renderer *renderer, SDL_Texture *explosion, SDL_Rect pos, int
     pos.x -= pos.w / 2;
     pos.y -= pos.h / 2;
     SDL_RenderCopy(renderer, explosion, &etats[etat], &pos);
-
 }
 
 /*Boucle Principale de Gestion d'événement*/
@@ -247,12 +246,15 @@ void GestionEvenement(SDL_Window *window, SDL_Renderer *renderer, TTF_Font *font
     /*Variable utile*/
     SDL_bool activation = SDL_TRUE;
     SDL_Event event;
-    int score = 0;
-    SDL_Rect etats[25]; //les explosions pour la mort
+    SDL_Rect etats[25]; // les explosions pour la mort
     GenereTabExplosion(etats, explosion);
 
     int test_explo = 0;
     SDL_Rect test = {400, 440, FENETREWIDTH * TAILLE_EXPLOSION / DIMENSION_TAB_JEU, (FENETREHEIGHT - TAILLE_MENU) * TAILLE_EXPLOSION / DIMENSION_TAB_JEU};
+
+    //score en fonction du temps qui passe
+    int score = 0;
+    long timeDebut = SDL_GetTicks();
 
     while (activation)
     {
@@ -288,12 +290,15 @@ void GestionEvenement(SDL_Window *window, SDL_Renderer *renderer, TTF_Font *font
                 break;
             }
         }
-        // fonction
-        score++;
+        
+        //Calcul du score en fonction du temps ecoulé
+        score = (SDL_GetTicks() - timeDebut) / 1000; //en mili sec donc /1000 pour sec
+
         AffichageGrillage(renderer, pomme, plateau);
         AffichageMenu(renderer, font, logoMenu, meilleurScore, score);
-        if(test_explo < 25){
-            Explosion(renderer, explosion,test , test_explo, etats);
+        if (test_explo < 25)
+        {
+            Explosion(renderer, explosion, test, test_explo, etats);
             printf("%d\n", test_explo);
             test_explo++;
         }
