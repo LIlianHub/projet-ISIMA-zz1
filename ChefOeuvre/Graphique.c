@@ -163,14 +163,14 @@ void AffichageMenu(SDL_Renderer *renderer, TTF_Font *police, SDL_Texture *logo, 
 
 /*Grille*/
 
-void AffichagePomme(SDL_Renderer *renderer, SDL_Texture *pomme, SDL_Rect pos, int ** plateau)
+void AffichagePomme(SDL_Renderer *renderer, SDL_Texture *pomme, SDL_Rect pos)
 {
     SDL_Rect image = {0};
     SDL_QueryTexture(pomme, NULL, NULL, &image.w, &image.h);
     SDL_RenderCopy(renderer, pomme, &image, &pos);
 }
 
-void AffichageGrillage(SDL_Renderer *renderer, SDL_Texture * pomme, int ** plateau)
+void AffichageGrillage(SDL_Renderer *renderer, SDL_Texture *pomme, int **plateau)
 {
     SDL_Rect element_grillage;
     element_grillage.x = 0;
@@ -195,8 +195,9 @@ void AffichageGrillage(SDL_Renderer *renderer, SDL_Texture * pomme, int ** plate
             }
             SDL_RenderFillRect(renderer, &element_grillage);
 
-            if(plateau[i][j]){
-                AffichagePomme(renderer, pomme, element_grillage, plateau);
+            if (plateau[i][j])
+            {
+                AffichagePomme(renderer, pomme, element_grillage);
             }
             element_grillage.x += element_grillage.w;
         }
@@ -204,6 +205,36 @@ void AffichageGrillage(SDL_Renderer *renderer, SDL_Texture * pomme, int ** plate
         element_grillage.y += element_grillage.h;
         variation = !variation;
     }
+}
+
+/*explosion de defaite*/
+void GenereTabExplosion(SDL_Rect etats[25], SDL_Texture *explosion){
+    SDL_Rect planche = {0};
+    SDL_QueryTexture(explosion, NULL, NULL, &planche.w, &planche.h);
+    int offsetX = planche.w / 5;
+    int offsetY = planche.h / 5; //5 lignes et 5 colonnes
+    int indice = 0;
+    for(int i = 0; i < 5; i++)
+    {
+        for(int j = 0; j < 5; j++)
+        {
+            etats[indice].w = offsetX;
+            etats[indice].h = offsetY;
+            etats[indice].x = j * offsetX;
+            etats[indice].y = i * offsetY;
+            indice++;
+        }
+    }
+
+}
+
+void Explosion(SDL_Renderer *renderer, SDL_Texture *explosion, SDL_Rect pos, int etat, SDL_Rect etats[25])
+{
+    /*recentrage explosion car coordonnées en haut a gauche*/
+    pos.x -= pos.w / 2;
+    pos.y -= pos.h / 2;
+    SDL_RenderCopy(renderer, explosion, &etats[etat], &pos);
+
 }
 
 /*Boucle Principale de Gestion d'événement*/
@@ -217,6 +248,11 @@ void GestionEvenement(SDL_Window *window, SDL_Renderer *renderer, TTF_Font *font
     SDL_bool activation = SDL_TRUE;
     SDL_Event event;
     int score = 0;
+    SDL_Rect etats[25]; //les explosions pour la mort
+    GenereTabExplosion(etats, explosion);
+
+    int test_explo = 0;
+    SDL_Rect test = {400, 440, FENETREWIDTH * TAILLE_EXPLOSION / DIMENSION_TAB_JEU, (FENETREHEIGHT - TAILLE_MENU) * TAILLE_EXPLOSION / DIMENSION_TAB_JEU};
 
     while (activation)
     {
@@ -256,6 +292,11 @@ void GestionEvenement(SDL_Window *window, SDL_Renderer *renderer, TTF_Font *font
         score++;
         AffichageGrillage(renderer, pomme, plateau);
         AffichageMenu(renderer, font, logoMenu, meilleurScore, score);
+        if(test_explo < 25){
+            Explosion(renderer, explosion,test , test_explo, etats);
+            printf("%d\n", test_explo);
+            test_explo++;
+        }
         SDL_RenderPresent(renderer);
         SDL_Delay(50); // depend pour fps avec horloge
     }
