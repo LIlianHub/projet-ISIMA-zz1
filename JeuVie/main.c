@@ -11,7 +11,6 @@
 #define NB_LIGNE 25
 #define NB_COLONNE 25
 
-
 int main(int argc, char **argv)
 {
     (void)argc;
@@ -69,14 +68,13 @@ int main(int argc, char **argv)
 
     int masqueVie[TAILLE_MASQUE] = {0, 0, 1, 1, 0, 0, 0, 0, 0};
     int masqueMort[TAILLE_MASQUE] = {0, 0, 0, 1, 0, 0, 0, 0, 0};
-    int ** tab1 = creer_tableau(NB_LIGNE, NB_COLONNE);
-    int ** tab2 = creer_tableau(NB_LIGNE, NB_COLONNE);
+    int **tab1 = creer_tableau(NB_LIGNE, NB_COLONNE);
+    int **tab2 = creer_tableau(NB_LIGNE, NB_COLONNE);
 
     /*Gestion Vitesse*/
 
     int GestionVitesse = 50;
     int stagne = 0;
-    
 
     /*Evenement*/
 
@@ -161,15 +159,13 @@ int main(int argc, char **argv)
             {
                 VieTore(tab1, tab2, masqueVie, masqueMort, NB_LIGNE, NB_COLONNE);
             }
+            if (!stagne)
+            {
+                stagne = TestStagne(tab1, tab2, NB_LIGNE, NB_COLONNE);
+            }
         }
 
-        if(!stagne){
-            stagne = TestStagne(tab1, tab2, NB_LIGNE, NB_COLONNE);
-            
-        }
-
-        
-        Affichage(window,renderer,FenetreW, FenetreH, policeTitre, masqueVie, masqueMort, modeJeu, tab1, NB_LIGNE, NB_COLONNE, stagne);
+        Affichage(window, renderer, FenetreW, FenetreH, policeTitre, masqueVie, masqueMort, modeJeu, tab1, NB_LIGNE, NB_COLONNE, stagne);
         SDL_RenderPresent(renderer);
         SDL_Delay(GestionVitesse); // depend pour fps avec horloge
     }

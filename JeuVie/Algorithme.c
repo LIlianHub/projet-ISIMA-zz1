@@ -110,7 +110,7 @@ int nbVoisinVivantTor(int **tab, int i, int j, int ligne, int colonne)
         {
             if (k != 0 || l != 0)
             {
-                if (tab[(i + k + ligne) % ligne][(j + l + colonne) % colonne] == '1')
+                if (tab[(i + k + ligne) % ligne][(j + l + colonne) % colonne] == 1)
                 {
                     cpt++;
                 }
@@ -120,21 +120,28 @@ int nbVoisinVivantTor(int **tab, int i, int j, int ligne, int colonne)
     return cpt;
 }
 
-void VieTore(int **tab, int **cpyTab, int vie[TAILLE_MASQUE], int mort[TAILLE_MASQUE], int ligne, int colonne)
+void VieTore(int **moment_t, int **tmp, int masqueVie[TAILLE_MASQUE], int masqueMort[TAILLE_MASQUE], int nb_lignes, int nb_colonnes)
 {
-    copyTab(tab, cpyTab, ligne, colonne);
+    copyTab(moment_t, tmp, nb_lignes, nb_colonnes);
 
-    for (int i = 0; i < ligne; i++)
+    int i, j, m;
+    for (i = 0; i < nb_lignes; i++)
     {
-        for (int j = 0; j < colonne; j++)
+
+        for (j = 0; j < nb_colonnes; j++)
         {
-            if (cpyTab[i][j] == 1 && vie[nbVoisinVivantTor(cpyTab, i, j, ligne, colonne)] == 0)
+
+            m = nbVoisinVivantTor(tmp, i, j, nb_lignes, nb_colonnes);
+
+            if (tmp[i][j] == 1)
             {
-                tab[i][j] = 0;
+
+                moment_t[i][j] = masqueVie[m];
             }
-            if (cpyTab[i][j] == 1 && mort[nbVoisinVivantTor(cpyTab, i, j, ligne, colonne)] == 1)
+            else
             {
-                tab[i][j] = 1;
+
+                moment_t[i][j] = masqueMort[m];
             }
         }
     }
@@ -166,8 +173,8 @@ int nbvoisinsLimite(int **moment_t, int ligne, int colonne, int nb_lignes, int n
 /* 1 Itération du jeu de la vie */
 
 void iterationLimite(int **moment_t, int **tmp, int nb_lignes, int nb_colonnes,
-                   int masqueVie[TAILLE_MASQUE],
-                   int masqueMort[TAILLE_MASQUE])
+                     int masqueVie[TAILLE_MASQUE],
+                     int masqueMort[TAILLE_MASQUE])
 {
 
     copyTab(moment_t, tmp, nb_lignes, nb_colonnes);

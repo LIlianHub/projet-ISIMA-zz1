@@ -180,7 +180,6 @@ void ChangeEtat(int **tab, int FenetreW, int FenetreH, int x, int y, int nbLigne
 {
     if (x > 0 && x < FenetreW && y > 25 && y < FenetreH)
     {
-        printf("%d et %d\n", x, y - 25);
 
         int colonneTab = x / (FenetreW / nbColonne);
         int ligneTab = (y - 25) / (FenetreH / nbLigne);
