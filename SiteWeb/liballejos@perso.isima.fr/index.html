@@ -1,0 +1,1276 @@
+
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta content="IE=edge,chrome=1" http-equiv="X-UA-Compatible">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+        <meta
+            name="Projet ZZ1 BALLEJOS CORNUEZ LEGER"
+            content="Documentation for the Kittn API"
+        >
+    <title>Projet ZZ1 Groupe 31</title>
+
+    <style media="screen">
+      .highlight table td { padding: 5px; }
+.highlight table pre { margin: 0; }
+.highlight .gh {
+  color: #999999;
+}
+.highlight .sr {
+  color: #f6aa11;
+}
+.highlight .go {
+  color: #888888;
+}
+.highlight .gp {
+  color: #555555;
+}
+.highlight .gs {
+}
+.highlight .gu {
+  color: #aaaaaa;
+}
+.highlight .nb {
+  color: #f6aa11;
+}
+.highlight .cm {
+  color: #75715e;
+}
+.highlight .cp {
+  color: #75715e;
+}
+.highlight .c1 {
+  color: #75715e;
+}
+.highlight .cs {
+  color: #75715e;
+}
+.highlight .c, .highlight .ch, .highlight .cd, .highlight .cpf {
+  color: #75715e;
+}
+.highlight .err {
+  color: #960050;
+}
+.highlight .gr {
+  color: #960050;
+}
+.highlight .gt {
+  color: #960050;
+}
+.highlight .gd {
+  color: #49483e;
+}
+.highlight .gi {
+  color: #49483e;
+}
+.highlight .ge {
+  color: #49483e;
+}
+.highlight .kc {
+  color: #66d9ef;
+}
+.highlight .kd {
+  color: #66d9ef;
+}
+.highlight .kr {
+  color: #66d9ef;
+}
+.highlight .no {
+  color: #66d9ef;
+}
+.highlight .kt {
+  color: #66d9ef;
+}
+.highlight .mf {
+  color: #ae81ff;
+}
+.highlight .mh {
+  color: #ae81ff;
+}
+.highlight .il {
+  color: #ae81ff;
+}
+.highlight .mi {
+  color: #ae81ff;
+}
+.highlight .mo {
+  color: #ae81ff;
+}
+.highlight .m, .highlight .mb, .highlight .mx {
+  color: #ae81ff;
+}
+.highlight .sc {
+  color: #ae81ff;
+}
+.highlight .se {
+  color: #ae81ff;
+}
+.highlight .ss {
+  color: #ae81ff;
+}
+.highlight .sd {
+  color: #e6db74;
+}
+.highlight .s2 {
+  color: #e6db74;
+}
+.highlight .sb {
+  color: #e6db74;
+}
+.highlight .sh {
+  color: #e6db74;
+}
+.highlight .si {
+  color: #e6db74;
+}
+.highlight .sx {
+  color: #e6db74;
+}
+.highlight .s1 {
+  color: #e6db74;
+}
+.highlight .s, .highlight .sa, .highlight .dl {
+  color: #e6db74;
+}
+.highlight .na {
+  color: #a6e22e;
+}
+.highlight .nc {
+  color: #a6e22e;
+}
+.highlight .nd {
+  color: #a6e22e;
+}
+.highlight .ne {
+  color: #a6e22e;
+}
+.highlight .nf, .highlight .fm {
+  color: #a6e22e;
+}
+.highlight .vc {
+  color: #ffffff;
+}
+.highlight .nn {
+  color: #ffffff;
+}
+.highlight .ni {
+  color: #ffffff;
+}
+.highlight .bp {
+  color: #ffffff;
+}
+.highlight .vg {
+  color: #ffffff;
+}
+.highlight .vi {
+  color: #ffffff;
+}
+.highlight .nv, .highlight .vm {
+  color: #ffffff;
+}
+.highlight .w {
+  color: #ffffff;
+}
+.highlight {
+  color: #ffffff;
+}
+.highlight .n, .highlight .py, .highlight .nx {
+  color: #ffffff;
+}
+.highlight .nl {
+  color: #f92672;
+}
+.highlight .ow {
+  color: #f92672;
+}
+.highlight .nt {
+  color: #f92672;
+}
+.highlight .k, .highlight .kv {
+  color: #f92672;
+}
+.highlight .kn {
+  color: #f92672;
+}
+.highlight .kp {
+  color: #f92672;
+}
+.highlight .o {
+  color: #f92672;
+}
+    </style>
+    <style media="print">
+      * {
+        -webkit-transition:none!important;
+        transition:none!important;
+      }
+      .highlight table td { padding: 5px; }
+.highlight table pre { margin: 0; }
+.highlight, .highlight .w {
+  color: #586e75;
+}
+.highlight .err {
+  color: #002b36;
+  background-color: #dc322f;
+}
+.highlight .c, .highlight .ch, .highlight .cd, .highlight .cm, .highlight .cpf, .highlight .c1, .highlight .cs {
+  color: #657b83;
+}
+.highlight .cp {
+  color: #b58900;
+}
+.highlight .nt {
+  color: #b58900;
+}
+.highlight .o, .highlight .ow {
+  color: #93a1a1;
+}
+.highlight .p, .highlight .pi {
+  color: #93a1a1;
+}
+.highlight .gi {
+  color: #859900;
+}
+.highlight .gd {
+  color: #dc322f;
+}
+.highlight .gh {
+  color: #268bd2;
+  background-color: #002b36;
+  font-weight: bold;
+}
+.highlight .k, .highlight .kn, .highlight .kp, .highlight .kr, .highlight .kv {
+  color: #6c71c4;
+}
+.highlight .kc {
+  color: #cb4b16;
+}
+.highlight .kt {
+  color: #cb4b16;
+}
+.highlight .kd {
+  color: #cb4b16;
+}
+.highlight .s, .highlight .sb, .highlight .sc, .highlight .dl, .highlight .sd, .highlight .s2, .highlight .sh, .highlight .sx, .highlight .s1 {
+  color: #859900;
+}
+.highlight .sa {
+  color: #6c71c4;
+}
+.highlight .sr {
+  color: #2aa198;
+}
+.highlight .si {
+  color: #d33682;
+}
+.highlight .se {
+  color: #d33682;
+}
+.highlight .nn {
+  color: #b58900;
+}
+.highlight .nc {
+  color: #b58900;
+}
+.highlight .no {
+  color: #b58900;
+}
+.highlight .na {
+  color: #268bd2;
+}
+.highlight .m, .highlight .mb, .highlight .mf, .highlight .mh, .highlight .mi, .highlight .il, .highlight .mo, .highlight .mx {
+  color: #859900;
+}
+.highlight .ss {
+  color: #859900;
+}
+    </style>
+    <link href="stylesheets/screen-c9d8fa83.css" rel="stylesheet" media="screen" />
+    <link href="stylesheets/print-953e3353.css" rel="stylesheet" media="print" />
+      <script src="javascripts/all_nosearch-18c3ed8e.js"></script>
+
+  </head>
+
+  <body class="index" data-languages="[&quot;c&quot;]">
+    <a href="#" id="nav-button">
+      <span>
+        NAV
+        <img src="images/navbar-cad8cdcb.png" alt="" />
+      </span>
+    </a>
+    <div class="toc-wrapper">
+      <img src="images/logo-b043c49a.png" class="logo" alt="" />
+        <div class="lang-selector">
+              <a href="#" data-language-name="c">c</a>
+        </div>
+      <ul id="toc" class="toc-list-h1">
+          <li>
+            <a href="#accueil" class="toc-h1 toc-link" data-title="Accueil">Accueil</a>
+              <ul class="toc-list-h2">
+                  <li>
+                    <a href="#membres-du-groupe-31" class="toc-h2 toc-link" data-title="Membres du Groupe 31">Membres du Groupe 31</a>
+                  </li>
+              </ul>
+          </li>
+          <li>
+            <a href="#hebergement-du-projet" class="toc-h1 toc-link" data-title="Hébergement du projet">Hébergement du projet</a>
+              <ul class="toc-list-h2">
+                  <li>
+                    <a href="#les-programmes" class="toc-h2 toc-link" data-title="Les programmes">Les programmes</a>
+                  </li>
+              </ul>
+          </li>
+          <li>
+            <a href="#todo-list" class="toc-h1 toc-link" data-title="TODO List">TODO List</a>
+              <ul class="toc-list-h2">
+                  <li>
+                    <a href="#fonctionnement" class="toc-h2 toc-link" data-title="Fonctionnement">Fonctionnement</a>
+                  </li>
+              </ul>
+          </li>
+          <li>
+            <a href="#xfenetre" class="toc-h1 toc-link" data-title="Xfenetré">Xfenetré</a>
+              <ul class="toc-list-h2">
+                  <li>
+                    <a href="#ballejos-lilian" class="toc-h2 toc-link" data-title="BALLEJOS Lilian">BALLEJOS Lilian</a>
+                  </li>
+                  <li>
+                    <a href="#leger-bertrand" class="toc-h2 toc-link" data-title="LEGER Bertrand">LEGER Bertrand</a>
+                  </li>
+                  <li>
+                    <a href="#cornuez-charlotte" class="toc-h2 toc-link" data-title="CORNUEZ Charlotte">CORNUEZ Charlotte</a>
+                  </li>
+              </ul>
+          </li>
+          <li>
+            <a href="#animation-forme" class="toc-h1 toc-link" data-title="Animation Forme">Animation Forme</a>
+              <ul class="toc-list-h2">
+                  <li>
+                    <a href="#ballejos-lilian-2" class="toc-h2 toc-link" data-title="BALLEJOS Lilian">BALLEJOS Lilian</a>
+                  </li>
+                  <li>
+                    <a href="#cornuez-charlotte-2" class="toc-h2 toc-link" data-title="CORNUEZ Charlotte">CORNUEZ Charlotte</a>
+                  </li>
+                  <li>
+                    <a href="#leger-bertrand-2" class="toc-h2 toc-link" data-title="LEGER Bertrand">LEGER Bertrand</a>
+                  </li>
+              </ul>
+          </li>
+          <li>
+            <a href="#animation-avec-texture" class="toc-h1 toc-link" data-title="Animation avec Texture">Animation avec Texture</a>
+              <ul class="toc-list-h2">
+                  <li>
+                    <a href="#ballejos-lilian-3" class="toc-h2 toc-link" data-title="BALLEJOS Lilian">BALLEJOS Lilian</a>
+                  </li>
+                  <li>
+                    <a href="#leger-bertrand-3" class="toc-h2 toc-link" data-title="LEGER Bertrand">LEGER Bertrand</a>
+                  </li>
+              </ul>
+          </li>
+      </ul>
+        <ul class="toc-footer">
+            <li>Projet ZZ1</li>
+            <li>BALLEJOS Lilian</li>
+            <li>CORNUEZ Charlotte</li>
+            <li>LEGER Bertrand</li>
+        </ul>
+    </div>
+    <div class="page-wrapper">
+      <div class="dark-box"></div>
+      <div class="content">
+        <h1 id='accueil'>Accueil</h1><h2 id='membres-du-groupe-31'>Membres du Groupe 31</h2>
+<p>Bienvenue sur le site web des membres du groupe 31 du Projet ZZ1 2022, nous sommes</p>
+
+<ul>
+<li>BALLEJOS Lilian</li>
+<li>CORNUEZ Charlotte</li>
+<li>LEGER Bertrand</li>
+</ul>
+<h1 id='hebergement-du-projet'>Hébergement du projet</h1><h2 id='les-programmes'>Les programmes</h2>
+<p>Les programmes se trouvent tous dans le GitLab ISIMA de BALLEJOS Lilian à ce lien: <a href="https://gitlab.isima.fr/liballejos/projetzz1">ici</a></p>
+<h1 id='todo-list'>TODO List</h1><h2 id='fonctionnement'>Fonctionnement</h2>
+<p>Vous trouverez ici le programme de tout ce que l&#39;on va faire durant ces 2 semaines jour par jour</p>
+<h3 id='20-06-22-lundi'>20/06/22 (Lundi)</h3>
+<table><thead>
+<tr>
+<th>Avancé</th>
+<th>Membre</th>
+<th>Tâche</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>✔️</td>
+<td>BALLEJOS Lilian</td>
+<td>Mise en place du site</td>
+</tr>
+<tr>
+<td>✔️</td>
+<td>Commun</td>
+<td>Mise en place d&#39;un GitLab organisé</td>
+</tr>
+<tr>
+<td>✔️</td>
+<td>BALLEJOS Lilian</td>
+<td>Xfenetré</td>
+</tr>
+<tr>
+<td>✔️</td>
+<td>LEGER BERTRAND</td>
+<td>Xfenetré</td>
+</tr>
+<tr>
+<td>✔️</td>
+<td>CORNUEZ Charlotte</td>
+<td>Xfenetré</td>
+</tr>
+<tr>
+<td>✔️</td>
+<td>BALLEJOS Lilian</td>
+<td>Animation Forme</td>
+</tr>
+</tbody></table>
+<h3 id='21-06-22-mardi'>21/06/22 (Mardi)</h3>
+<table><thead>
+<tr>
+<th>Avancé</th>
+<th>Membre</th>
+<th>Tâche</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>✔️</td>
+<td>BALLEJOS Lilian</td>
+<td>Jeu de la vie</td>
+</tr>
+<tr>
+<td>❌</td>
+<td>BALLEJOS Lilian</td>
+<td>Frame</td>
+</tr>
+</tbody></table>
+<h1 id='xfenetre'>Xfenetré</h1><h2 id='ballejos-lilian'>BALLEJOS Lilian</h2><h3 id='explication-et-code'>Explication et Code</h3>
+<p>Mise en place d&#39;un programme qui récupère les dimensions de l&#39;écran principal et crée une animation de sinusoïde avec les fenêtres générées.</p>
+<div class="highlight"><pre class="highlight c tab-c"><code><span class="cm">/*Taille ecran*/</span>
+
+  <span class="n">SDL_DisplayMode</span> <span class="n">current</span><span class="p">;</span>
+  <span class="n">SDL_GetCurrentDisplayMode</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">current</span><span class="p">);</span>
+  <span class="kt">int</span> <span class="n">width</span> <span class="o">=</span> <span class="n">current</span><span class="p">.</span><span class="n">w</span><span class="p">;</span>
+  <span class="kt">int</span> <span class="n">height</span> <span class="o">=</span> <span class="n">current</span><span class="p">.</span><span class="n">h</span><span class="p">;</span>
+  <span class="c1">//printf("%d %d\n", width, height);</span>
+  <span class="kt">int</span> <span class="n">milieu</span> <span class="o">=</span> <span class="n">height</span> <span class="o">/</span> <span class="mi">2</span> <span class="o">-</span> <span class="n">TAILLE_FENETRE</span><span class="p">;</span> <span class="c1">// milieu ecran axe y</span>
+  <span class="kt">int</span> <span class="n">nbr_element</span> <span class="o">=</span> <span class="n">width</span> <span class="o">/</span> <span class="n">TAILLE_FENETRE</span><span class="p">;</span> <span class="c1">// nb d'element a generer</span>
+
+  <span class="cm">/*PLacement et creation fenetre*/</span>
+
+  <span class="n">SDL_Window</span> <span class="o">**</span><span class="n">tabWindow</span><span class="p">;</span>
+  <span class="n">tabWindow</span> <span class="o">=</span> <span class="p">(</span><span class="n">SDL_Window</span> <span class="o">**</span><span class="p">)</span><span class="n">malloc</span><span class="p">(</span><span class="k">sizeof</span><span class="p">(</span><span class="n">SDL_Window</span> <span class="o">*</span><span class="p">)</span> <span class="o">*</span> <span class="n">nbr_element</span><span class="p">);</span>
+
+  <span class="k">for</span> <span class="p">(</span><span class="kt">int</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">nbr_element</span><span class="p">;</span> <span class="n">i</span><span class="o">++</span><span class="p">)</span>
+  <span class="p">{</span>
+    <span class="n">tabWindow</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">SDL_CreateWindow</span><span class="p">(</span>
+        <span class="s">"Fenetre"</span><span class="p">,</span>                  <span class="c1">// codage en utf8, donc accents possibles</span>
+        <span class="n">i</span> <span class="o">*</span> <span class="n">TAILLE_FENETRE</span><span class="p">,</span> <span class="n">milieu</span><span class="p">,</span> <span class="c1">// a coté de sa voisine et au milieu de l'ecran en y</span>
+        <span class="n">TAILLE_FENETRE</span><span class="p">,</span> <span class="n">TAILLE_FENETRE</span><span class="p">,</span>
+        <span class="mi">0</span><span class="p">);</span> <span class="c1">// non redimensionnable</span>
+
+    <span class="k">if</span> <span class="p">(</span><span class="n">tabWindow</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">==</span> <span class="nb">NULL</span><span class="p">)</span>
+    <span class="p">{</span>
+      <span class="n">SDL_Log</span><span class="p">(</span><span class="s">"Error : SDL window %d creation - %s</span><span class="se">\n</span><span class="s">"</span><span class="p">,</span>
+              <span class="n">i</span><span class="p">,</span> <span class="n">SDL_GetError</span><span class="p">());</span> <span class="c1">// échec de la création de la fenêtre</span>
+      <span class="n">SDL_Quit</span><span class="p">();</span>                 <span class="c1">// On referme la SDL</span>
+      <span class="n">exit</span><span class="p">(</span><span class="n">EXIT_FAILURE</span><span class="p">);</span>
+    <span class="p">}</span>
+  <span class="p">}</span>
+
+  <span class="cm">/*ANimation 1*/</span>
+  <span class="cm">/*on créé la courbe cosinus*/</span>
+  <span class="k">for</span> <span class="p">(</span><span class="kt">int</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">nbr_element</span><span class="p">;</span> <span class="n">i</span><span class="o">++</span><span class="p">)</span>
+  <span class="p">{</span>
+    <span class="cm">/*cos a chaque point "I * TAILLE_FENETRE*/</span>
+    <span class="kt">float</span> <span class="n">val_cos</span> <span class="o">=</span> <span class="n">cosf</span><span class="p">((</span><span class="n">i</span><span class="p">)</span> <span class="o">*</span> <span class="n">TAILLE_FENETRE</span><span class="p">);</span>
+    <span class="cm">/*cos au carré pour osciller entre 0 et 1 et pas -1 et 1 puis d'amplitude de taille "hauteur ecran / 2 qu'on recentre au milieu avec + milieu /2"*/</span>
+    <span class="n">SDL_SetWindowPosition</span><span class="p">(</span><span class="n">tabWindow</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="n">i</span> <span class="o">*</span> <span class="n">TAILLE_FENETRE</span><span class="p">,</span> <span class="p">(</span><span class="n">val_cos</span> <span class="o">*</span> <span class="n">val_cos</span> <span class="o">*</span> <span class="n">milieu</span><span class="p">)</span> <span class="o">+</span> <span class="n">milieu</span> <span class="o">/</span> <span class="mi">2</span><span class="p">);</span>
+    <span class="n">SDL_Delay</span><span class="p">(</span><span class="mi">100</span><span class="p">);</span>
+  <span class="p">}</span>
+
+  <span class="cm">/*Animation 2*/</span>
+  <span class="cm">/*on fait osciller en changeant la valeur x des points avec une variante*/</span>
+  <span class="kt">int</span> <span class="n">variante</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+  <span class="k">while</span> <span class="p">(</span><span class="n">variante</span> <span class="o">&lt;</span> <span class="mi">100</span><span class="p">)</span>
+  <span class="p">{</span>
+    <span class="k">for</span> <span class="p">(</span><span class="kt">int</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">nbr_element</span><span class="p">;</span> <span class="n">i</span><span class="o">++</span><span class="p">)</span>
+    <span class="p">{</span>
+      <span class="kt">float</span> <span class="n">val_cos</span> <span class="o">=</span> <span class="n">cosf</span><span class="p">((</span><span class="n">i</span> <span class="o">+</span> <span class="n">variante</span><span class="p">)</span> <span class="o">*</span> <span class="n">TAILLE_FENETRE</span><span class="p">);</span>
+      <span class="n">SDL_SetWindowPosition</span><span class="p">(</span><span class="n">tabWindow</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="n">i</span> <span class="o">*</span> <span class="n">TAILLE_FENETRE</span><span class="p">,</span> <span class="p">(</span><span class="n">val_cos</span> <span class="o">*</span> <span class="n">val_cos</span> <span class="o">*</span> <span class="n">milieu</span><span class="p">)</span> <span class="o">+</span> <span class="n">milieu</span> <span class="o">/</span> <span class="mi">2</span><span class="p">);</span>
+    <span class="p">}</span>
+    <span class="n">variante</span><span class="o">++</span><span class="p">;</span>
+    <span class="n">printf</span><span class="p">(</span><span class="s">"iteration n°%d</span><span class="se">\n</span><span class="s">"</span><span class="p">,</span> <span class="n">variante</span><span class="p">);</span>
+    <span class="n">SDL_Delay</span><span class="p">(</span><span class="mi">100</span><span class="p">);</span>
+  <span class="p">}</span>
+
+  <span class="cm">/*ANimation 3*/</span>
+  <span class="cm">/*on replace au milieu*/</span>
+  <span class="k">for</span> <span class="p">(</span><span class="kt">int</span> <span class="n">i</span> <span class="o">=</span> <span class="n">nbr_element</span> <span class="o">-</span> <span class="mi">1</span><span class="p">;</span> <span class="n">i</span> <span class="o">&gt;=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">i</span><span class="o">--</span><span class="p">)</span>
+  <span class="p">{</span>
+    <span class="n">SDL_SetWindowPosition</span><span class="p">(</span><span class="n">tabWindow</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="n">i</span> <span class="o">*</span> <span class="n">TAILLE_FENETRE</span><span class="p">,</span> <span class="n">milieu</span><span class="p">);</span>
+    <span class="n">SDL_Delay</span><span class="p">(</span><span class="mi">100</span><span class="p">);</span>
+  <span class="p">}</span>
+
+  <span class="cm">/*Supression fenetre*/</span>
+  <span class="k">for</span> <span class="p">(</span><span class="kt">int</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">nbr_element</span><span class="p">;</span> <span class="n">i</span><span class="o">++</span><span class="p">)</span>
+  <span class="p">{</span>
+    <span class="n">SDL_DestroyWindow</span><span class="p">(</span><span class="n">tabWindow</span><span class="p">[</span><span class="n">i</span><span class="p">]);</span>
+    <span class="n">printf</span><span class="p">(</span><span class="s">"clear fenetre %d</span><span class="se">\n</span><span class="s">"</span><span class="p">,</span> <span class="n">i</span><span class="p">);</span>
+  <span class="p">}</span>
+
+  <span class="n">free</span><span class="p">(</span><span class="n">tabWindow</span><span class="p">);</span>
+</code></pre></div><h3 id='video'>Vidéo</h3>
+<p align="center"><iframe width="80%" height="315" src="https://www.youtube.com/embed/PmCJ4XlQqXs" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe></p>
+<h2 id='leger-bertrand'>LEGER Bertrand</h2><h3 id='explication-et-code-2'>Explication et Code</h3>
+<p>Principe :
+J&#39;ouvre des fenêtres sur les côtés de l&#39;écran en partant du milieu de la hauteur et du côté gauche et droit puis elles disparaissent. Puis j&#39;ouvre des fenêtres et je les fais &quot;spiraler&quot; grâce au cosinus et
+en augmentant le rayon du cercle à chaque itération, je finis par fermer toutes mes fenêtres une à une.</p>
+<div class="highlight"><pre class="highlight c tab-c"><code><span class="n">SDL_Window</span> <span class="o">*</span><span class="n">windows</span><span class="p">[</span><span class="n">NBREWINDOWS</span><span class="p">];</span>
+
+  <span class="n">SDL_DisplayMode</span> <span class="n">current</span><span class="p">;</span>
+  <span class="n">SDL_GetCurrentDisplayMode</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">current</span><span class="p">);</span>
+  <span class="kt">int</span> <span class="n">width</span> <span class="o">=</span> <span class="n">current</span><span class="p">.</span><span class="n">w</span><span class="p">;</span>
+  <span class="kt">int</span> <span class="n">height</span> <span class="o">=</span> <span class="n">current</span><span class="p">.</span><span class="n">h</span><span class="p">;</span>
+
+  <span class="kt">float</span> <span class="n">position_x_left</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="c1">// première fenêtre côté gauche au milieu de la largeur de l'écran</span>
+  <span class="kt">float</span> <span class="n">position_y_left</span> <span class="o">=</span> <span class="n">height</span> <span class="o">/</span> <span class="mi">2</span><span class="p">;</span>
+
+  <span class="kt">float</span> <span class="n">position_x_right</span> <span class="o">=</span> <span class="n">width</span><span class="p">;</span> <span class="c1">// première fenêtre côté droit au milieu de la largeur de l'écran</span>
+  <span class="kt">float</span> <span class="n">position_y_right</span> <span class="o">=</span> <span class="n">height</span> <span class="o">/</span> <span class="mi">2</span><span class="p">;</span>
+
+  <span class="cm">/*Animation 1:
+   *ligne de fenêtre de la moitié de la largeur de l'écran et de longueur = 1/3 de l'écran
+   *Qui se referme une fois que la dernière est placée*/</span>
+
+  <span class="k">while</span> <span class="p">(</span><span class="n">position_x_left</span> <span class="o">&lt;</span> <span class="n">width</span> <span class="o">/</span> <span class="mi">2</span> <span class="o">&amp;&amp;</span> <span class="n">position_x_right</span> <span class="o">&gt;</span> <span class="n">width</span> <span class="o">/</span> <span class="mi">2</span><span class="p">)</span>
+  <span class="p">{</span>
+
+    <span class="n">windows</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">SDL_CreateWindow</span><span class="p">(</span>
+        <span class="s">"left"</span><span class="p">,</span>
+        <span class="n">position_x_left</span><span class="p">,</span> <span class="n">position_y_left</span><span class="p">,</span>
+        <span class="mi">40</span><span class="p">,</span> <span class="mi">20</span><span class="p">,</span>
+        <span class="mi">0</span><span class="p">);</span>
+
+    <span class="n">windows</span><span class="p">[</span><span class="mi">200</span> <span class="o">+</span> <span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">SDL_CreateWindow</span><span class="p">(</span>
+        <span class="s">"right"</span><span class="p">,</span>
+        <span class="n">position_x_right</span><span class="p">,</span> <span class="n">position_y_right</span><span class="p">,</span>
+        <span class="mi">40</span><span class="p">,</span> <span class="mi">20</span><span class="p">,</span>
+        <span class="n">SDL_WINDOW_RESIZABLE</span><span class="p">);</span>
+
+    <span class="k">if</span> <span class="p">(</span><span class="n">windows</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">==</span> <span class="nb">NULL</span> <span class="o">||</span> <span class="n">windows</span><span class="p">[</span><span class="mi">200</span> <span class="o">+</span> <span class="n">i</span><span class="p">]</span> <span class="o">==</span> <span class="nb">NULL</span><span class="p">)</span>
+    <span class="p">{</span>
+      <span class="n">SDL_Log</span><span class="p">(</span><span class="s">"Error : SDL window %d creation - %s</span><span class="se">\n</span><span class="s">"</span><span class="p">,</span> <span class="n">i</span><span class="p">,</span> <span class="n">SDL_GetError</span><span class="p">());</span>
+      <span class="n">SDL_Quit</span><span class="p">();</span>
+      <span class="n">exit</span><span class="p">(</span><span class="n">EXIT_FAILURE</span><span class="p">);</span>
+    <span class="p">}</span>
+    <span class="n">position_x_left</span> <span class="o">=</span> <span class="n">position_x_left</span> <span class="o">+</span> <span class="mi">15</span><span class="p">;</span>
+    <span class="n">SDL_SetWindowPosition</span><span class="p">(</span><span class="n">windows</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="n">position_x_left</span><span class="p">,</span> <span class="n">position_y_left</span><span class="p">);</span>
+
+    <span class="n">position_x_right</span> <span class="o">=</span> <span class="n">position_x_right</span> <span class="o">-</span> <span class="mi">15</span><span class="p">;</span>
+    <span class="n">SDL_SetWindowPosition</span><span class="p">(</span><span class="n">windows</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="n">position_x_left</span><span class="p">,</span> <span class="n">position_y_left</span><span class="p">);</span>
+
+    <span class="n">SDL_Delay</span><span class="p">(</span><span class="mi">25</span><span class="p">);</span>
+    <span class="n">i</span><span class="o">++</span><span class="p">;</span>
+  <span class="p">}</span>
+
+  <span class="n">SDL_Delay</span><span class="p">(</span><span class="mi">300</span><span class="p">);</span>
+
+  <span class="cm">/*Animation 2 :
+   *Je fais tourner fenêtres grâce aux coordonnées du cercle trigonométrique
+   *A chaque itération le rayon du cercle va grandir*/</span>
+
+  <span class="kt">int</span> <span class="n">b</span><span class="p">;</span>
+
+  <span class="k">for</span> <span class="p">(</span><span class="n">b</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">b</span> <span class="o">&lt;=</span> <span class="mi">100</span><span class="p">;</span> <span class="n">b</span><span class="o">++</span><span class="p">)</span>
+  <span class="p">{</span>
+
+    <span class="k">if</span> <span class="p">(</span><span class="n">b</span> <span class="o">==</span> <span class="mi">0</span><span class="p">)</span>
+    <span class="p">{</span>
+
+      <span class="k">for</span> <span class="p">(</span><span class="n">j</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">j</span> <span class="o">&lt;</span> <span class="n">i</span><span class="p">;</span> <span class="n">j</span><span class="o">++</span><span class="p">)</span>
+      <span class="p">{</span>
+
+        <span class="n">SDL_DestroyWindow</span><span class="p">(</span><span class="n">windows</span><span class="p">[</span><span class="n">j</span><span class="p">]);</span>
+        <span class="n">SDL_DestroyWindow</span><span class="p">(</span><span class="n">windows</span><span class="p">[</span><span class="mi">200</span> <span class="o">+</span> <span class="n">j</span><span class="p">]);</span>
+        <span class="n">SDL_Delay</span><span class="p">(</span><span class="mi">75</span><span class="p">);</span>
+      <span class="p">}</span>
+    <span class="p">}</span>
+    <span class="n">windows</span><span class="p">[</span><span class="n">b</span><span class="p">]</span> <span class="o">=</span> <span class="n">SDL_CreateWindow</span><span class="p">(</span>
+        <span class="s">"left circle"</span><span class="p">,</span>
+        <span class="n">position_x_left</span><span class="p">,</span> <span class="n">position_y_left</span><span class="p">,</span>
+        <span class="mi">40</span><span class="p">,</span> <span class="mi">30</span><span class="p">,</span>
+        <span class="mi">0</span><span class="p">);</span>
+
+    <span class="k">if</span> <span class="p">(</span><span class="n">windows</span><span class="p">[</span><span class="n">b</span><span class="p">]</span> <span class="o">==</span> <span class="nb">NULL</span><span class="p">)</span>
+    <span class="p">{</span>
+      <span class="n">SDL_Log</span><span class="p">(</span><span class="s">"Error : SDL window %d creation - %s</span><span class="se">\n</span><span class="s">"</span><span class="p">,</span> <span class="n">b</span><span class="p">,</span> <span class="n">SDL_GetError</span><span class="p">());</span>
+      <span class="n">SDL_Quit</span><span class="p">();</span>
+      <span class="n">exit</span><span class="p">(</span><span class="n">EXIT_FAILURE</span><span class="p">);</span>
+    <span class="p">}</span>
+
+    <span class="kt">float</span> <span class="n">pos_x</span> <span class="o">=</span> <span class="n">cosf</span><span class="p">(</span><span class="n">b</span><span class="p">)</span> <span class="o">*</span> <span class="mi">25</span> <span class="o">*</span> <span class="p">(</span><span class="n">b</span> <span class="o">/</span> <span class="mi">4</span><span class="p">)</span> <span class="o">+</span> <span class="n">position_x_left</span><span class="p">;</span>
+    <span class="kt">float</span> <span class="n">pos_y</span> <span class="o">=</span> <span class="n">sinf</span><span class="p">(</span><span class="n">b</span><span class="p">)</span> <span class="o">*</span> <span class="mi">25</span> <span class="o">*</span> <span class="p">(</span><span class="n">b</span> <span class="o">/</span> <span class="mi">4</span><span class="p">)</span> <span class="o">+</span> <span class="n">position_y_left</span><span class="p">;</span>
+
+    <span class="n">SDL_SetWindowPosition</span><span class="p">(</span><span class="n">windows</span><span class="p">[</span><span class="n">b</span><span class="p">],</span> <span class="n">pos_x</span><span class="p">,</span> <span class="n">pos_y</span><span class="p">);</span>
+
+    <span class="n">SDL_Delay</span><span class="p">(</span><span class="mi">75</span><span class="p">);</span>
+  <span class="p">}</span>
+
+  <span class="n">SDL_Delay</span><span class="p">(</span><span class="mi">3000</span><span class="p">);</span>
+
+  <span class="k">for</span> <span class="p">(</span><span class="n">b</span> <span class="o">=</span> <span class="mi">100</span><span class="p">;</span> <span class="n">b</span> <span class="o">&gt;=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">b</span><span class="o">--</span><span class="p">)</span>
+  <span class="p">{</span>
+
+    <span class="n">SDL_DestroyWindow</span><span class="p">(</span><span class="n">windows</span><span class="p">[</span><span class="n">b</span><span class="p">]);</span>
+    <span class="n">SDL_Delay</span><span class="p">(</span><span class="mi">20</span><span class="p">);</span>
+  <span class="p">}</span>
+</code></pre></div><h3 id='video-2'>Vidéo</h3>
+<p style="texte-align: center;"><iframe width="80%" height="315" src="https://www.youtube.com/embed/j7vuU87j4RA" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe></p>
+<h2 id='cornuez-charlotte'>CORNUEZ Charlotte</h2><h3 id='explication-et-code-3'>Explication et Code</h3>
+<p>Les fenêtres s&#39;affichent petit à petit pour former un U. Puis elles se rassemblent au milieu avant de partir chacune leur tour dans un des coins de l&#39;écran.             </p>
+<div class="highlight"><pre class="highlight c tab-c"><code><span class="cm">/* Récupération de la taille de l'écran */</span>
+
+    <span class="n">SDL_DisplayMode</span> <span class="n">current</span><span class="p">;</span>
+    <span class="n">SDL_GetCurrentDisplayMode</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">current</span><span class="p">);</span>
+    <span class="kt">int</span> <span class="n">width</span> <span class="o">=</span> <span class="n">current</span><span class="p">.</span><span class="n">w</span><span class="p">;</span>
+    <span class="kt">int</span> <span class="n">height</span> <span class="o">=</span> <span class="n">current</span><span class="p">.</span><span class="n">h</span><span class="p">;</span>
+    <span class="c1">// printf("%d %d\n", width,height);</span>
+
+    <span class="cm">/* Création des fenêtres */</span>
+    <span class="k">for</span> <span class="p">(</span><span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="mi">14</span><span class="p">;</span> <span class="n">i</span><span class="o">++</span><span class="p">)</span>
+    <span class="p">{</span>
+        <span class="n">TabWindows</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">SDL_CreateWindow</span><span class="p">(</span>
+            <span class="s">"Fenêtres U"</span><span class="p">,</span>              <span class="c1">// codage en utf8, donc accents possibles</span>
+            <span class="n">width</span> <span class="o">/</span> <span class="mi">3</span><span class="p">,</span> <span class="n">height</span> <span class="o">/</span> <span class="mi">3</span> <span class="o">+</span> <span class="n">j</span><span class="p">,</span> <span class="c1">// coin haut gauche en haut gauche de l'écran</span>
+            <span class="mi">200</span><span class="p">,</span> <span class="mi">200</span><span class="p">,</span>                  <span class="c1">// largeur = 400, hauteur = 300</span>
+            <span class="n">SDL_WINDOW_RESIZABLE</span><span class="p">);</span>
+        <span class="n">j</span> <span class="o">=</span> <span class="n">j</span> <span class="o">+</span> <span class="n">height</span> <span class="o">/</span> <span class="mi">50</span><span class="p">;</span>
+
+        <span class="cm">/* Vérification de la création des fenêtres */</span>
+
+        <span class="k">if</span> <span class="p">(</span><span class="n">TabWindows</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">==</span> <span class="nb">NULL</span><span class="p">)</span>
+        <span class="p">{</span>
+            <span class="n">SDL_Log</span><span class="p">(</span><span class="s">"Error : SDL window 1 creation - %s</span><span class="se">\n</span><span class="s">"</span><span class="p">,</span>
+                    <span class="n">SDL_GetError</span><span class="p">());</span> <span class="c1">// échec de la création de la fenêtre</span>
+            <span class="n">SDL_Quit</span><span class="p">();</span>              <span class="c1">// On referme la SDL</span>
+            <span class="n">exit</span><span class="p">(</span><span class="n">EXIT_FAILURE</span><span class="p">);</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
+
+    <span class="kt">int</span> <span class="n">k</span> <span class="o">=</span> <span class="n">j</span> <span class="o">-</span> <span class="n">height</span> <span class="o">/</span> <span class="mi">50</span><span class="p">;</span>
+
+    <span class="k">for</span> <span class="p">(</span><span class="n">i</span> <span class="o">=</span> <span class="mi">14</span><span class="p">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="mi">29</span><span class="p">;</span> <span class="n">i</span><span class="o">++</span><span class="p">)</span>
+    <span class="p">{</span>
+        <span class="n">TabWindows</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">SDL_CreateWindow</span><span class="p">(</span>
+            <span class="s">"Fenêtres U"</span><span class="p">,</span>                              <span class="c1">// codage en utf8, donc accents possibles</span>
+            <span class="n">width</span> <span class="o">/</span> <span class="mi">3</span> <span class="o">+</span> <span class="p">(</span><span class="n">i</span> <span class="o">-</span> <span class="mi">14</span><span class="p">)</span> <span class="o">*</span> <span class="mi">25</span><span class="p">,</span> <span class="n">height</span> <span class="o">/</span> <span class="mi">3</span> <span class="o">+</span> <span class="n">k</span><span class="p">,</span> <span class="c1">// coin haut gauche en haut gauche de l'écran</span>
+            <span class="mi">200</span><span class="p">,</span> <span class="mi">200</span><span class="p">,</span>                                  <span class="c1">// largeur = 400, hauteur = 300</span>
+            <span class="n">SDL_WINDOW_RESIZABLE</span><span class="p">);</span>
+
+        <span class="cm">/* Vérification de la création des fenêtres */</span>
+
+        <span class="k">if</span> <span class="p">(</span><span class="n">TabWindows</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">==</span> <span class="nb">NULL</span><span class="p">)</span>
+        <span class="p">{</span>
+            <span class="n">SDL_Log</span><span class="p">(</span><span class="s">"Error : SDL window 1 creation - %s</span><span class="se">\n</span><span class="s">"</span><span class="p">,</span>
+                    <span class="n">SDL_GetError</span><span class="p">());</span> <span class="c1">// échec de la création de la fenêtre</span>
+            <span class="n">SDL_Quit</span><span class="p">();</span>              <span class="c1">// On referme la SDL</span>
+            <span class="n">exit</span><span class="p">(</span><span class="n">EXIT_FAILURE</span><span class="p">);</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
+
+    <span class="k">for</span> <span class="p">(</span><span class="n">i</span> <span class="o">=</span> <span class="mi">29</span><span class="p">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="mi">44</span><span class="p">;</span> <span class="n">i</span><span class="o">++</span><span class="p">)</span>
+    <span class="p">{</span>
+        <span class="n">TabWindows</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">SDL_CreateWindow</span><span class="p">(</span>
+            <span class="s">"Fenêtres U"</span><span class="p">,</span>                          <span class="c1">// codage en utf8, donc accents possibles</span>
+            <span class="n">width</span> <span class="o">/</span> <span class="mi">3</span> <span class="o">+</span> <span class="p">(</span><span class="mi">14</span> <span class="o">*</span> <span class="mi">25</span><span class="p">),</span> <span class="n">height</span> <span class="o">/</span> <span class="mi">3</span> <span class="o">+</span> <span class="n">k</span><span class="p">,</span> <span class="c1">// coin haut gauche en haut gauche de l'écran</span>
+            <span class="mi">200</span><span class="p">,</span> <span class="mi">200</span><span class="p">,</span>                              <span class="c1">// largeur = 400, hauteur = 300</span>
+            <span class="n">SDL_WINDOW_RESIZABLE</span><span class="p">);</span>
+        <span class="n">k</span> <span class="o">=</span> <span class="n">k</span> <span class="o">-</span> <span class="n">height</span> <span class="o">/</span> <span class="mi">50</span><span class="p">;</span>
+
+        <span class="cm">/* Vérification de la création des fenêtres */</span>
+
+        <span class="k">if</span> <span class="p">(</span><span class="n">TabWindows</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">==</span> <span class="nb">NULL</span><span class="p">)</span>
+        <span class="p">{</span>
+            <span class="n">SDL_Log</span><span class="p">(</span><span class="s">"Error : SDL window 1 creation - %s</span><span class="se">\n</span><span class="s">"</span><span class="p">,</span>
+                    <span class="n">SDL_GetError</span><span class="p">());</span> <span class="c1">// échec de la création de la fenêtre</span>
+            <span class="n">SDL_Quit</span><span class="p">();</span>              <span class="c1">// On referme la SDL</span>
+            <span class="n">exit</span><span class="p">(</span><span class="n">EXIT_FAILURE</span><span class="p">);</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
+    <span class="n">SDL_Delay</span><span class="p">(</span><span class="mi">100</span><span class="p">);</span>
+    <span class="cm">/*Mise en place d'une étoile : les points vont aux quatres coins*/</span>
+    <span class="k">for</span> <span class="p">(</span><span class="n">etoile</span><span class="p">;</span> <span class="n">etoile</span> <span class="o">&lt;</span> <span class="mi">45</span><span class="p">;</span> <span class="n">etoile</span><span class="o">++</span><span class="p">)</span>
+    <span class="p">{</span>
+        <span class="n">SDL_SetWindowPosition</span><span class="p">(</span><span class="n">TabWindows</span><span class="p">[</span><span class="n">etoile</span><span class="p">],</span> <span class="p">(</span><span class="n">width</span> <span class="o">-</span> <span class="mi">200</span><span class="p">)</span> <span class="o">/</span> <span class="mi">2</span><span class="p">,</span> <span class="p">(</span><span class="n">height</span> <span class="o">-</span> <span class="mi">200</span><span class="p">)</span> <span class="o">/</span> <span class="mi">2</span><span class="p">);</span>
+    <span class="p">}</span>
+    <span class="n">SDL_Delay</span><span class="p">(</span><span class="mi">100</span><span class="p">);</span>
+    <span class="k">for</span> <span class="p">(</span><span class="n">etoile</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">etoile</span> <span class="o">&lt;</span> <span class="mi">44</span><span class="p">;</span> <span class="n">etoile</span> <span class="o">+=</span> <span class="mi">4</span><span class="p">)</span>
+    <span class="p">{</span>
+        <span class="k">for</span> <span class="p">(</span><span class="kt">int</span> <span class="n">x</span> <span class="o">=</span> <span class="p">(</span><span class="n">width</span> <span class="o">-</span> <span class="mi">200</span><span class="p">)</span> <span class="o">/</span> <span class="mi">2</span><span class="p">;</span> <span class="n">x</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">;</span> <span class="n">x</span><span class="o">--</span><span class="p">)</span>
+        <span class="p">{</span>
+            <span class="n">SDL_SetWindowPosition</span><span class="p">(</span><span class="n">TabWindows</span><span class="p">[</span><span class="n">etoile</span><span class="p">],</span> <span class="n">x</span><span class="p">,</span> <span class="p">((</span><span class="n">width</span> <span class="o">-</span> <span class="mi">200</span><span class="p">)</span> <span class="o">/</span> <span class="p">(</span><span class="n">height</span> <span class="o">-</span> <span class="mi">200</span><span class="p">))</span> <span class="o">*</span> <span class="n">x</span><span class="p">);</span>
+
+            <span class="n">SDL_Delay</span><span class="p">(</span><span class="mi">1</span><span class="p">);</span>
+        <span class="p">}</span>
+        <span class="k">for</span> <span class="p">(</span><span class="kt">int</span> <span class="n">x</span> <span class="o">=</span> <span class="n">width</span> <span class="o">/</span> <span class="mi">2</span><span class="p">;</span> <span class="n">x</span> <span class="o">&lt;</span> <span class="n">width</span><span class="p">;</span> <span class="n">x</span><span class="o">++</span><span class="p">)</span>
+        <span class="p">{</span>
+            <span class="n">SDL_SetWindowPosition</span><span class="p">(</span><span class="n">TabWindows</span><span class="p">[</span><span class="n">etoile</span> <span class="o">+</span> <span class="mi">3</span><span class="p">],</span> <span class="n">x</span><span class="p">,</span> <span class="p">(</span><span class="n">width</span> <span class="o">/</span> <span class="n">height</span><span class="p">)</span> <span class="o">*</span> <span class="n">x</span><span class="p">);</span>
+
+            <span class="n">SDL_Delay</span><span class="p">(</span><span class="mi">1</span><span class="p">);</span>
+        <span class="p">}</span>
+        <span class="k">for</span> <span class="p">(</span><span class="kt">int</span> <span class="n">y</span> <span class="o">=</span> <span class="n">width</span> <span class="o">/</span> <span class="mi">2</span><span class="p">;</span> <span class="n">y</span> <span class="o">&lt;</span> <span class="n">width</span><span class="p">;</span> <span class="n">y</span><span class="o">++</span><span class="p">)</span>
+        <span class="p">{</span>
+            <span class="n">SDL_SetWindowPosition</span><span class="p">(</span><span class="n">TabWindows</span><span class="p">[</span><span class="n">etoile</span> <span class="o">+</span> <span class="mi">2</span><span class="p">],</span> <span class="n">y</span><span class="p">,</span> <span class="p">((</span><span class="n">height</span> <span class="o">-</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">width</span><span class="p">)</span> <span class="o">/</span> <span class="n">width</span><span class="p">)</span> <span class="o">*</span> <span class="n">y</span> <span class="o">+</span> <span class="n">width</span><span class="p">);</span>
+
+            <span class="n">SDL_Delay</span><span class="p">(</span><span class="mi">1</span><span class="p">);</span>
+        <span class="p">}</span>
+        <span class="k">for</span> <span class="p">(</span><span class="kt">int</span> <span class="n">y</span> <span class="o">=</span> <span class="n">width</span> <span class="o">/</span> <span class="mi">2</span><span class="p">;</span> <span class="n">y</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">;</span> <span class="n">y</span><span class="o">--</span><span class="p">)</span>
+        <span class="p">{</span>
+            <span class="n">SDL_SetWindowPosition</span><span class="p">(</span><span class="n">TabWindows</span><span class="p">[</span><span class="n">etoile</span> <span class="o">+</span> <span class="mi">1</span><span class="p">],</span> <span class="n">y</span><span class="p">,</span> <span class="p">((</span><span class="n">height</span> <span class="o">-</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">width</span><span class="p">)</span> <span class="o">/</span> <span class="n">width</span><span class="p">)</span> <span class="o">*</span> <span class="n">y</span> <span class="o">+</span> <span class="n">width</span><span class="p">);</span>
+            <span class="n">printf</span><span class="p">(</span><span class="s">"%d </span><span class="se">\n</span><span class="s">"</span><span class="p">,</span> <span class="p">((</span><span class="n">height</span> <span class="o">-</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">width</span><span class="p">)</span> <span class="o">/</span> <span class="n">width</span><span class="p">)</span> <span class="o">*</span> <span class="n">y</span> <span class="o">+</span> <span class="n">width</span><span class="p">);</span>
+            <span class="n">SDL_Delay</span><span class="p">(</span><span class="mi">1</span><span class="p">);</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
+
+    <span class="n">SDL_Delay</span><span class="p">(</span><span class="mi">200</span><span class="p">);</span>
+
+    <span class="cm">/* Fermeture des fenêtres */</span>
+
+    <span class="k">for</span> <span class="p">(</span><span class="n">i</span> <span class="o">=</span> <span class="mi">45</span><span class="p">;</span> <span class="n">i</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">;</span> <span class="n">i</span><span class="o">--</span><span class="p">)</span>
+    <span class="p">{</span>
+        <span class="n">SDL_DestroyWindow</span><span class="p">(</span><span class="n">TabWindows</span><span class="p">[</span><span class="n">i</span><span class="p">]);</span>
+    <span class="p">}</span>
+
+</code></pre></div><h3 id='video-3'>Vidéo</h3>
+<p style="text-align: center;"><iframe width="80%" height="315" src="https://www.youtube.com/embed/CKo6G8Bd3j0" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe></p>
+<h1 id='animation-forme'>Animation Forme</h1><h2 id='ballejos-lilian-2'>BALLEJOS Lilian</h2><h3 id='explication-et-code-4'>Explication et Code</h3>
+<p>Mise en place d&#39;un programme qui créée une fenêtre blanche et fais apparaitre deux ellipses qui se croisent à intervales réguliers et forment des ronds.
+Pour faire cela il a suffit de changer le rayon des cercles sur la composantes X et Y en le décalant de 10 de taille. Ensuite on inverse le rayon de la composante X et Y entre les deux ellipses afin de les inverser entre elles ! De plus on joue avec les composantes de couleur pour changer la couleur des carrés qui forment les ellipses.</p>
+<div class="highlight"><pre class="highlight c tab-c"><code><span class="kt">void</span> <span class="nf">draw</span><span class="p">(</span><span class="n">SDL_Renderer</span> <span class="o">*</span><span class="n">renderer</span><span class="p">,</span> <span class="kt">int</span> <span class="n">largeur</span><span class="p">,</span> <span class="kt">int</span> <span class="n">hauteur</span><span class="p">)</span>
+<span class="p">{</span>
+    <span class="cm">/*Tableau de rectangle assez petit pour sembler etre des points*/</span>
+    <span class="n">SDL_Rect</span> <span class="o">*</span><span class="n">rectangles</span> <span class="o">=</span> <span class="p">(</span><span class="n">SDL_Rect</span> <span class="o">*</span><span class="p">)</span><span class="n">malloc</span><span class="p">(</span><span class="k">sizeof</span><span class="p">(</span><span class="n">SDL_Rect</span><span class="p">)</span> <span class="o">*</span> <span class="n">NBR_RECTANGLE</span><span class="p">);</span>
+    <span class="n">SDL_Rect</span> <span class="o">*</span><span class="n">rectangles2</span> <span class="o">=</span> <span class="p">(</span><span class="n">SDL_Rect</span> <span class="o">*</span><span class="p">)</span><span class="n">malloc</span><span class="p">(</span><span class="k">sizeof</span><span class="p">(</span><span class="n">SDL_Rect</span><span class="p">)</span> <span class="o">*</span> <span class="n">NBR_RECTANGLE</span><span class="p">);</span>
+    <span class="kt">int</span> <span class="n">cercleTailleX</span> <span class="o">=</span> <span class="mi">100</span><span class="p">;</span>
+    <span class="kt">int</span> <span class="n">cercleTailleY</span> <span class="o">=</span> <span class="mi">200</span><span class="p">;</span> <span class="cm">/*taille des cercles pas la même pour avoir alternance ellispse et cercle*/</span>
+    <span class="kt">int</span> <span class="n">couleurR</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+    <span class="kt">int</span> <span class="n">couleurG</span> <span class="o">=</span> <span class="mi">20</span><span class="p">;</span> <span class="cm">/*couleur varie*/</span>
+    <span class="kt">int</span> <span class="n">couleurB</span> <span class="o">=</span> <span class="mi">10</span><span class="p">;</span>
+    <span class="kt">float</span> <span class="n">interation</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+    <span class="k">while</span> <span class="p">(</span><span class="n">interation</span> <span class="o">&lt;</span> <span class="mi">1000</span><span class="p">)</span>
+    <span class="p">{</span>
+        <span class="n">SDL_SetRenderDrawColor</span><span class="p">(</span><span class="n">renderer</span><span class="p">,</span> <span class="mi">255</span><span class="p">,</span> <span class="mi">255</span><span class="p">,</span> <span class="mi">255</span><span class="p">,</span> <span class="mi">255</span><span class="p">);</span>                <span class="c1">// fond blanc</span>
+        <span class="n">SDL_RenderClear</span><span class="p">(</span><span class="n">renderer</span><span class="p">);</span>                                           <span class="c1">// efface le rendu précédent</span>
+        <span class="n">SDL_SetRenderDrawColor</span><span class="p">(</span><span class="n">renderer</span><span class="p">,</span> <span class="n">couleurR</span><span class="p">,</span> <span class="n">couleurG</span><span class="p">,</span> <span class="n">couleurB</span><span class="p">,</span> <span class="mi">255</span><span class="p">);</span> <span class="c1">// couleur rectangle</span>
+        <span class="k">for</span> <span class="p">(</span><span class="kt">int</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">NBR_RECTANGLE</span><span class="p">;</span> <span class="n">i</span><span class="o">++</span><span class="p">)</span>
+        <span class="p">{</span>
+            <span class="kt">float</span> <span class="n">valCos</span> <span class="o">=</span> <span class="n">cosf</span><span class="p">(</span><span class="n">i</span><span class="p">);</span>
+            <span class="kt">float</span> <span class="n">valSin</span> <span class="o">=</span> <span class="n">sinf</span><span class="p">(</span><span class="n">i</span><span class="p">);</span>
+            <span class="n">rectangles</span><span class="p">[</span><span class="n">i</span><span class="p">].</span><span class="n">x</span> <span class="o">=</span> <span class="n">cercleTailleX</span> <span class="o">*</span> <span class="n">valCos</span> <span class="o">+</span> <span class="n">largeur</span> <span class="o">/</span> <span class="mi">2</span><span class="p">;</span>
+            <span class="n">rectangles</span><span class="p">[</span><span class="n">i</span><span class="p">].</span><span class="n">y</span> <span class="o">=</span> <span class="n">cercleTailleY</span> <span class="o">*</span> <span class="n">valSin</span> <span class="o">+</span> <span class="n">hauteur</span> <span class="o">/</span> <span class="mi">2</span><span class="p">;</span>
+            <span class="n">rectangles</span><span class="p">[</span><span class="n">i</span><span class="p">].</span><span class="n">w</span> <span class="o">=</span> <span class="n">TAILLE_RECT</span><span class="p">;</span>
+            <span class="n">rectangles</span><span class="p">[</span><span class="n">i</span><span class="p">].</span><span class="n">h</span> <span class="o">=</span> <span class="n">TAILLE_RECT</span><span class="p">;</span>
+            <span class="n">SDL_RenderFillRect</span><span class="p">(</span><span class="n">renderer</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">rectangles</span><span class="p">[</span><span class="n">i</span><span class="p">]);</span> <span class="c1">// on applique le rectangle</span>
+        <span class="p">}</span>
+        <span class="k">for</span> <span class="p">(</span><span class="kt">int</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">NBR_RECTANGLE</span><span class="p">;</span> <span class="n">i</span><span class="o">++</span><span class="p">)</span>
+        <span class="p">{</span>
+            <span class="kt">float</span> <span class="n">valCos</span> <span class="o">=</span> <span class="n">cosf</span><span class="p">(</span><span class="n">i</span><span class="p">);</span>
+            <span class="kt">float</span> <span class="n">valSin</span> <span class="o">=</span> <span class="n">sinf</span><span class="p">(</span><span class="n">i</span><span class="p">);</span> <span class="cm">/*on inverse les largeur x et y avec le premier pour avoir une belle forme*/</span>
+            <span class="n">rectangles</span><span class="p">[</span><span class="n">i</span><span class="p">].</span><span class="n">x</span> <span class="o">=</span> <span class="n">cercleTailleY</span> <span class="o">*</span> <span class="n">valCos</span> <span class="o">+</span> <span class="n">largeur</span> <span class="o">/</span> <span class="mi">2</span><span class="p">;</span>
+            <span class="n">rectangles</span><span class="p">[</span><span class="n">i</span><span class="p">].</span><span class="n">y</span> <span class="o">=</span> <span class="n">cercleTailleX</span> <span class="o">*</span> <span class="n">valSin</span> <span class="o">+</span> <span class="n">hauteur</span> <span class="o">/</span> <span class="mi">2</span><span class="p">;</span>
+            <span class="n">rectangles</span><span class="p">[</span><span class="n">i</span><span class="p">].</span><span class="n">w</span> <span class="o">=</span> <span class="n">TAILLE_RECT</span><span class="p">;</span>
+            <span class="n">rectangles</span><span class="p">[</span><span class="n">i</span><span class="p">].</span><span class="n">h</span> <span class="o">=</span> <span class="n">TAILLE_RECT</span><span class="p">;</span>
+            <span class="n">SDL_RenderFillRect</span><span class="p">(</span><span class="n">renderer</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">rectangles</span><span class="p">[</span><span class="n">i</span><span class="p">]);</span> <span class="c1">// on applique le rectangle</span>
+        <span class="p">}</span>
+
+        <span class="n">cercleTailleX</span> <span class="o">=</span> <span class="p">(</span><span class="n">cercleTailleX</span> <span class="o">+</span> <span class="mi">10</span><span class="p">)</span> <span class="o">%</span> <span class="mi">300</span><span class="p">;</span>
+        <span class="n">cercleTailleY</span> <span class="o">=</span> <span class="p">(</span><span class="n">cercleTailleY</span> <span class="o">+</span> <span class="mi">10</span><span class="p">)</span> <span class="o">%</span> <span class="mi">400</span><span class="p">;</span>
+        <span class="n">couleurR</span> <span class="o">=</span> <span class="p">(</span><span class="n">couleurR</span> <span class="o">+</span> <span class="mi">5</span><span class="p">)</span> <span class="o">%</span> <span class="mi">200</span><span class="p">;</span>
+        <span class="n">couleurG</span> <span class="o">=</span> <span class="p">(</span><span class="n">couleurG</span> <span class="o">+</span> <span class="mi">5</span><span class="p">)</span> <span class="o">%</span> <span class="mi">200</span><span class="p">;</span> <span class="c1">// modulo 200 pour eviter le blanc en 255</span>
+        <span class="n">couleurB</span> <span class="o">=</span> <span class="p">(</span><span class="n">couleurB</span> <span class="o">+</span> <span class="mi">5</span><span class="p">)</span> <span class="o">%</span> <span class="mi">200</span><span class="p">;</span>
+        <span class="n">SDL_RenderPresent</span><span class="p">(</span><span class="n">renderer</span><span class="p">);</span> <span class="c1">// on charge le rendu</span>
+        <span class="n">SDL_Delay</span><span class="p">(</span><span class="mi">75</span><span class="p">);</span>
+        <span class="n">interation</span><span class="o">++</span><span class="p">;</span>
+    <span class="p">}</span>
+
+    <span class="n">free</span><span class="p">(</span><span class="n">rectangles</span><span class="p">);</span>
+    <span class="n">free</span><span class="p">(</span><span class="n">rectangles2</span><span class="p">);</span>
+<span class="p">}</span>
+
+</code></pre></div><h3 id='video-4'>Vidéo</h3>
+<p align="center"><iframe width="80%" height="315" src="https://www.youtube.com/embed/9enCd_bTOAw" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe></p>
+<h2 id='cornuez-charlotte-2'>CORNUEZ Charlotte</h2><h3 id='explication-et-code-5'>Explication et Code</h3>
+<p>Le but de ce programme est de créer un cube qui tombe sur une pente.<br>
+Pour cela, on crée d&#39;abord un rectangle de taille 1920*1080 dans lequel on crée une pente à l&#39;aide d&#39;une droite.
+Un cube orange descend petit à petit la pente pour arriver sur le plat.                 </p>
+<div class="highlight"><pre class="highlight c tab-c"><code>
+<span class="kt">void</span> <span class="nf">draw</span><span class="p">(</span><span class="n">SDL_Renderer</span><span class="o">*</span> <span class="n">renderer</span><span class="p">)</span> <span class="p">{</span>                                 <span class="c1">// Je pense que vous allez faire moins laid :)</span>
+  <span class="n">SDL_Rect</span> <span class="n">rectangle</span><span class="p">,</span><span class="n">cube</span><span class="p">;</span>                                                             
+
+  <span class="n">SDL_SetRenderDrawColor</span><span class="p">(</span><span class="n">renderer</span><span class="p">,</span>                                                
+                         <span class="mi">255</span><span class="p">,</span> <span class="mi">255</span><span class="p">,</span> <span class="mi">255</span><span class="p">,</span>                                  <span class="c1">// mode Red, Green, Blue (tous dans 0..255)</span>
+                         <span class="mi">255</span><span class="p">);</span>                                      <span class="c1">// 0 = transparent ; 255 = opaque</span>
+  <span class="n">rectangle</span><span class="p">.</span><span class="n">x</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>                                                  <span class="c1">// x haut gauche du rectangle</span>
+  <span class="n">rectangle</span><span class="p">.</span><span class="n">y</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>                                                  <span class="c1">// y haut gauche du rectangle</span>
+  <span class="n">rectangle</span><span class="p">.</span><span class="n">w</span> <span class="o">=</span> <span class="mi">1920</span><span class="p">;</span>                                                <span class="c1">// sa largeur (w = width)</span>
+  <span class="n">rectangle</span><span class="p">.</span><span class="n">h</span> <span class="o">=</span> <span class="mi">1080</span><span class="p">;</span>                                                <span class="c1">// sa hauteur (h = height)</span>
+
+  <span class="n">SDL_RenderFillRect</span><span class="p">(</span><span class="n">renderer</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">rectangle</span><span class="p">);</span>                         
+
+
+
+  <span class="n">SDL_SetRenderDrawColor</span><span class="p">(</span><span class="n">renderer</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">255</span><span class="p">);</span>                   
+  <span class="n">SDL_RenderDrawLine</span><span class="p">(</span><span class="n">renderer</span><span class="p">,</span>                                      
+                     <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span>                                          <span class="c1">// x,y du point de la première extrémité</span>
+                     <span class="mi">600</span><span class="p">,</span> <span class="mi">500</span><span class="p">);</span>                                     <span class="c1">// x,y seconde extrémité</span>
+
+  <span class="n">SDL_SetRenderDrawColor</span><span class="p">(</span><span class="n">renderer</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">255</span><span class="p">);</span>
+  <span class="n">SDL_RenderDrawLine</span><span class="p">(</span><span class="n">renderer</span><span class="p">,</span>
+                      <span class="mi">600</span><span class="p">,</span><span class="mi">500</span><span class="p">,</span>
+                      <span class="mi">1920</span><span class="p">,</span> <span class="mi">500</span><span class="p">);</span>
+
+
+
+  <span class="n">SDL_SetRenderDrawColor</span><span class="p">(</span><span class="n">renderer</span><span class="p">,</span> <span class="mi">253</span><span class="p">,</span><span class="mi">108</span><span class="p">,</span><span class="mi">58</span><span class="p">,</span><span class="mi">255</span><span class="p">);</span>
+  <span class="n">cube</span><span class="p">.</span><span class="n">x</span><span class="o">=</span><span class="mi">100</span><span class="p">;</span>
+  <span class="n">cube</span><span class="p">.</span><span class="n">y</span><span class="o">=</span><span class="mi">37</span><span class="p">;</span>
+  <span class="n">cube</span><span class="p">.</span><span class="n">w</span><span class="o">=</span><span class="mi">50</span><span class="p">;</span>
+  <span class="n">cube</span><span class="p">.</span><span class="n">h</span><span class="o">=</span><span class="mi">50</span><span class="p">;</span>
+  <span class="n">SDL_RenderFillRect</span><span class="p">(</span><span class="n">renderer</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">cube</span><span class="p">);</span>
+
+  <span class="n">SDL_RenderPresent</span><span class="p">(</span><span class="n">renderer</span><span class="p">);</span>
+
+
+  <span class="n">SDL_Delay</span><span class="p">(</span><span class="mi">1000</span><span class="p">);</span>
+
+  <span class="n">SDL_Rect</span> <span class="n">rectangle1</span><span class="p">,</span><span class="n">cube1</span><span class="p">;</span>                                                             
+
+  <span class="n">SDL_SetRenderDrawColor</span><span class="p">(</span><span class="n">renderer</span><span class="p">,</span>                                                
+                         <span class="mi">255</span><span class="p">,</span> <span class="mi">255</span><span class="p">,</span> <span class="mi">255</span><span class="p">,</span>                                  <span class="c1">// mode Red, Green, Blue (tous dans 0..255)</span>
+                         <span class="mi">255</span><span class="p">);</span>                                      <span class="c1">// 0 = transparent ; 255 = opaque</span>
+  <span class="n">rectangle1</span><span class="p">.</span><span class="n">x</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>                                                  <span class="c1">// x haut gauche du rectangle</span>
+  <span class="n">rectangle1</span><span class="p">.</span><span class="n">y</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>                                                  <span class="c1">// y haut gauche du rectangle</span>
+  <span class="n">rectangle1</span><span class="p">.</span><span class="n">w</span> <span class="o">=</span> <span class="mi">1920</span><span class="p">;</span>                                                <span class="c1">// sa largeur (w = width)</span>
+  <span class="n">rectangle1</span><span class="p">.</span><span class="n">h</span> <span class="o">=</span> <span class="mi">1080</span><span class="p">;</span>                                                <span class="c1">// sa hauteur (h = height)</span>
+
+  <span class="n">SDL_RenderFillRect</span><span class="p">(</span><span class="n">renderer</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">rectangle1</span><span class="p">);</span>                         
+
+
+
+  <span class="n">SDL_SetRenderDrawColor</span><span class="p">(</span><span class="n">renderer</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">255</span><span class="p">);</span>                   
+  <span class="n">SDL_RenderDrawLine</span><span class="p">(</span><span class="n">renderer</span><span class="p">,</span>                                      
+                     <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span>                                          <span class="c1">// x,y du point de la première extrémité</span>
+                     <span class="mi">600</span><span class="p">,</span> <span class="mi">500</span><span class="p">);</span>                                     <span class="c1">// x,y seconde extrémité</span>
+
+  <span class="n">SDL_SetRenderDrawColor</span><span class="p">(</span><span class="n">renderer</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">255</span><span class="p">);</span>
+  <span class="n">SDL_RenderDrawLine</span><span class="p">(</span><span class="n">renderer</span><span class="p">,</span>
+                      <span class="mi">600</span><span class="p">,</span><span class="mi">500</span><span class="p">,</span>
+                      <span class="mi">1920</span><span class="p">,</span> <span class="mi">500</span><span class="p">);</span>
+
+
+
+  <span class="n">SDL_SetRenderDrawColor</span><span class="p">(</span><span class="n">renderer</span><span class="p">,</span> <span class="mi">253</span><span class="p">,</span><span class="mi">108</span><span class="p">,</span><span class="mi">58</span><span class="p">,</span><span class="mi">255</span><span class="p">);</span>
+  <span class="n">cube1</span><span class="p">.</span><span class="n">x</span><span class="o">=</span><span class="mi">200</span><span class="p">;</span>
+  <span class="n">cube1</span><span class="p">.</span><span class="n">y</span><span class="o">=</span><span class="mi">115</span><span class="p">;</span>
+  <span class="n">cube1</span><span class="p">.</span><span class="n">w</span><span class="o">=</span><span class="mi">50</span><span class="p">;</span>
+  <span class="n">cube1</span><span class="p">.</span><span class="n">h</span><span class="o">=</span><span class="mi">50</span><span class="p">;</span>
+  <span class="n">SDL_RenderFillRect</span><span class="p">(</span><span class="n">renderer</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">cube1</span><span class="p">);</span>
+  <span class="n">SDL_RenderPresent</span><span class="p">(</span><span class="n">renderer</span><span class="p">);</span>
+
+
+  <span class="n">SDL_Delay</span><span class="p">(</span><span class="mi">1000</span><span class="p">);</span>
+
+  <span class="n">SDL_Rect</span> <span class="n">rectangle2</span><span class="p">,</span><span class="n">cube2</span><span class="p">;</span>                                                             
+
+  <span class="n">SDL_SetRenderDrawColor</span><span class="p">(</span><span class="n">renderer</span><span class="p">,</span>                                                
+                         <span class="mi">255</span><span class="p">,</span> <span class="mi">255</span><span class="p">,</span> <span class="mi">255</span><span class="p">,</span>                                  <span class="c1">// mode Red, Green, Blue (tous dans 0..255)</span>
+                         <span class="mi">255</span><span class="p">);</span>                                      <span class="c1">// 0 = transparent ; 255 = opaque</span>
+  <span class="n">rectangle2</span><span class="p">.</span><span class="n">x</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>                                                  <span class="c1">// x haut gauche du rectangle</span>
+  <span class="n">rectangle2</span><span class="p">.</span><span class="n">y</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>                                                  <span class="c1">// y haut gauche du rectangle</span>
+  <span class="n">rectangle2</span><span class="p">.</span><span class="n">w</span> <span class="o">=</span> <span class="mi">1920</span><span class="p">;</span>                                                <span class="c1">// sa largeur (w = width)</span>
+  <span class="n">rectangle2</span><span class="p">.</span><span class="n">h</span> <span class="o">=</span> <span class="mi">1080</span><span class="p">;</span>                                                <span class="c1">// sa hauteur (h = height)</span>
+
+  <span class="n">SDL_RenderFillRect</span><span class="p">(</span><span class="n">renderer</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">rectangle2</span><span class="p">);</span>                         
+
+
+
+  <span class="n">SDL_SetRenderDrawColor</span><span class="p">(</span><span class="n">renderer</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">255</span><span class="p">);</span>                   
+  <span class="n">SDL_RenderDrawLine</span><span class="p">(</span><span class="n">renderer</span><span class="p">,</span>                                      
+                     <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span>                                          <span class="c1">// x,y du point de la première extrémité</span>
+                     <span class="mi">600</span><span class="p">,</span> <span class="mi">500</span><span class="p">);</span>                                     <span class="c1">// x,y seconde extrémité</span>
+
+  <span class="n">SDL_SetRenderDrawColor</span><span class="p">(</span><span class="n">renderer</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">255</span><span class="p">);</span>
+  <span class="n">SDL_RenderDrawLine</span><span class="p">(</span><span class="n">renderer</span><span class="p">,</span>
+                      <span class="mi">600</span><span class="p">,</span><span class="mi">500</span><span class="p">,</span>
+                      <span class="mi">1920</span><span class="p">,</span> <span class="mi">500</span><span class="p">);</span>
+
+
+
+  <span class="n">SDL_SetRenderDrawColor</span><span class="p">(</span><span class="n">renderer</span><span class="p">,</span> <span class="mi">253</span><span class="p">,</span><span class="mi">108</span><span class="p">,</span><span class="mi">58</span><span class="p">,</span><span class="mi">255</span><span class="p">);</span>
+  <span class="n">cube2</span><span class="p">.</span><span class="n">x</span><span class="o">=</span><span class="mi">300</span><span class="p">;</span>
+  <span class="n">cube2</span><span class="p">.</span><span class="n">y</span><span class="o">=</span><span class="mi">197</span><span class="p">;</span>
+  <span class="n">cube2</span><span class="p">.</span><span class="n">w</span><span class="o">=</span><span class="mi">50</span><span class="p">;</span>
+  <span class="n">cube2</span><span class="p">.</span><span class="n">h</span><span class="o">=</span><span class="mi">50</span><span class="p">;</span>
+  <span class="n">SDL_RenderFillRect</span><span class="p">(</span><span class="n">renderer</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">cube2</span><span class="p">);</span>
+
+  <span class="n">SDL_RenderPresent</span><span class="p">(</span><span class="n">renderer</span><span class="p">);</span>
+
+
+  <span class="n">SDL_Delay</span><span class="p">(</span><span class="mi">1000</span><span class="p">);</span>
+
+  <span class="n">SDL_Rect</span> <span class="n">rectangle3</span><span class="p">,</span><span class="n">cube3</span><span class="p">;</span>                                                             
+
+  <span class="n">SDL_SetRenderDrawColor</span><span class="p">(</span><span class="n">renderer</span><span class="p">,</span>                                                
+                         <span class="mi">255</span><span class="p">,</span> <span class="mi">255</span><span class="p">,</span> <span class="mi">255</span><span class="p">,</span>                                  <span class="c1">// mode Red, Green, Blue (tous dans 0..255)</span>
+                         <span class="mi">255</span><span class="p">);</span>                                      <span class="c1">// 0 = transparent ; 255 = opaque</span>
+  <span class="n">rectangle3</span><span class="p">.</span><span class="n">x</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>                                                  <span class="c1">// x haut gauche du rectangle</span>
+  <span class="n">rectangle3</span><span class="p">.</span><span class="n">y</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>                                                  <span class="c1">// y haut gauche du rectangle</span>
+  <span class="n">rectangle3</span><span class="p">.</span><span class="n">w</span> <span class="o">=</span> <span class="mi">1920</span><span class="p">;</span>                                                <span class="c1">// sa largeur (w = width)</span>
+  <span class="n">rectangle3</span><span class="p">.</span><span class="n">h</span> <span class="o">=</span> <span class="mi">1080</span><span class="p">;</span>                                                <span class="c1">// sa hauteur (h = height)</span>
+
+  <span class="n">SDL_RenderFillRect</span><span class="p">(</span><span class="n">renderer</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">rectangle3</span><span class="p">);</span>                         
+
+
+
+  <span class="n">SDL_SetRenderDrawColor</span><span class="p">(</span><span class="n">renderer</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">255</span><span class="p">);</span>                   
+  <span class="n">SDL_RenderDrawLine</span><span class="p">(</span><span class="n">renderer</span><span class="p">,</span>                                      
+                     <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span>                                          <span class="c1">// x,y du point de la première extrémité</span>
+                     <span class="mi">600</span><span class="p">,</span> <span class="mi">500</span><span class="p">);</span>                                     <span class="c1">// x,y seconde extrémité</span>
+
+  <span class="n">SDL_SetRenderDrawColor</span><span class="p">(</span><span class="n">renderer</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">255</span><span class="p">);</span>
+  <span class="n">SDL_RenderDrawLine</span><span class="p">(</span><span class="n">renderer</span><span class="p">,</span>
+                      <span class="mi">600</span><span class="p">,</span><span class="mi">500</span><span class="p">,</span>
+                      <span class="mi">1920</span><span class="p">,</span> <span class="mi">500</span><span class="p">);</span>
+
+
+
+  <span class="n">SDL_SetRenderDrawColor</span><span class="p">(</span><span class="n">renderer</span><span class="p">,</span> <span class="mi">253</span><span class="p">,</span><span class="mi">108</span><span class="p">,</span><span class="mi">58</span><span class="p">,</span><span class="mi">255</span><span class="p">);</span>
+  <span class="n">cube3</span><span class="p">.</span><span class="n">x</span><span class="o">=</span><span class="mi">400</span><span class="p">;</span>
+  <span class="n">cube3</span><span class="p">.</span><span class="n">y</span><span class="o">=</span><span class="mi">280</span><span class="p">;</span>
+  <span class="n">cube3</span><span class="p">.</span><span class="n">w</span><span class="o">=</span><span class="mi">50</span><span class="p">;</span>
+  <span class="n">cube3</span><span class="p">.</span><span class="n">h</span><span class="o">=</span><span class="mi">50</span><span class="p">;</span>
+  <span class="n">SDL_RenderFillRect</span><span class="p">(</span><span class="n">renderer</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">cube3</span><span class="p">);</span>
+
+  <span class="n">SDL_RenderPresent</span><span class="p">(</span><span class="n">renderer</span><span class="p">);</span>
+
+
+  <span class="n">SDL_Delay</span><span class="p">(</span><span class="mi">1000</span><span class="p">);</span>
+
+  <span class="n">SDL_Rect</span> <span class="n">rectangle4</span><span class="p">,</span><span class="n">cube4</span><span class="p">;</span>                                                             
+
+  <span class="n">SDL_SetRenderDrawColor</span><span class="p">(</span><span class="n">renderer</span><span class="p">,</span>                                                
+                         <span class="mi">255</span><span class="p">,</span> <span class="mi">255</span><span class="p">,</span> <span class="mi">255</span><span class="p">,</span>                                  <span class="c1">// mode Red, Green, Blue (tous dans 0..255)</span>
+                         <span class="mi">255</span><span class="p">);</span>                                      <span class="c1">// 0 = transparent ; 255 = opaque</span>
+  <span class="n">rectangle4</span><span class="p">.</span><span class="n">x</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>                                                  <span class="c1">// x haut gauche du rectangle</span>
+  <span class="n">rectangle4</span><span class="p">.</span><span class="n">y</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>                                                  <span class="c1">// y haut gauche du rectangle</span>
+  <span class="n">rectangle4</span><span class="p">.</span><span class="n">w</span> <span class="o">=</span> <span class="mi">1920</span><span class="p">;</span>                                                <span class="c1">// sa largeur (w = width)</span>
+  <span class="n">rectangle4</span><span class="p">.</span><span class="n">h</span> <span class="o">=</span> <span class="mi">1080</span><span class="p">;</span>                                                <span class="c1">// sa hauteur (h = height)</span>
+
+  <span class="n">SDL_RenderFillRect</span><span class="p">(</span><span class="n">renderer</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">rectangle4</span><span class="p">);</span>                         
+
+
+
+  <span class="n">SDL_SetRenderDrawColor</span><span class="p">(</span><span class="n">renderer</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">255</span><span class="p">);</span>                   
+  <span class="n">SDL_RenderDrawLine</span><span class="p">(</span><span class="n">renderer</span><span class="p">,</span>                                      
+                     <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span>                                          <span class="c1">// x,y du point de la première extrémité</span>
+                     <span class="mi">600</span><span class="p">,</span> <span class="mi">500</span><span class="p">);</span>                                     <span class="c1">// x,y seconde extrémité</span>
+
+  <span class="n">SDL_SetRenderDrawColor</span><span class="p">(</span><span class="n">renderer</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">255</span><span class="p">);</span>
+  <span class="n">SDL_RenderDrawLine</span><span class="p">(</span><span class="n">renderer</span><span class="p">,</span>
+                      <span class="mi">600</span><span class="p">,</span><span class="mi">500</span><span class="p">,</span>
+                      <span class="mi">1920</span><span class="p">,</span> <span class="mi">500</span><span class="p">);</span>
+
+
+
+  <span class="n">SDL_SetRenderDrawColor</span><span class="p">(</span><span class="n">renderer</span><span class="p">,</span> <span class="mi">253</span><span class="p">,</span><span class="mi">108</span><span class="p">,</span><span class="mi">58</span><span class="p">,</span><span class="mi">255</span><span class="p">);</span>
+  <span class="n">cube4</span><span class="p">.</span><span class="n">x</span><span class="o">=</span><span class="mi">500</span><span class="p">;</span>
+  <span class="n">cube4</span><span class="p">.</span><span class="n">y</span><span class="o">=</span><span class="mi">365</span><span class="p">;</span>
+  <span class="n">cube4</span><span class="p">.</span><span class="n">w</span><span class="o">=</span><span class="mi">50</span><span class="p">;</span>
+  <span class="n">cube4</span><span class="p">.</span><span class="n">h</span><span class="o">=</span><span class="mi">50</span><span class="p">;</span>
+  <span class="n">SDL_RenderFillRect</span><span class="p">(</span><span class="n">renderer</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">cube4</span><span class="p">);</span>
+
+<span class="n">SDL_RenderPresent</span><span class="p">(</span><span class="n">renderer</span><span class="p">);</span>
+
+
+  <span class="n">SDL_Delay</span><span class="p">(</span><span class="mi">1000</span><span class="p">);</span>
+
+  <span class="n">SDL_Rect</span> <span class="n">rectangle5</span><span class="p">,</span><span class="n">cube5</span><span class="p">;</span>                                                             
+
+  <span class="n">SDL_SetRenderDrawColor</span><span class="p">(</span><span class="n">renderer</span><span class="p">,</span>                                                
+                         <span class="mi">255</span><span class="p">,</span> <span class="mi">255</span><span class="p">,</span> <span class="mi">255</span><span class="p">,</span>                                  <span class="c1">// mode Red, Green, Blue (tous dans 0..255)</span>
+                         <span class="mi">255</span><span class="p">);</span>                                      <span class="c1">// 0 = transparent ; 255 = opaque</span>
+  <span class="n">rectangle5</span><span class="p">.</span><span class="n">x</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>                                                  <span class="c1">// x haut gauche du rectangle</span>
+  <span class="n">rectangle5</span><span class="p">.</span><span class="n">y</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>                                                  <span class="c1">// y haut gauche du rectangle</span>
+  <span class="n">rectangle5</span><span class="p">.</span><span class="n">w</span> <span class="o">=</span> <span class="mi">1920</span><span class="p">;</span>                                                <span class="c1">// sa largeur (w = width)</span>
+  <span class="n">rectangle5</span><span class="p">.</span><span class="n">h</span> <span class="o">=</span> <span class="mi">1080</span><span class="p">;</span>                                                <span class="c1">// sa hauteur (h = height)</span>
+
+  <span class="n">SDL_RenderFillRect</span><span class="p">(</span><span class="n">renderer</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">rectangle5</span><span class="p">);</span>                         
+
+
+
+  <span class="n">SDL_SetRenderDrawColor</span><span class="p">(</span><span class="n">renderer</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">255</span><span class="p">);</span>                   
+  <span class="n">SDL_RenderDrawLine</span><span class="p">(</span><span class="n">renderer</span><span class="p">,</span>                                      
+                     <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span>                                          <span class="c1">// x,y du point de la première extrémité</span>
+                     <span class="mi">600</span><span class="p">,</span> <span class="mi">500</span><span class="p">);</span>                                     <span class="c1">// x,y seconde extrémité</span>
+
+  <span class="n">SDL_SetRenderDrawColor</span><span class="p">(</span><span class="n">renderer</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">255</span><span class="p">);</span>
+  <span class="n">SDL_RenderDrawLine</span><span class="p">(</span><span class="n">renderer</span><span class="p">,</span>
+                      <span class="mi">600</span><span class="p">,</span><span class="mi">500</span><span class="p">,</span>
+                      <span class="mi">1920</span><span class="p">,</span> <span class="mi">500</span><span class="p">);</span>
+
+
+
+  <span class="n">SDL_SetRenderDrawColor</span><span class="p">(</span><span class="n">renderer</span><span class="p">,</span> <span class="mi">253</span><span class="p">,</span><span class="mi">108</span><span class="p">,</span><span class="mi">58</span><span class="p">,</span><span class="mi">255</span><span class="p">);</span>
+  <span class="n">cube5</span><span class="p">.</span><span class="n">x</span><span class="o">=</span><span class="mi">600</span><span class="p">;</span>
+  <span class="n">cube5</span><span class="p">.</span><span class="n">y</span><span class="o">=</span><span class="mi">450</span><span class="p">;</span>
+  <span class="n">cube5</span><span class="p">.</span><span class="n">w</span><span class="o">=</span><span class="mi">50</span><span class="p">;</span>
+  <span class="n">cube5</span><span class="p">.</span><span class="n">h</span><span class="o">=</span><span class="mi">50</span><span class="p">;</span>
+  <span class="n">SDL_RenderFillRect</span><span class="p">(</span><span class="n">renderer</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">cube5</span><span class="p">);</span>
+
+  <span class="n">SDL_RenderPresent</span><span class="p">(</span><span class="n">renderer</span><span class="p">);</span>
+
+
+  <span class="n">SDL_Delay</span><span class="p">(</span><span class="mi">1000</span><span class="p">);</span>
+
+  <span class="n">SDL_Rect</span> <span class="n">rectangle6</span><span class="p">,</span><span class="n">cube6</span><span class="p">;</span>                                                             
+
+  <span class="n">SDL_SetRenderDrawColor</span><span class="p">(</span><span class="n">renderer</span><span class="p">,</span>                                                
+                         <span class="mi">255</span><span class="p">,</span> <span class="mi">255</span><span class="p">,</span> <span class="mi">255</span><span class="p">,</span>                                  <span class="c1">// mode Red, Green, Blue (tous dans 0..255)</span>
+                         <span class="mi">255</span><span class="p">);</span>                                      <span class="c1">// 0 = transparent ; 255 = opaque</span>
+  <span class="n">rectangle6</span><span class="p">.</span><span class="n">x</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>                                                  <span class="c1">// x haut gauche du rectangle</span>
+  <span class="n">rectangle6</span><span class="p">.</span><span class="n">y</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>                                                  <span class="c1">// y haut gauche du rectangle</span>
+  <span class="n">rectangle6</span><span class="p">.</span><span class="n">w</span> <span class="o">=</span> <span class="mi">1920</span><span class="p">;</span>                                                <span class="c1">// sa largeur (w = width)</span>
+  <span class="n">rectangle6</span><span class="p">.</span><span class="n">h</span> <span class="o">=</span> <span class="mi">1080</span><span class="p">;</span>                                                <span class="c1">// sa hauteur (h = height)</span>
+
+  <span class="n">SDL_RenderFillRect</span><span class="p">(</span><span class="n">renderer</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">rectangle6</span><span class="p">);</span>                         
+
+
+
+  <span class="n">SDL_SetRenderDrawColor</span><span class="p">(</span><span class="n">renderer</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">255</span><span class="p">);</span>                   
+  <span class="n">SDL_RenderDrawLine</span><span class="p">(</span><span class="n">renderer</span><span class="p">,</span>                                      
+                     <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span>                                          <span class="c1">// x,y du point de la première extrémité</span>
+                     <span class="mi">600</span><span class="p">,</span> <span class="mi">500</span><span class="p">);</span>                                     <span class="c1">// x,y seconde extrémité</span>
+
+  <span class="n">SDL_SetRenderDrawColor</span><span class="p">(</span><span class="n">renderer</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">255</span><span class="p">);</span>
+  <span class="n">SDL_RenderDrawLine</span><span class="p">(</span><span class="n">renderer</span><span class="p">,</span>
+                      <span class="mi">600</span><span class="p">,</span><span class="mi">500</span><span class="p">,</span>
+                      <span class="mi">1920</span><span class="p">,</span> <span class="mi">500</span><span class="p">);</span>
+
+
+
+  <span class="n">SDL_SetRenderDrawColor</span><span class="p">(</span><span class="n">renderer</span><span class="p">,</span> <span class="mi">253</span><span class="p">,</span><span class="mi">108</span><span class="p">,</span><span class="mi">58</span><span class="p">,</span><span class="mi">255</span><span class="p">);</span>
+  <span class="n">cube6</span><span class="p">.</span><span class="n">x</span><span class="o">=</span><span class="mi">700</span><span class="p">;</span>
+  <span class="n">cube6</span><span class="p">.</span><span class="n">y</span><span class="o">=</span><span class="mi">450</span><span class="p">;</span>
+  <span class="n">cube6</span><span class="p">.</span><span class="n">w</span><span class="o">=</span><span class="mi">50</span><span class="p">;</span>
+  <span class="n">cube6</span><span class="p">.</span><span class="n">h</span><span class="o">=</span><span class="mi">50</span><span class="p">;</span>
+  <span class="n">SDL_RenderFillRect</span><span class="p">(</span><span class="n">renderer</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">cube6</span><span class="p">);</span>
+
+
+<span class="p">}</span>
+</code></pre></div><h3 id='video-5'>Vidéo</h3>
+<p style="text-align: center;"><iframe width="80%" height="315" src="https://www.youtube.com/embed/0oiR6EIlI3Q" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe></p>
+<h2 id='leger-bertrand-2'>LEGER Bertrand</h2><h3 id='explication-et-code-6'>Explication et Code</h3>
+<p>Principe
+Faire afficher une fenêtre, mettre le fond de la fenêtre en bleu fonçé 
+Faire apparaître des lignes, représentant la pluie, qui apparaissent aléatoirement
+Rajouter des cercles au point d&#39;impact pour faire un effet d&#39;eau touchant de l&#39;eau</p>
+<div class="highlight"><pre class="highlight c tab-c"><code><span class="kt">void</span> <span class="nf">drawCircle</span><span class="p">(</span><span class="n">SDL_Renderer</span><span class="o">*</span> <span class="n">renderer</span><span class="p">,</span> <span class="kt">int</span> <span class="n">centre_x</span><span class="p">,</span> <span class="kt">int</span> <span class="n">centre_y</span><span class="p">,</span> <span class="kt">int</span> <span class="n">rayon_x</span><span class="p">,</span> <span class="kt">int</span> <span class="n">rayon_y</span><span class="p">){</span>
+  <span class="k">for</span><span class="p">(</span> <span class="kt">float</span> <span class="n">angle</span> <span class="o">=</span> <span class="mi">0</span> <span class="p">;</span> <span class="n">angle</span> <span class="o">&lt;</span> <span class="mi">2</span><span class="o">*</span><span class="n">M_PI</span><span class="p">;</span> <span class="n">angle</span> <span class="o">+=</span> <span class="n">M_PI</span> <span class="o">/</span> <span class="mi">4000</span><span class="p">){</span>
+    <span class="n">SDL_RenderDrawPoint</span><span class="p">(</span><span class="n">renderer</span><span class="p">,</span>
+            <span class="n">centre_x</span> <span class="o">+</span> <span class="n">rayon_x</span> <span class="o">*</span> <span class="n">cos</span><span class="p">(</span><span class="n">angle</span><span class="p">),</span>
+            <span class="n">centre_y</span> <span class="o">+</span> <span class="n">rayon_y</span> <span class="o">*</span> <span class="n">sin</span><span class="p">(</span><span class="n">angle</span><span class="p">));</span>
+  <span class="p">}</span>  
+<span class="p">}</span>
+
+
+<span class="kt">void</span> <span class="nf">draw</span><span class="p">(</span><span class="n">SDL_Renderer</span><span class="o">*</span> <span class="n">renderer</span><span class="p">)</span> <span class="p">{</span>                                
+  <span class="n">SDL_Rect</span> <span class="n">rectangle</span><span class="p">;</span>                                                             
+
+  <span class="n">SDL_SetRenderDrawColor</span><span class="p">(</span><span class="n">renderer</span><span class="p">,</span>                                                
+                         <span class="mi">37</span><span class="p">,</span> <span class="mi">25</span><span class="p">,</span> <span class="mi">133</span><span class="p">,</span>                               <span class="c1">// mode Red, Green, Blue (tous dans 0..255)</span>
+                         <span class="mi">255</span><span class="p">);</span>                                      <span class="c1">// 0 = transparent ; 255 = opaque</span>
+  <span class="n">rectangle</span><span class="p">.</span><span class="n">x</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+  <span class="c1">// x haut gauche du rectangle</span>
+  <span class="n">rectangle</span><span class="p">.</span><span class="n">y</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>                                                  <span class="c1">// y haut gauche du rectangle</span>
+  <span class="n">rectangle</span><span class="p">.</span><span class="n">w</span> <span class="o">=</span> <span class="mi">600</span><span class="p">;</span>                                                <span class="c1">// sa largeur (w = width)</span>
+  <span class="n">rectangle</span><span class="p">.</span><span class="n">h</span> <span class="o">=</span> <span class="mi">600</span><span class="p">;</span>                                                <span class="c1">// sa hauteur (h = height)</span>
+
+  <span class="n">SDL_RenderFillRect</span><span class="p">(</span><span class="n">renderer</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">rectangle</span><span class="p">);</span>                         
+
+  <span class="n">SDL_SetRenderDrawColor</span><span class="p">(</span><span class="n">renderer</span><span class="p">,</span> <span class="mi">224</span><span class="p">,</span> <span class="mi">222</span><span class="p">,</span> <span class="mi">238</span><span class="p">,</span> <span class="mi">255</span><span class="p">);</span>                   
+
+
+  <span class="k">for</span><span class="p">(</span><span class="kt">int</span> <span class="n">m</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">m</span> <span class="o">&lt;</span> <span class="mi">20</span><span class="p">;</span> <span class="n">m</span><span class="o">++</span><span class="p">){</span>
+    <span class="kt">int</span> <span class="n">pos_x_deb</span> <span class="o">=</span> <span class="n">rand</span><span class="p">()</span><span class="o">%</span> <span class="mi">600</span><span class="p">;</span>
+    <span class="kt">int</span> <span class="n">pos_y_deb</span> <span class="o">=</span> <span class="n">rand</span><span class="p">()</span><span class="o">%</span> <span class="mi">600</span><span class="p">;</span>
+    <span class="kt">int</span> <span class="n">pos_x_fin</span> <span class="o">=</span> <span class="n">pos_x_deb</span> <span class="o">-</span> <span class="n">rand</span><span class="p">()</span><span class="o">%</span><span class="mi">50</span><span class="p">;</span>
+    <span class="kt">int</span> <span class="n">pos_y_fin</span> <span class="o">=</span> <span class="n">pos_y_deb</span> <span class="o">+</span> <span class="n">rand</span><span class="p">()</span><span class="o">%</span><span class="mi">600</span> <span class="p">;</span>
+
+
+    <span class="n">SDL_RenderDrawLine</span><span class="p">(</span><span class="n">renderer</span><span class="p">,</span>                                      
+               <span class="n">pos_x_deb</span><span class="p">,</span> <span class="n">pos_y_deb</span><span class="p">,</span>                                      <span class="c1">// x,y du point de la première extrémité</span>
+               <span class="n">pos_x_fin</span><span class="p">,</span> <span class="n">pos_y_fin</span><span class="p">);</span>                                     <span class="c1">// x,y seconde extrémité</span>
+
+  <span class="n">drawCircle</span><span class="p">(</span><span class="n">renderer</span><span class="p">,</span><span class="n">pos_x_fin</span><span class="p">,</span><span class="n">pos_y_fin</span><span class="p">,</span><span class="mi">35</span><span class="p">,</span><span class="mi">23</span><span class="p">);</span>
+  <span class="n">drawCircle</span><span class="p">(</span><span class="n">renderer</span><span class="p">,</span><span class="n">pos_x_fin</span><span class="p">,</span><span class="n">pos_y_fin</span><span class="p">,</span><span class="mi">20</span><span class="p">,</span><span class="mi">17</span><span class="p">);</span>
+  <span class="n">drawCircle</span><span class="p">(</span><span class="n">renderer</span><span class="p">,</span><span class="n">pos_x_fin</span><span class="p">,</span><span class="n">pos_y_fin</span><span class="p">,</span><span class="mi">7</span><span class="p">,</span><span class="mi">5</span><span class="p">);</span>
+  <span class="p">}</span>
+
+<span class="p">}</span>
+</code></pre></div><h3 id='video-6'>Vidéo</h3>
+<p style="text-align: center;"><iframe width="80%" height="315" src="https://www.youtube.com/embed/3bOyuSg8Ctk" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe></p>
+<h1 id='animation-avec-texture'>Animation avec Texture</h1><h2 id='ballejos-lilian-3'>BALLEJOS Lilian</h2><h3 id='explication-et-code-7'>Explication et Code</h3>
+<p>Placement d&#39;une image de fond de nuage en mouvement qui va de gauche à droite et se replace à gauche quand elle va déborder !
+J&#39;ai ensuite posé une texture de sol <strong>très</strong> inspirée de l&#39;univers d&#39;un plombier Italien rouge.
+Ensuite j&#39;affiche frame par frame un oiseau qui traverse l&#39;écran de gauche à droite !</p>
+<div class="highlight"><pre class="highlight c tab-c"><code><span class="c1">// placement fond</span>
+<span class="kt">void</span> <span class="nf">placementTexture</span><span class="p">(</span><span class="n">SDL_Texture</span> <span class="o">*</span><span class="n">my_texture</span><span class="p">,</span> <span class="n">SDL_Window</span> <span class="o">*</span><span class="n">window</span><span class="p">,</span>
+                      <span class="n">SDL_Renderer</span> <span class="o">*</span><span class="n">renderer</span><span class="p">)</span>
+<span class="p">{</span>
+    <span class="n">SDL_Rect</span>
+        <span class="n">source</span> <span class="o">=</span> <span class="p">{</span><span class="mi">0</span><span class="p">},</span>
+        <span class="n">window_dimensions</span> <span class="o">=</span> <span class="p">{</span><span class="mi">0</span><span class="p">},</span>
+        <span class="n">destination</span> <span class="o">=</span> <span class="p">{</span><span class="mi">0</span><span class="p">};</span>
+
+    <span class="n">SDL_GetWindowSize</span><span class="p">(</span>
+        <span class="n">window</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">window_dimensions</span><span class="p">.</span><span class="n">w</span><span class="p">,</span>
+        <span class="o">&amp;</span><span class="n">window_dimensions</span><span class="p">.</span><span class="n">h</span><span class="p">);</span> <span class="c1">// Récupération des dimensions de la fenêtre</span>
+    <span class="n">SDL_QueryTexture</span><span class="p">(</span><span class="n">my_texture</span><span class="p">,</span> <span class="nb">NULL</span><span class="p">,</span> <span class="nb">NULL</span><span class="p">,</span>
+                     <span class="o">&amp;</span><span class="n">source</span><span class="p">.</span><span class="n">w</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">source</span><span class="p">.</span><span class="n">h</span><span class="p">);</span> <span class="c1">// Récupération des dimensions de l'image</span>
+
+    <span class="n">destination</span> <span class="o">=</span> <span class="n">window_dimensions</span><span class="p">;</span> <span class="c1">// On fixe les dimensions de l'affichage à  celles de la fenêtre</span>
+
+    <span class="cm">/* On veut afficher la texture de façon à ce que l'image occupe la totalité de la fenêtre */</span>
+
+    <span class="n">SDL_RenderCopy</span><span class="p">(</span><span class="n">renderer</span><span class="p">,</span> <span class="n">my_texture</span><span class="p">,</span>
+                   <span class="o">&amp;</span><span class="n">source</span><span class="p">,</span>
+                   <span class="o">&amp;</span><span class="n">destination</span><span class="p">);</span> <span class="c1">// Création de l'élément à afficher</span>
+<span class="p">}</span>
+
+<span class="kt">void</span> <span class="nf">anim</span><span class="p">(</span><span class="n">SDL_Texture</span> <span class="o">*</span><span class="n">ciel</span><span class="p">,</span>
+          <span class="n">SDL_Window</span> <span class="o">*</span><span class="n">window</span><span class="p">,</span>
+          <span class="n">SDL_Renderer</span> <span class="o">*</span><span class="n">renderer</span><span class="p">,</span>
+          <span class="n">SDL_Texture</span> <span class="o">*</span><span class="n">sol</span><span class="p">,</span>
+          <span class="n">SDL_Texture</span> <span class="o">*</span><span class="n">oiseau</span><span class="p">)</span>
+<span class="p">{</span>
+
+    <span class="cm">/* perso*/</span>
+    <span class="n">SDL_Rect</span>
+        <span class="n">source2</span> <span class="o">=</span> <span class="p">{</span><span class="mi">0</span><span class="p">},</span>            <span class="c1">// Rectangle définissant la zone totale de la planche</span>
+        <span class="n">window_dimensions2</span> <span class="o">=</span> <span class="p">{</span><span class="mi">0</span><span class="p">},</span> <span class="c1">// Rectangle définissant la fenêtre, on n'utilisera que largeur et hauteur</span>
+        <span class="n">destination2</span> <span class="o">=</span> <span class="p">{</span><span class="mi">0</span><span class="p">},</span>       <span class="c1">// Rectangle définissant où la zone_source doit être déposée dans le renderer</span>
+        <span class="n">state2</span> <span class="o">=</span> <span class="p">{</span><span class="mi">0</span><span class="p">};</span>             <span class="c1">// Rectangle de la vignette en cours dans la planche</span>
+
+    <span class="n">SDL_GetWindowSize</span><span class="p">(</span><span class="n">window</span><span class="p">,</span> <span class="c1">// Récupération des dimensions de la fenêtre</span>
+                      <span class="o">&amp;</span><span class="n">window_dimensions2</span><span class="p">.</span><span class="n">w</span><span class="p">,</span>
+                      <span class="o">&amp;</span><span class="n">window_dimensions2</span><span class="p">.</span><span class="n">h</span><span class="p">);</span>
+
+    <span class="n">SDL_QueryTexture</span><span class="p">(</span><span class="n">oiseau</span><span class="p">,</span> <span class="c1">// Récupération des dimensions de l'image</span>
+                     <span class="nb">NULL</span><span class="p">,</span> <span class="nb">NULL</span><span class="p">,</span>
+                     <span class="o">&amp;</span><span class="n">source2</span><span class="p">.</span><span class="n">w</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">source2</span><span class="p">.</span><span class="n">h</span><span class="p">);</span>
+
+    <span class="n">printf</span><span class="p">(</span><span class="s">"dim image %d %d</span><span class="se">\n</span><span class="s">"</span><span class="p">,</span> <span class="n">source2</span><span class="p">.</span><span class="n">w</span><span class="p">,</span> <span class="n">source2</span><span class="p">.</span><span class="n">h</span><span class="p">);</span>
+
+    <span class="kt">int</span> <span class="n">nb_images</span> <span class="o">=</span> <span class="mi">5</span><span class="p">;</span>
+    <span class="kt">int</span> <span class="n">offset_x</span> <span class="o">=</span> <span class="n">source2</span><span class="p">.</span><span class="n">w</span> <span class="o">/</span> <span class="n">nb_images</span><span class="p">,</span> <span class="c1">// 5 frame par ligne</span>
+        <span class="n">offset_y</span> <span class="o">=</span> <span class="n">source2</span><span class="p">.</span><span class="n">h</span> <span class="o">/</span> <span class="mi">3</span><span class="p">;</span>         <span class="c1">// 3 lignes</span>
+
+    <span class="n">state2</span><span class="p">.</span><span class="n">x</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+    <span class="n">state2</span><span class="p">.</span><span class="n">y</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="c1">// premiere ligne</span>
+    <span class="n">state2</span><span class="p">.</span><span class="n">w</span> <span class="o">=</span> <span class="n">offset_x</span><span class="p">;</span>
+    <span class="n">state2</span><span class="p">.</span><span class="n">h</span> <span class="o">=</span> <span class="n">offset_y</span><span class="p">;</span>
+
+    <span class="n">printf</span><span class="p">(</span><span class="s">"offeset %d %d</span><span class="se">\n</span><span class="s">"</span><span class="p">,</span> <span class="n">offset_x</span><span class="p">,</span> <span class="n">offset_y</span><span class="p">);</span>
+
+    <span class="n">destination2</span><span class="p">.</span><span class="n">w</span> <span class="o">=</span> <span class="n">offset_x</span><span class="p">;</span>
+    <span class="n">destination2</span><span class="p">.</span><span class="n">h</span> <span class="o">=</span> <span class="n">offset_y</span><span class="p">;</span>
+    <span class="n">destination2</span><span class="p">.</span><span class="n">y</span> <span class="o">=</span> <span class="p">(</span><span class="n">window_dimensions2</span><span class="p">.</span><span class="n">h</span> <span class="o">/</span> <span class="mi">2</span><span class="p">)</span> <span class="o">-</span> <span class="n">destination2</span><span class="p">.</span><span class="n">h</span><span class="p">;</span> <span class="c1">// La course se fait en milieu d'écran (en vertical)</span>
+
+    <span class="n">printf</span><span class="p">(</span><span class="s">"destination H et W %d %d</span><span class="se">\n</span><span class="s">"</span><span class="p">,</span> <span class="n">destination2</span><span class="p">.</span><span class="n">w</span><span class="p">,</span> <span class="n">destination2</span><span class="p">.</span><span class="n">h</span><span class="p">);</span>
+
+    <span class="cm">/* fond */</span>
+    <span class="n">SDL_Rect</span>
+        <span class="n">source</span> <span class="o">=</span> <span class="p">{</span><span class="mi">0</span><span class="p">},</span>            <span class="c1">// Rectangle définissant la zone de la texture à récupérer</span>
+        <span class="n">window_dimensions</span> <span class="o">=</span> <span class="p">{</span><span class="mi">0</span><span class="p">},</span> <span class="c1">// Rectangle définissant la fenêtre, on n'utilisera que largeur et hauteur</span>
+        <span class="n">destination</span> <span class="o">=</span> <span class="p">{</span><span class="mi">0</span><span class="p">};</span>       <span class="c1">// Rectangle définissant où la zone_source doit être déposée dans le renderer</span>
+
+    <span class="n">SDL_GetWindowSize</span><span class="p">(</span>
+        <span class="n">window</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">window_dimensions</span><span class="p">.</span><span class="n">w</span><span class="p">,</span>
+        <span class="o">&amp;</span><span class="n">window_dimensions</span><span class="p">.</span><span class="n">h</span><span class="p">);</span> <span class="c1">// Récupération des dimensions de la fenêtre</span>
+
+    <span class="n">SDL_QueryTexture</span><span class="p">(</span><span class="n">ciel</span><span class="p">,</span> <span class="nb">NULL</span><span class="p">,</span> <span class="nb">NULL</span><span class="p">,</span>
+                     <span class="o">&amp;</span><span class="n">source</span><span class="p">.</span><span class="n">w</span><span class="p">,</span>
+                     <span class="o">&amp;</span><span class="n">source</span><span class="p">.</span><span class="n">h</span><span class="p">);</span> <span class="c1">// Récupération des dimensions de l'image</span>
+
+    <span class="kt">float</span> <span class="n">zoom</span> <span class="o">=</span> <span class="mi">1</span><span class="p">.</span><span class="mi">5</span><span class="p">;</span>                <span class="c1">// Facteur de zoom entre l'image source et l'image affichée pour fond</span>
+    <span class="n">destination</span><span class="p">.</span><span class="n">w</span> <span class="o">=</span> <span class="n">source</span><span class="p">.</span><span class="n">w</span> <span class="o">*</span> <span class="n">zoom</span><span class="p">;</span> <span class="c1">// On applique le zoom sur la largeur</span>
+    <span class="n">destination</span><span class="p">.</span><span class="n">h</span> <span class="o">=</span> <span class="n">source</span><span class="p">.</span><span class="n">h</span> <span class="o">*</span> <span class="n">zoom</span><span class="p">;</span> <span class="c1">// On applique le zoom sur la hauteur</span>
+    <span class="n">destination</span><span class="p">.</span><span class="n">x</span> <span class="o">=</span> <span class="o">-</span><span class="n">source</span><span class="p">.</span><span class="n">w</span> <span class="o">/</span> <span class="mi">2</span><span class="p">;</span>   <span class="c1">// au depart a droite</span>
+
+    <span class="kt">int</span> <span class="n">speed</span> <span class="o">=</span> <span class="mi">12</span><span class="p">;</span> <span class="c1">// vitesse de déplacement</span>
+    <span class="kt">int</span> <span class="n">x</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>      <span class="c1">// depart oiseau</span>
+    <span class="n">SDL_bool</span> <span class="n">program_on</span> <span class="o">=</span> <span class="n">SDL_TRUE</span><span class="p">;</span>
+    <span class="n">SDL_Event</span> <span class="n">event</span><span class="p">;</span>
+
+    <span class="k">while</span> <span class="p">(</span><span class="n">program_on</span><span class="p">)</span>
+    <span class="p">{</span>
+
+        <span class="k">while</span> <span class="p">(</span><span class="n">SDL_PollEvent</span><span class="p">(</span><span class="o">&amp;</span><span class="n">event</span><span class="p">))</span>
+        <span class="p">{</span>
+            <span class="k">switch</span> <span class="p">(</span><span class="n">event</span><span class="p">.</span><span class="n">type</span><span class="p">)</span>
+            <span class="p">{</span>
+            <span class="k">case</span> <span class="n">SDL_QUIT</span><span class="p">:</span>
+                <span class="n">program_on</span> <span class="o">=</span> <span class="n">SDL_FALSE</span><span class="p">;</span>
+                <span class="k">break</span><span class="p">;</span>
+
+            <span class="nl">default:</span>
+                <span class="k">break</span><span class="p">;</span>
+            <span class="p">}</span>
+        <span class="p">}</span>
+        <span class="cm">/*animation*/</span>
+        <span class="n">x</span> <span class="o">+=</span> <span class="n">speed</span><span class="p">;</span>
+        <span class="k">if</span> <span class="p">(</span><span class="n">destination</span><span class="p">.</span><span class="n">x</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">)</span> <span class="c1">// on atteind le bout de l'image le fond retourne a sa place</span>
+        <span class="p">{</span>
+            <span class="n">destination</span><span class="p">.</span><span class="n">x</span> <span class="o">=</span> <span class="o">-</span><span class="n">source</span><span class="p">.</span><span class="n">w</span> <span class="o">/</span> <span class="mi">2</span><span class="p">;</span>
+        <span class="p">}</span>
+        <span class="k">else</span>
+        <span class="p">{</span>
+            <span class="n">destination</span><span class="p">.</span><span class="n">x</span> <span class="o">+=</span> <span class="mi">10</span><span class="p">;</span>
+        <span class="p">}</span>
+        <span class="n">destination2</span><span class="p">.</span><span class="n">x</span> <span class="o">=</span> <span class="n">x</span><span class="p">;</span>
+        <span class="n">state2</span><span class="p">.</span><span class="n">x</span> <span class="o">+=</span> <span class="n">offset_x</span><span class="p">;</span>  <span class="c1">// On passe à la vignette suivante dans l'image</span>
+        <span class="n">state2</span><span class="p">.</span><span class="n">x</span> <span class="o">%=</span> <span class="n">source2</span><span class="p">.</span><span class="n">w</span><span class="p">;</span> <span class="c1">// On réinitialise à 0 si on dépasse la largeur</span>
+
+        <span class="n">printf</span><span class="p">(</span><span class="s">"etat %d %d</span><span class="se">\n</span><span class="s">"</span><span class="p">,</span> <span class="n">state2</span><span class="p">.</span><span class="n">x</span><span class="p">,</span> <span class="n">state2</span><span class="p">.</span><span class="n">y</span><span class="p">);</span>
+        <span class="n">printf</span><span class="p">(</span><span class="s">"destination %d %d</span><span class="se">\n</span><span class="s">"</span><span class="p">,</span> <span class="n">destination2</span><span class="p">.</span><span class="n">x</span><span class="p">,</span> <span class="n">destination2</span><span class="p">.</span><span class="n">y</span><span class="p">);</span>
+
+        <span class="n">SDL_RenderClear</span><span class="p">(</span><span class="n">renderer</span><span class="p">);</span>                                <span class="c1">// Effacer l'image précédente</span>
+        <span class="n">SDL_RenderCopy</span><span class="p">(</span><span class="n">renderer</span><span class="p">,</span> <span class="n">ciel</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">source</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">destination</span><span class="p">);</span>    <span class="c1">// Préparation de l'affichage</span>
+        <span class="n">placementTexture</span><span class="p">(</span><span class="n">sol</span><span class="p">,</span> <span class="n">window</span><span class="p">,</span> <span class="n">renderer</span><span class="p">);</span>                  <span class="c1">// Afficher le sol</span>
+        <span class="n">SDL_RenderCopy</span><span class="p">(</span><span class="n">renderer</span><span class="p">,</span> <span class="n">oiseau</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">state2</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">destination2</span><span class="p">);</span> <span class="c1">// personnage</span>
+        <span class="n">SDL_RenderPresent</span><span class="p">(</span><span class="n">renderer</span><span class="p">);</span>                              <span class="c1">// Affichage de la nouvelle image</span>
+        <span class="n">SDL_Delay</span><span class="p">(</span><span class="mi">30</span><span class="p">);</span>
+        <span class="k">if</span><span class="p">(</span><span class="n">x</span> <span class="o">&gt;</span> <span class="n">window_dimensions</span><span class="p">.</span><span class="n">w</span><span class="p">)</span>
+            <span class="n">program_on</span> <span class="o">=</span> <span class="o">!</span><span class="n">program_on</span><span class="p">;</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+</code></pre></div><h3 id='video-7'>Vidéo</h3>
+<p style="text-align: center;"><iframe width="80%" height="315" src="https://www.youtube.com/embed/XjAD57nNzGw" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe></p>
+<h2 id='leger-bertrand-3'>LEGER Bertrand</h2><h3 id='explication-et-code-8'>Explication et Code</h3>
+<p>Principe  : afficher le ciel en fond, le panier à droite et faire arriver le ballon de basket (en le faisant tourner) dans le panier avec un arc parabolique typique d&#39;un tir de basketball.</p>
+<h3 id='video-8'>Vidéo</h3>
+      </div>
+      <div class="dark-box">
+          <div class="lang-selector">
+                <a href="#" data-language-name="c">c</a>
+          </div>
+      </div>
+    </div>
+  </body>
+</html>

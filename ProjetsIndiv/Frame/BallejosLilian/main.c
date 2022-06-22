@@ -145,13 +145,8 @@ void anim(SDL_Texture *ciel,
     destination.h = source.h * zoom; // On applique le zoom sur la hauteur
     destination.x = -source.w / 2;   // au depart a droite
 
-<<<<<<< HEAD
     int speed = 12; // vitesse de déplacement
     int x = 0;      // depart oiseau
-=======
-    int speed = 10; // vitesse de déplacement
-    int x = 0; //depart oiseau
->>>>>>> partie_graphique
     SDL_bool program_on = SDL_TRUE;
     SDL_Event event;
 
@@ -172,11 +167,7 @@ void anim(SDL_Texture *ciel,
         }
         /*animation*/
         x += speed;
-<<<<<<< HEAD
         if (destination.x > 0) // on atteind le bout de l'image le fond retourne a sa place
-=======
-        if (destination.x > 0) // on atteind le bout de l'image
->>>>>>> partie_graphique
         {
             destination.x = -source.w / 2;
         }
@@ -197,11 +188,7 @@ void anim(SDL_Texture *ciel,
         SDL_RenderCopy(renderer, oiseau, &state2, &destination2); // personnage
         SDL_RenderPresent(renderer);                              // Affichage de la nouvelle image
         SDL_Delay(30);
-<<<<<<< HEAD
-        if (x > window_dimensions.w)
-=======
         if(x > window_dimensions.w)
->>>>>>> partie_graphique
             program_on = !program_on;
     }
 }
