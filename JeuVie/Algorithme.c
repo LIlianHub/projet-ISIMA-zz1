@@ -87,13 +87,66 @@ void afficher_tableau(int **tableau, int nb_lignes, int nb_colonnes)
     printf("\n");
 }
 
-/*version fini*/
+/*tor*/
 
+// ecrit le contenu d'un tableau dans un autre
+void copyTab(int **src, int **dest, int ligne, int colonne)
+{
+    for (int i = 0; i < ligne; i++)
+    {
+        for (int j = 0; j < colonne; j++)
+        {
+            dest[i][j] = src[i][j];
+        }
+    }
+}
+
+int nbVoisinVivantTor(int **tab, int i, int j, int ligne, int colonne)
+{
+    int cpt = 0;
+    for (int k = -1; k <= 1; k++)
+    {
+        for (int l = -1; l <= 1; l++)
+        {
+            if (k != 0 || l != 0)
+            {
+                if (tab[(i + k + ligne) % ligne][(j + l + colonne) % colonne] == '1')
+                {
+                    cpt++;
+                }
+            }
+        }
+    }
+    return cpt;
+}
+
+void VieTore(int **tab, int **cpyTab, int vie[TAILLE_MASQUE], int mort[TAILLE_MASQUE], int ligne, int colonne)
+{
+    copyTab(tab, cpyTab, ligne, colonne);
+
+    for (int i = 0; i < ligne; i++)
+    {
+        for (int j = 0; j < colonne; j++)
+        {
+            if (cpyTab[i][j] == 1 && vie[nbVoisinVivantTor(cpyTab, i, j, ligne, colonne)] == 0)
+            {
+                tab[i][j] = 0;
+            }
+            if (cpyTab[i][j] == 1 && mort[nbVoisinVivantTor(cpyTab, i, j, ligne, colonne)] == 1)
+            {
+                tab[i][j] = 1;
+            }
+        }
+    }
+}
+
+/*Itération reel*/
 int nbvoisinsLimite(int **moment_t, int ligne, int colonne, int nb_lignes, int nb_colonnes)
 {
 
     int i, j;
     int nbre = 0;
+
     for (i = ligne - 1; i < ligne + 2; i++)
     {
 
@@ -110,164 +163,48 @@ int nbvoisinsLimite(int **moment_t, int ligne, int colonne, int nb_lignes, int n
     return nbre;
 }
 
-void iterationReelLimite(int nb_lignes, int nb_colonnes,
-                         int masqueVie[TAILLE_MASQUE],
-                         int masqueMort[TAILLE_MASQUE])
+/* 1 Itération du jeu de la vie */
+
+void iterationLimite(int **moment_t, int **tmp, int nb_lignes, int nb_colonnes,
+                   int masqueVie[TAILLE_MASQUE],
+                   int masqueMort[TAILLE_MASQUE])
 {
+
+    copyTab(moment_t, tmp, nb_lignes, nb_colonnes);
+
     int i, j, m;
-    int resultat = 0;
     for (i = 0; i < nb_lignes; i++)
     {
 
         for (j = 0; j < nb_colonnes; j++)
         {
 
-            if (TAB1[i][j] == 1)
+            m = nbvoisinsLimite(tmp, i, j, nb_lignes, nb_colonnes);
+
+            if (tmp[i][j] == 1)
             {
 
-                for (m = 0; m < TAILLE_MASQUE; m++)
-                {
-
-                    if (masqueVie[m] == 1 && nbvoisinsLimite(TAB1, i, j, nb_lignes, nb_colonnes) == m)
-                    {
-
-                        resultat += 1; // son nombre de voisin est dans le masque de la Vie, il survit
-                    }
-                }
-                if (resultat != 0)
-                {
-                    TAB2[i][j] = 1;
-                }
+                moment_t[i][j] = masqueVie[m];
             }
             else
             {
-                for (m = 0; m < TAILLE_MASQUE; m++)
-                {
 
-                    if (masqueMort[m] == 1 && nbvoisinsLimite(TAB1, i, j, nb_lignes, nb_colonnes) == m)
-                    {
-
-                        resultat += 1; // son nombre de voisin est dans le masque de la Mort, il ressuscite
-                    }
-                }
-                if (resultat != 0)
-                {
-                    TAB2[i][j] = 1;
-                }
+                moment_t[i][j] = masqueMort[m];
             }
         }
     }
-    int **tmp = TAB1;
-    TAB1 = TAB2;
-    TAB2 = tmp;
 }
 
-/*tor*/
+/*Test stagne*/
 
-int NbVoisinsTor(int **TabT1, int nbLignes, int nbColonnes, int i, int j)
+int TestStagne(int **tab1, int **tab2, int ligne, int colonne)
 {
-    int nbV;
-
-    if (i == 0)
-    {
-        if (j == 0)
-        {
-            nbV = TabT1[i + 1][j] + TabT1[i + 1][j + 1] + TabT1[i][j + 1] + TabT1[nbLignes - 1][0] + TabT1[nbLignes - 1][1] + TabT1[nbLignes - 1][nbColonnes - 1] + TabT1[0][nbColonnes - 1] + TabT1[1][nbColonnes - 1];
-        }
-        else
-        {
-            if (j == nbColonnes - 1)
-            {
-                nbV = TabT1[0][j - 1] + TabT1[1][j - 1] + TabT1[1][j] + TabT1[nbLignes - 1][j - 1] + TabT1[nbLignes - 1][j] + TabT1[0][0] + TabT1[1][0] + TabT1[nbLignes - 1][nbColonnes - 1];
-            }
-            else
-            {
-                nbV = TabT1[i][j - 1] + TabT1[i][j + 1] + TabT1[i + 1][j - 1] + TabT1[i + 1][j] + TabT1[i + 1][j + 1] + TabT1[nbLignes - 1][j] + TabT1[nbLignes - 1][j - 1] + TabT1[nbLignes - 1][j + 1];
-            }
-        }
-    }
-    else
-    {
-        if (i == nbLignes - 1)
-        {
-            if (j == 0)
-            {
-                nbV = TabT1[i - 1][j] + TabT1[i - 1][j + 1] + TabT1[i][j + 1] + TabT1[0][j] + TabT1[0][j + 1] + TabT1[i][nbColonnes - 1] + TabT1[i - 1][nbColonnes - 1] + TabT1[0][nbColonnes - 1];
-            }
-            else
-            {
-                if (j == nbColonnes - 1)
-                {
-
-                    nbV = TabT1[i][j - 1] + TabT1[i - 1][j - 1] + TabT1[i - 1][j] + TabT1[i - 1][0] + TabT1[i][0] + TabT1[0][j - 1] + TabT1[0][j] + TabT1[0][0];
-                }
-                else
-                {
-                    nbV = TabT1[i][j - 1] + TabT1[i][j + 1] + TabT1[i - 1][j - 1] + TabT1[i - 1][j] + TabT1[i - 1][j + 1] + TabT1[0][j - 1] + TabT1[0][j] + TabT1[0][j + 1];
-                }
-            }
-        }
-        else
-        {
-            if (j == 0)
-            {
-                nbV = TabT1[i][j - 1] + TabT1[i][j + 1] + TabT1[i + 1][j - 1] + TabT1[i + 1][j] + TabT1[i + 1][j + 1] + TabT1[i][nbColonnes - 1] + TabT1[i + 1][nbColonnes - 1] + TabT1[i - 1][nbColonnes - 1];
-            }
-            else
-            {
-                if (j == nbColonnes - 1)
-                {
-                    nbV = TabT1[i][j - 1] + TabT1[i][j + 1] + TabT1[i - 1][j - 1] + TabT1[i - 1][j] + TabT1[i - 1][j + 1] + TabT1[i][0] + TabT1[i + 1][0] + TabT1[i - 1][0];
-                }
-                else
-                {
-                    nbV = TabT1[i][j - 1] + TabT1[i][j + 1] + TabT1[i - 1][j - 1] + TabT1[i - 1][j] + TabT1[i - 1][j + 1] + TabT1[i + 1][j - 1] + TabT1[i + 1][j] + TabT1[i - 1][j + 1];
-                }
-            }
-        }
-    }
-    return nbV;
-}
-
-void VieTore(int B[TAILLE_MASQUE], int S[TAILLE_MASQUE], int NbLignes, int NbColonnes)
-{
-    int i, j, NbV;
-    int **TabInt;
-
-    for (i = 0; i < NbLignes; i++)
-    {
-        for (j = 0; j < NbColonnes; j++)
-        {
-            NbV = NbVoisinsTor(TAB1, NbLignes, NbColonnes, i, j);
-            // printf("%d hhhh\n", NbV);
-            if (TAB1[i][j] == 1)
-            { // Cas où la cellule est vivante donc masque de mort
-                if (NbV == B[NbV])
-                {
-                    TAB2[i][j] = 0;
-                }
-            }
-
-            else
-            { // Cas où la cellule est morte donc masque de vie
-                if (NbV == S[NbV])
-                {
-                    TAB2[i][j] = 1;
-                }
-            }
-        }
-    }
-    TabInt = TAB1;
-    TAB1 = TAB2;
-    TAB1 = TabInt;
-}
-
-
-int TestStagne(int ligne, int colonne){
     int retour = 1;
-    for(int i = 0; i < ligne; i++){
-        for(int j = 0; j < colonne; j++){
-            if(TAB1[i][j] != TAB2[i][j])
+    for (int i = 0; i < ligne; i++)
+    {
+        for (int j = 0; j < colonne; j++)
+        {
+            if (tab1[i][j] != tab2[i][j])
                 retour = 0;
         }
     }

@@ -69,9 +69,8 @@ int main(int argc, char **argv)
 
     int masqueVie[TAILLE_MASQUE] = {0, 0, 1, 1, 0, 0, 0, 0, 0};
     int masqueMort[TAILLE_MASQUE] = {0, 0, 0, 1, 0, 0, 0, 0, 0};
-    TAB1 = creer_tableau(NB_LIGNE, NB_COLONNE);
-    TAB2 = creer_tableau(NB_LIGNE, NB_COLONNE);
-    TAB1[12][12] = 1;
+    int ** tab1 = creer_tableau(NB_LIGNE, NB_COLONNE);
+    int ** tab2 = creer_tableau(NB_LIGNE, NB_COLONNE);
 
     /*Gestion Vitesse*/
 
@@ -101,7 +100,6 @@ int main(int argc, char **argv)
                 {
                 case SDLK_SPACE:
                     enJeu = SDL_TRUE;
-                    printf("suuh\n");
                     break;
                 case SDLK_c: // changement mode
                     modeJeu = !modeJeu;
@@ -109,19 +107,19 @@ int main(int argc, char **argv)
                 case SDLK_w: // save config
                     if (!enJeu)
                     {
-                        EcritureConfig(TAB1, NB_LIGNE, NB_COLONNE);
+                        EcritureConfig(tab1, NB_LIGNE, NB_COLONNE);
                     }
                     break;
                 case SDLK_v: // clear
                     if (!enJeu)
                     {
-                        ClearTab(TAB1, NB_LIGNE, NB_COLONNE);
+                        ClearTab(tab1, NB_LIGNE, NB_COLONNE);
                     }
                     break;
                 case SDLK_x: // lecture save
                     if (!enJeu)
                     {
-                        LectureFichier(TAB1, NB_LIGNE, NB_COLONNE);
+                        LectureFichier(tab1, NB_LIGNE, NB_COLONNE);
                     }
                     break;
                 case SDLK_LEFT: // ralentissement
@@ -145,7 +143,7 @@ int main(int argc, char **argv)
                     SDL_BUTTON(SDL_BUTTON_LEFT))
                 { // clique droit
                     if (!enJeu)
-                        ChangeEtat(TAB1, FenetreW, FenetreH, event.motion.x, event.motion.y, NB_LIGNE, NB_COLONNE, enJeu);
+                        ChangeEtat(tab1, FenetreW, FenetreH, event.motion.x, event.motion.y, NB_LIGNE, NB_COLONNE, enJeu);
                 }
                 break;
             default: // Les évènements qu'on n'a pas envisagé
@@ -153,34 +151,32 @@ int main(int argc, char **argv)
             }
         }
         // fonction
-        enJeu = SDL_TRUE;
-        modeJeu = SDL_TRUE;
         if (enJeu)
         {
             if (!modeJeu)
             {
-                iterationReelLimite(NB_LIGNE, NB_COLONNE, masqueVie, masqueMort);
+                iterationLimite(tab1, tab2, NB_LIGNE, NB_COLONNE, masqueVie, masqueMort);
             }
             else
             {
-                VieTore(masqueMort, masqueVie, NB_LIGNE, NB_COLONNE);
+                VieTore(tab1, tab2, masqueVie, masqueMort, NB_LIGNE, NB_COLONNE);
             }
         }
 
         if(!stagne){
-            stagne = TestStagne(NB_LIGNE, NB_COLONNE);
+            stagne = TestStagne(tab1, tab2, NB_LIGNE, NB_COLONNE);
             
         }
 
-        printf("stagne = %d\n", stagne);
-        Affichage(window,renderer,FenetreW, FenetreH, policeTitre, masqueVie, masqueMort, modeJeu, TAB1, NB_LIGNE, NB_COLONNE, stagne);
+        
+        Affichage(window,renderer,FenetreW, FenetreH, policeTitre, masqueVie, masqueMort, modeJeu, tab1, NB_LIGNE, NB_COLONNE, stagne);
         SDL_RenderPresent(renderer);
         SDL_Delay(GestionVitesse); // depend pour fps avec horloge
     }
 
     // Fermeture
-    liberer_tableau(TAB1, NB_LIGNE);
-    liberer_tableau(TAB2, NB_LIGNE);
+    liberer_tableau(tab1, NB_LIGNE);
+    liberer_tableau(tab2, NB_LIGNE);
     end_sdl(1, "Normal ending", window, renderer, policeTitre);
     return EXIT_SUCCESS;
 

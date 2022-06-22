@@ -169,7 +169,7 @@ void Affichage(SDL_Window *window, SDL_Renderer *renderer, int FenetreW, int Fen
             end_sdl(0, "Can't create texture from surface", window, renderer, FontTitre);
         SDL_FreeSurface(text_surface3); // la texture ne sert plus à rien
 
-        SDL_Rect pos3 = {5, 0, 0, 0};
+        SDL_Rect pos3 = {5, 775, 0, 0};
         SDL_QueryTexture(text_texture3, NULL, NULL, &pos3.w, &pos3.h); // récupération de la taille (w, h) du texte
         SDL_RenderCopy(renderer, text_texture3, NULL, &pos3);          // Ecriture du texte dans le renderer
         SDL_DestroyTexture(text_texture3);                             // On n'a plus besoin de la texture avec le texte
