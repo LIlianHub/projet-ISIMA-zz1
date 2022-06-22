@@ -65,14 +65,6 @@ void draw(SDL_Renderer* renderer) {                                 // Je pense 
 
   SDL_SetRenderDrawColor(renderer, 224, 222, 238, 255);                   
   
-  srand(time(NULL));
-
-  /*int orientationPluie = rand()%600;
-  // Initialisation
-  int pos_x_deb = rand()% 600;
-  int pos_y_deb = rand()% 600;
-  int pos_x_fin = pos_x_deb - 50;
-  int pos_y_fin = pos_y_deb + rand()%600 ;*/
 
   for(int m = 0; m < 20; m++){
     int pos_x_deb = rand()% 600;
@@ -151,7 +143,8 @@ int main(int argc, char** argv) {
 	break;
       }
     }
-    draw(renderer);                                      // appel de la fonction qui crée l'image  
+    draw(renderer);
+    SDL_Delay(100);// appel de la fonction qui crée l'image  
     SDL_RenderPresent(renderer);                         // affichage
   }  
   
