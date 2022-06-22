@@ -8,8 +8,8 @@
 /*  exemple de création de fenêtres */
 /************************************/
 
-#define NB_LIGNE 25
-#define NB_COLONNE 25
+#define NB_LIGNE 100
+#define NB_COLONNE 100
 
 int main(int argc, char **argv)
 {
