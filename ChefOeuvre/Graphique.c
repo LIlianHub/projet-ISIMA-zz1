@@ -6,7 +6,7 @@
 
 /*Boucle Principale de Gestion d'événement*/
 
-void GestionEvenement(SDL_Window * window, SDL_Renderer * renderer, TTF_Font * font, int ** position, int ** plateau)
+void GestionEvenement(SDL_Window *window, SDL_Renderer *renderer, TTF_Font *font, int **position, int **plateau)
 {
     /*Variable utile*/
     SDL_bool activation = SDL_TRUE;
@@ -22,15 +22,14 @@ void GestionEvenement(SDL_Window * window, SDL_Renderer * renderer, TTF_Font * f
                 activation = SDL_FALSE;
                 break;
 
-            case SDL_KEYDOWN: 
+            case SDL_KEYDOWN:
                 switch (event.key.keysym.sym)
                 {
                 case SDLK_SPACE:
-                    enJeu = SDL_TRUE;
                     break;
-                case SDLK_LEFT: 
+                case SDLK_LEFT:
                     break;
-                case SDLK_RIGHT: 
+                case SDLK_RIGHT:
                     break;
                 default:
                     break;
@@ -42,16 +41,14 @@ void GestionEvenement(SDL_Window * window, SDL_Renderer * renderer, TTF_Font * f
                 { // clique droit
                 }
                 break;
-            default: // poubelle à événement
+            default: // poubelle à événement inutile
                 break;
             }
         }
-        //fonction
+        // fonction
         SDL_RenderPresent(renderer);
         SDL_Delay(50); // depend pour fps avec horloge
     }
-
-    return 0;
 }
 
 /*LIbération Propre de la SDL*/
