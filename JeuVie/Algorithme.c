@@ -2,6 +2,8 @@
 #include <stdio.h>
 #include <string.h>
 
+#define TAILLE_MASQUE 9
+
 void EcritureConfig(int **tab, int ligne, int colonne)
 {
     FILE *fichier = NULL;
@@ -86,4 +88,77 @@ void afficher_tableau(int **tableau, int nb_lignes, int nb_colonnes)
     printf("\n");
 }
 
+/*version fini*/
 
+int nbvoisinsLimite(int **moment_t, int ligne, int colonne, int nb_lignes, int nb_colonnes)
+{
+
+    int i, j;
+    int nbre = 0;
+    for (i = ligne - 1; i < ligne + 2; i++)
+    {
+
+        for (j = colonne - 1; j < colonne + 2; j++)
+        {
+
+            if (i >= 0 && i >= 0 && i < nb_lignes && j < nb_colonnes && !(i == ligne && j == colonne) && (moment_t[i][j] == 1))
+            {
+
+                nbre += 1;
+            }
+        }
+    }
+    return nbre;
+}
+
+void iterationReelLimite(int **moment_t, int **moment_t1, int nb_lignes, int nb_colonnes,
+                   int masqueVie[TAILLE_MASQUE],
+                   int masqueMort[TAILLE_MASQUE])
+{
+    int i, j, m;
+    int resultat = 0;
+    for (i = 0; i < nb_lignes; i++)
+    {
+
+        for (j = 0; j < nb_colonnes; j++)
+        {
+
+            if (moment_t[i][j] == 1)
+            {
+
+                for (m = 0; m < TAILLE_MASQUE; m++)
+                {
+
+                    if (masqueVie[m] == 1 && nbvoisinsLimite(moment_t, i, j, nb_lignes, nb_colonnes) == m)
+                    {
+
+                        resultat += 1; // son nombre de voisin est dans le masque de la Vie, il survit
+                    }
+                }
+                if (resultat != 0)
+                {
+                    moment_t1[i][j] = 1;
+                }
+            }
+            else
+            {
+                for (m = 0; m < TAILLE_MASQUE; m++)
+                {
+
+                    if (masqueMort[m] == 1 && nbvoisinsLimite(moment_t, i, j, nb_lignes, nb_colonnes) == m)
+                    {
+
+                        resultat += 1; // son nombre de voisin est dans le masque de la Mort, il ressuscite
+                    }
+                }
+                if (resultat != 0)
+                {
+                    moment_t1[i][j] = 1;
+                }
+            }
+        }
+    }
+    int **tmp = moment_t;
+    moment_t = moment_t1;
+    moment_t1 = tmp;
+}

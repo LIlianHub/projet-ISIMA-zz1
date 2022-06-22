@@ -72,9 +72,6 @@ int main(int argc, char **argv)
     int **tableau1 = creer_tableau(NB_LIGNE, NB_COLONNE);
     int **tableau2 = creer_tableau(NB_LIGNE, NB_COLONNE);
 
-
-
-
     /*Evenement*/
 
     SDL_bool
@@ -96,7 +93,8 @@ int main(int argc, char **argv)
                 switch (event.key.keysym.sym)
                 {
                 case SDLK_SPACE:
-                    enJeu = !enJeu;
+                    enJeu = SDL_TRUE;
+                    printf("suuh\n");
                     break;
                 case SDLK_c: // changement mode
                     modeJeu = !modeJeu;
@@ -138,6 +136,11 @@ int main(int argc, char **argv)
         // fonction
         if (enJeu)
         {
+            if (!modeJeu)
+            {
+                printf("test");
+                iterationReelLimite(tableau1, tableau2, NB_LIGNE, NB_COLONNE, masqueVie, masqueMort);
+            }
         }
 
         Affichage(window, renderer, FenetreW, FenetreH, policeTitre, masqueVie, masqueMort, modeJeu, tableau1, NB_LIGNE, NB_COLONNE);
