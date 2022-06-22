@@ -141,6 +141,10 @@ int main(int argc, char **argv)
                 printf("test");
                 iterationReelLimite(tableau1, tableau2, NB_LIGNE, NB_COLONNE, masqueVie, masqueMort);
             }
+            else{
+                VieTore(tableau1, tableau2, masqueVie, masqueMort, NB_LIGNE, NB_COLONNE);
+            }
+
         }
 
         Affichage(window, renderer, FenetreW, FenetreH, policeTitre, masqueVie, masqueMort, modeJeu, tableau1, NB_LIGNE, NB_COLONNE);

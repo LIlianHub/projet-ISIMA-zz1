@@ -9,7 +9,7 @@ void ChangeEtat(int **tab, int FenetreW, int FenetreH, int x, int y, int nbLigne
 void iterationReelLimite(int **moment_t, int **moment_t1, int nb_lignes, int nb_colonnes,
                    int masqueVie[TAILLE_MASQUE],
                    int masqueMort[TAILLE_MASQUE]);
-void iterationReelLimite(int **moment_t, int **moment_t1, int nb_lignes, int nb_colonnes,
-                   int masqueVie[TAILLE_MASQUE],
-                   int masqueMort[TAILLE_MASQUE]);
+void VieTore(int ** TabT1, int ** TabTplus1, int B[TAILLE_MASQUE], int S[TAILLE_MASQUE], int NbLignes,int NbColonnes);
+
+
 #endif
