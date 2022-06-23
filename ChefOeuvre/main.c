@@ -22,61 +22,6 @@ float markov [5][5] = {{ 0.4,   0.1,   0.3,  0.15,  0.05},
 		       {  0,    0.3,     0,     0,   0.7}}; 
 
 
-
-
-
-// passer d'un état à un autre
-// comme tu voulais faire
-
-int VitesseNormale = 30 ;  //la vitesse de base est 30ms
-
-int passageMarkovLilou(int EtatPrec, int * vitesse){
-  
-  int i;
-  int pourcentCumul= 0;
-  
-  int nvlEtat = EtatPrec;
-  int pourcent = (rand()%101);
-  for(i = 0; i < NB_ETATS ; i++){
-
-    pourcentCumul += markov[EtatPrec][i];
-    
-    if(pourcent <= pourcentCumul * 100){
-
-      nvlEtat = i ;
-      i = 6;
-      
-    }
-   
-  }       
-
-  if(nvlEtat == 0){ //etat 0 : vitesse normale
-
-    *vitesse = VitesseNormale;
-    
-  }
-  else if(nvlEtat == 1){ //etat 1 : vitesse/2
-
-    *vitesse = VitesseNormale/2;
-    
-  }else if(nvlEtat == 2){ //etat 2 : vitesse*2
-
-    *vitesse = VitesseNormale*2;
-    
-  }else if(nvlEtat == 3){ //etat 3 : vitesse*3
-
-    *vitesse = VitesseNormale*3;
-    
-  }else{ //etat 4 : vitesse NULLE
-
-    *vitesse = 0;
-    
-  }
-  
-  return nvlEtat;
-}
-
-
 // passer d'un état à un autre
 //avec mon idée
 
@@ -85,15 +30,15 @@ int passageMarkovLilou(int EtatPrec, int * vitesse){
  *du tableau de markov si dessus
  *ici ce serait :
  *vitesse   =  30ms
- *vitesse/2 =  15ms
- *vitesse*2 =  60ms
- *vitesse*3 =  90ms
+ *vitesse/2 =  60ms
+ *vitesse*2 =  15ms
+ *vitesse*3 =  7ms
  *endormi   =  0ms
  */
-int vitesseParEtat[5] = { 30, 15, 60, 90, 0 };
+int vitesseParEtat[5] = { 30, 60, 15, 7, 0 };
 
 
-int passageMarkov(int EtatPrec/*,int * vitesse*/){
+int passageMarkov(int EtatPrec){
   
   int i;
   int pourcentCumul= 0;
@@ -105,13 +50,12 @@ int passageMarkov(int EtatPrec/*,int * vitesse*/){
     pourcentCumul += markov[EtatPrec][i];
     
     if(pourcent <= pourcentCumul * 100){
-
-      nvlEtat = i ;
       
+      nvlEtat = i ;
+      printf("%d",i);
       i = 6;
       
     }
-    //*vitesse = vitesseParEtat[nvlEtat];
   }       
   
   return nvlEtat;
@@ -126,13 +70,17 @@ int passageMarkov(int EtatPrec/*,int * vitesse*/){
 
 int  meilleurScore(int ScoreActuel){
   
-  srand(time(NULL));
+
   
   int MeilleurScore;
   char PremiereLigne[10];
   
   FILE * score = fopen("score.txt","r+");
-
+  if(score == NULL){
+    printf("erreur de fichier");
+    exit(1);
+  }
+  
   MeilleurScore = atoi(fgets(PremiereLigne, 10, score));
 
   if (MeilleurScore < ScoreActuel){
@@ -152,7 +100,11 @@ int  meilleurScore(int ScoreActuel){
 
 int main (){  
 
-  printf("%d",meilleurScore(5));
+  srand(time(NULL));
+  
+  //printf("%d",meilleurScore(5));
+  
+  printf("%d",passageMarkov(5));
   
   return 0;
 }
