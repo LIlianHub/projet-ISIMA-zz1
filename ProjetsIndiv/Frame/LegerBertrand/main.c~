@@ -9,8 +9,7 @@ void end_sdl(char ok,            // fin normale : ok = 0 ; anormale ok = 1
              SDL_Window *window, // fenêtre à fermer
              SDL_Renderer *renderer,
              SDL_Texture *panier,
-             SDL_Texture *ciel,
-	     SDL_Texture *ballon)
+             SDL_Texture *ciel)
 {
   char msg_formated[255];
   int l;
@@ -46,11 +45,6 @@ void end_sdl(char ok,            // fin normale : ok = 0 ; anormale ok = 1
       SDL_DestroyTexture(ciel);
       ciel = NULL;
     }
-  if (ballon != NULL)
-    {
-      SDL_DestroyTexture(ballon);
-      ballon = NULL;
-    }
 
 
   SDL_Quit();
@@ -61,12 +55,34 @@ void end_sdl(char ok,            // fin normale : ok = 0 ; anormale ok = 1
     }
 }
 
-
-
-
-
-void AffichageObjet(SDL_Renderer *renderer, SDL_Texture *objet, SDL_Rect pos)
+// placement panier
+void placerText(SDL_Texture *my_texture, SDL_Window *window,
+                      SDL_Renderer *renderer)
 {
+  SDL_Rect
+    source = {0},
+    window_dimensions = {0},
+    destination = {0};
+
+  SDL_GetWindowSize(
+		    window, (&window_dimensions.w),
+		    (&window_dimensions.h)); // Récupération des dimensions de la fenêtre
+  SDL_QueryTexture(my_texture, NULL, NULL,
+		   &source.w, &source.h); // Récupération des dimensions de l'image
+
+  // destination = window_dimensions;  On fixe les dimensions de l'affichage à  celles de la fenêtre
+
+  SDL_RenderCopy(renderer,
+		 my_texture,
+		 &source,
+		 &destination); // Création de l'élément à afficher
+}
+
+
+
+
+void AffichageObjet(SDL_Renderer *renderer, SDL_Texture *objet, SDL_Rect pos){
+
   SDL_Rect image = {0};
   SDL_QueryTexture(objet, NULL, NULL, &image.w, &image.h);
   SDL_RenderCopy(renderer, objet, &image, &pos);
@@ -75,11 +91,12 @@ void AffichageObjet(SDL_Renderer *renderer, SDL_Texture *objet, SDL_Rect pos)
 
 
 
+
+
 void Animation(SDL_Window *window,
 	       SDL_Renderer *renderer,
 	       SDL_Texture *panier,
-	       SDL_Texture *ciel,
-	       SDL_Texture *ballon)
+	       SDL_Texture *ciel)
 {
 
  
@@ -102,41 +119,6 @@ void Animation(SDL_Window *window,
   destination.h = source.h * zoom; // On applique le zoom sur la hauteur
   destination.x = -source.w / 2;   // au depart a droite
 
-  /* position Panier */
-
-  SDL_Rect  posPanier;
-  posPanier.h = 400;
-  posPanier.w = 400;
-  posPanier.x = 60*window_dimensions.w/100;
-  posPanier.y = window_dimensions.h - posPanier.h + 100; /*+100 car la hauteur du png fais plus
-							   que la hauteur du panier en soit*/
-
- 
-  /* ballon */
-
-  //découpage du sprite et on les met tous dans un tableau de SDL_Rect pour pouvoir les utilsez dans l'animation
-  
-  SDL_Rect planche = {0};
-  SDL_QueryTexture(ballon, NULL, NULL, &planche.w, &planche.h);
-  int offsetX = planche.w / 4;
-  int offsetY = planche.h / 3; //3 lignes et 4 colonnes
-
-  SDL_Rect etats[12];
-
-  int indice = 0;
-  for(int i = 0; i < 3; i++)
-    {
-      for(int j = 0; j < 4; j++)
-        {
-	  etats[indice].w = offsetX;
-	  etats[indice].h = offsetY;
-	  etats[indice].x = j * offsetX;
-	  etats[indice].y = i * offsetY;
-	  indice++;
-        }
-    }
-      
-
   SDL_bool program_on = SDL_TRUE;
   SDL_Event event;
 
@@ -155,14 +137,12 @@ void Animation(SDL_Window *window,
 	      break;
             }
         }
-
-      
       /*animation*/
        
 
       SDL_RenderClear(renderer);                                // Effacer l'image précédente
       SDL_RenderCopy(renderer, ciel, &source, &destination);    // Préparation de l'affichage
-      AffichageObjet(renderer, panier, posPanier);              // Affichage du panier
+      placerText(panier, window, renderer);                  // Afficher le panier
       SDL_RenderPresent(renderer);                              // Affichage de la nouvelle image
       SDL_Delay(30);
 
@@ -178,15 +158,13 @@ int main(int argc, char **argv)
 
   SDL_Window *window = NULL;
   SDL_DisplayMode screen;
-  SDL_Renderer *renderer = NULL;
   SDL_Texture *panier = NULL;
   SDL_Texture *ciel = NULL;
-  SDL_Texture *ballon = NULL;
-
+  SDL_Renderer *renderer = NULL;
 
   /*Allocation sdl*/
   if (SDL_Init(SDL_INIT_VIDEO) != 0)
-    end_sdl(0, "ERROR SDL INIT", window, renderer, panier, ciel, ballon);
+    end_sdl(0, "ERROR SDL INIT", window, renderer, panier, ciel);
 
   SDL_GetCurrentDisplayMode(0, &screen);
   printf("Résolution écran\n\tw : %d\n\th : %d\n",
@@ -199,37 +177,31 @@ int main(int argc, char **argv)
 			    screen.h * 0.66,
 			    SDL_WINDOW_OPENGL);
   if (window == NULL)
-    end_sdl(0, "ERROR WINDOW CREATION", window, renderer, panier, ciel, ballon);
+    end_sdl(0, "ERROR WINDOW CREATION", window, renderer, panier, ciel);
 
   /* Création du renderer */
 
   renderer = SDL_CreateRenderer(window, -1,
 				SDL_RENDERER_ACCELERATED | SDL_RENDERER_PRESENTVSYNC);
   if (renderer == NULL)
-    end_sdl(0, "ERROR RENDERER CREATION", window, renderer, panier, ciel, ballon);
+    end_sdl(0, "ERROR RENDERER CREATION", window, renderer, panier, ciel);
 
   /*Creation image panier*/
 
   panier = IMG_LoadTexture(renderer, "./img/panier.png");
   if (panier == NULL)
-    end_sdl(0, "Echec du chargement de l'image dans la texture", window, renderer, panier, ciel, ballon);
+    end_sdl(0, "Echec du chargement de l'image dans la texture", window, renderer, panier, ciel);
 
   /*Creation image ciel*/
 
   ciel = IMG_LoadTexture(renderer, "./img/ciel.png");
   if (ciel == NULL)
-    end_sdl(0, "Echec du chargement de l'image dans la texture", window, renderer, panier, ciel, ballon);
+    end_sdl(0, "Echec du chargement de l'image dans la texture", window, renderer, panier, ciel);
 
-  /*Creation image ballon*/
-
-  ballon = IMG_LoadTexture(renderer, "./img/ciel.png");
-  if (ballon == NULL)
-    end_sdl(0, "Echec du chargement de l'image dans la texture", window, renderer, panier, ciel, ballon);
-  
   /*Affichage*/
 
-  Animation(window, renderer, panier, ciel, ballon);
+  Animation(window, renderer, panier, ciel);
 
-  end_sdl(1, "Normal ending", window, renderer, panier, ciel, ballon);
+  end_sdl(1, "Normal ending", window, renderer, panier, ciel);
   return EXIT_SUCCESS;
 }
