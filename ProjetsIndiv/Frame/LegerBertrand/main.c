@@ -116,6 +116,9 @@ void Animation(SDL_Window *window,
   /* ballon */
 
   //découpage du sprite et on les met tous dans un tableau de SDL_Rect pour pouvoir les utilsez dans l'animation
+
+  //int a, b, c ;
+
   
   SDL_Rect
     planche = {0},    //rectangle de toute la table de sprite
@@ -142,11 +145,15 @@ void Animation(SDL_Window *window,
     }
 
   //position et dimension du ballon
-  posBallon.y = (window_dimensions.h/2) -50 ;
+  /*posBallon.y = window_dimensions.h -25;
+    posBallon.x = 0;
+    posBallon.h = 100;
+    posBallon.w = 100;*/
+
   posBallon.x = 0;
+  posBallon.y = window_dimensions.h/2 -25;
   posBallon.h = 100;
   posBallon.w = 100;
-  
   // boucle évènement SDL
   
   SDL_bool program_on = SDL_TRUE;
@@ -171,31 +178,57 @@ void Animation(SDL_Window *window,
       
       /*animation*/
 
-	
+
+      // c = window_dimensions.h -25 ;
+      
       int m = 0;
       for(m  = 0 ; m < 12 ; m ++){
 
-	posBallon.x = posBallon.x + (60*window_dimensions.w/100)/50 ;
-	
+       
 	SDL_RenderClear(renderer);                                // Effacer l'image précédente
 	
 	SDL_RenderCopy(renderer, ciel, &source, &destination);    // Préparation de l'affichage
 
-	
-	AffichageObjet(renderer, panier, posPanier);              // Affichage du panier
+	posBallon.x = posBallon.x + (60*window_dimensions.w/100)/50 ;
 
+	/*
+	 *paramètres de la parabole
+	 */
+	
+	/*b = ((window_dimensions.h/2)-window_dimensions.h +25 -
+	  800*(36/100)*window_dimensions.w*window_dimensions.w - 800*156*window_dimensions.w - 800*16900 +
+	  8*(36/100)*window_dimensions.h*window_dimensions.w*window_dimensions.w
+	  +8*156*window_dimensions.h*window_dimensions.w + 8*16900*window_dimensions.h -
+	  100*(36/100)*window_dimensions.w*window_dimensions.w -100*156*window_dimensions.w
+	  -100*169000)/(-4*((6/10) * (6/10))*window_dimensions.w)/2 - 312 -
+	  (4*19000)/(window_dimensions.w*2)+(6/10)*window_dimensions.w +130;
+	
+	  a = 4 * (100 - (b * window_dimensions.w / 2 ) - window_dimensions.h
+	  +25)/(window_dimensions.w * window_dimensions.w);*/
+       
+    
+	/*équation de la parabole*/
+	
+	/*posBallon.y = -(posBallon.x * posBallon.x) * a + posBallon.x * b + c; */
+	
+	
 	if (posBallon.x < (60*window_dimensions.w/100) + 130 ){
 	
-	SDL_RenderCopy(renderer, ballon, &etats[m], &posBallon);        //ballon
+	  SDL_RenderCopy(renderer, ballon, &etats[m], &posBallon);        //ballon
+	  
+	}else {
 
+	  program_on = SDL_FALSE;
 	}
+
+	AffichageObjet(renderer, panier, posPanier);              // Affichage du panier
 	
 	SDL_RenderPresent(renderer);                              // Affichage de la nouvelle image
 
-	SDL_Delay(100);
+	SDL_Delay(50);
 
 	
-	}
+      }
     }
 }
 
