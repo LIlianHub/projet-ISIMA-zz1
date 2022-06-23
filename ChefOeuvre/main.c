@@ -2,6 +2,7 @@
 #include <stdio.h>
 #include <SDL2/SDL_ttf.h>
 #include <SDL2/SDL_image.h>
+#include <time.h>
 
 #include "Config.h"
 #include "Graphique.h"
@@ -14,6 +15,9 @@ int main(int argc, char **argv)
 {
     (void)argc;
     (void)argv;
+
+    /*random*/
+    srand(time(NULL));
 
     /* PARTIE ALLOCATION*/
 
@@ -87,7 +91,7 @@ int main(int argc, char **argv)
 
     /*Appel de la fonction qui gère les événments*/
 
-    GestionEvenement(window, renderer, policeTitre, position_snake, plateau, meilleurScore, logoMenu, pomme, explosion);
+    GestionEvenement(renderer, policeTitre, position_snake, plateau, meilleurScore, logoMenu, pomme, explosion);
 
     /* LIBERATION*/
 

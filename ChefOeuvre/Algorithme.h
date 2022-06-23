@@ -9,5 +9,8 @@ void decalagedroite(int **serpent, int direction, int aManger, int * taille_serp
 void InitPlateau(int ** plateau);
 int TestDeplacement(int **serpent, int direction, int *taille_serpent, int **plateau);
 int MeilleurScore(int ScoreActuel);
+void SupprimePomme(int **plateau, int **serpent, int direction);
+void posPomme(int **plateau, int **serpent, int tailleSerpent);
+int passageMarkov(int EtatPrec);
 
 #endif

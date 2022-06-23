@@ -1,4 +1,4 @@
-//Trouvez ici tous les defines de configs du programme
+// Trouvez ici tous les defines de configs du programme
 #ifndef CONFIG_H
 #define CONFIG_H
 
@@ -9,9 +9,9 @@
 
 #define DIMENSION_TAB_JEU 40
 
-#define DIMENSION_TAB_POS DIMENSION_TAB_JEU * DIMENSION_TAB_JEU
+#define DIMENSION_TAB_POS DIMENSION_TAB_JEU *DIMENSION_TAB_JEU
 
 #define TAILLE_EXPLOSION 5
 
-#endif
 
+#endif
