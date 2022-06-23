@@ -1,6 +1,6 @@
 SRC=main.c
-SRC+= Animation.c Algorithme.c
-EXE=exec
+SRC+= Graphique.c Algorithme.c
+EXE=Jeu
 
 CC=gcc
 CFLAGS:=-Wall -Wextra -lm -MMD -Og -g $(sdl2-config --cflags)
