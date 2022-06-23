@@ -87,7 +87,9 @@ void Animation(SDL_Window *window,
   SDL_Rect
     source = {0},            // Rectangle définissant la zone de la texture à récupérer
     window_dimensions = {0}, // Rectangle définissant la fenêtre, on n'utilisera que largeur et hauteur
-    destination = {0};       // Rectangle définissant où la zone_source doit être déposée dans le renderer
+    destination = {0},       // Rectangle définissant où la zone_source doit être déposée dans le renderer
+    posPanier = {0};
+    
 
   SDL_GetWindowSize(
 		    window, &window_dimensions.w,
@@ -104,7 +106,6 @@ void Animation(SDL_Window *window,
 
   /* position Panier */
 
-  SDL_Rect  posPanier;
   posPanier.h = 400;
   posPanier.w = 400;
   posPanier.x = 60*window_dimensions.w/100;
@@ -116,13 +117,17 @@ void Animation(SDL_Window *window,
 
   //découpage du sprite et on les met tous dans un tableau de SDL_Rect pour pouvoir les utilsez dans l'animation
   
-  SDL_Rect planche = {0}, destination2 = {0};
+  SDL_Rect
+    planche = {0},    //rectangle de toute la table de sprite
+    posBallon = {0};        //rectangle à chaque itération du sprite
+  
   SDL_QueryTexture(ballon, NULL, NULL, &planche.w, &planche.h);
+  
   int offsetX = planche.w / 4;
   int offsetY = planche.h / 3; //3 lignes et 4 colonnes
 
   SDL_Rect etats[12];
-
+  
   int indice = 0;
   for(int i = 0; i < 3; i++)
     {
@@ -136,9 +141,14 @@ void Animation(SDL_Window *window,
         }
     }
 
+  //position et dimension du ballon
+  posBallon.y = (window_dimensions.h/2) -50 ;
+  posBallon.x = 0;
+  posBallon.h = 100;
+  posBallon.w = 100;
   
+  // boucle évènement SDL
   
-
   SDL_bool program_on = SDL_TRUE;
   SDL_Event event;
 
@@ -161,26 +171,31 @@ void Animation(SDL_Window *window,
       
       /*animation*/
 
-      SDL_Rect state = {0};
-      int speed = 9;
-      for (int x = 0; x <window_dimensions.w - destination2.w; x += speed){
-	destination2.x = x;
-
-	state.x +=etats[x%12].x;
-	state.x %=source.w;
 	
-	
-      
+      int m = 0;
+      for(m  = 0 ; m < 12 ; m ++){
 
+	posBallon.x = posBallon.x + (60*window_dimensions.w/100)/50 ;
+	
 	SDL_RenderClear(renderer);                                // Effacer l'image précédente
-
-	SDL_RenderCopy(renderer, ballon, &state, &destination2);   //ballon
 	
 	SDL_RenderCopy(renderer, ciel, &source, &destination);    // Préparation de l'affichage
+
+	
 	AffichageObjet(renderer, panier, posPanier);              // Affichage du panier
+
+	if (posBallon.x < (60*window_dimensions.w/100) + 130 ){
+	
+	SDL_RenderCopy(renderer, ballon, &etats[m], &posBallon);        //ballon
+
+	}
+	
 	SDL_RenderPresent(renderer);                              // Affichage de la nouvelle image
-	SDL_Delay(30);
-      }
+
+	SDL_Delay(100);
+
+	
+	}
     }
 }
 
@@ -237,7 +252,7 @@ int main(int argc, char **argv)
 
   /*Creation image ballon*/
 
-  ballon = IMG_LoadTexture(renderer, "./img/ciel.png");
+  ballon = IMG_LoadTexture(renderer, "./img/ballon.png");
   if (ballon == NULL)
     end_sdl(0, "Echec du chargement de l'image dans la texture", window, renderer, panier, ciel, ballon);
   
