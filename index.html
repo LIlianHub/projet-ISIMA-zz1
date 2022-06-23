@@ -366,6 +366,34 @@
                   <li>
                     <a href="#leger-bertrand-3" class="toc-h2 toc-link" data-title="LEGER Bertrand">LEGER Bertrand</a>
                   </li>
+                  <li>
+                    <a href="#cornuez-charlotte-3" class="toc-h2 toc-link" data-title="CORNUEZ Charlotte">CORNUEZ Charlotte</a>
+                  </li>
+              </ul>
+          </li>
+          <li>
+            <a href="#jeu-de-la-vie" class="toc-h1 toc-link" data-title="Jeu de la vie">Jeu de la vie</a>
+              <ul class="toc-list-h2">
+                  <li>
+                    <a href="#principe-implemente" class="toc-h2 toc-link" data-title="Principe implémenté">Principe implémenté</a>
+                  </li>
+                  <li>
+                    <a href="#video-10" class="toc-h2 toc-link" data-title="Video">Video</a>
+                  </li>
+              </ul>
+          </li>
+          <li>
+            <a href="#chef-d-39-oeuvre" class="toc-h1 toc-link" data-title="Chef d'oeuvre">Chef d'oeuvre</a>
+              <ul class="toc-list-h2">
+                  <li>
+                    <a href="#presentation" class="toc-h2 toc-link" data-title="Présentation">Présentation</a>
+                  </li>
+                  <li>
+                    <a href="#video-11" class="toc-h2 toc-link" data-title="Vidéo">Vidéo</a>
+                  </li>
+                  <li>
+                    <a href="#a-ameliorer" class="toc-h2 toc-link" data-title="A améliorer">A améliorer</a>
+                  </li>
               </ul>
           </li>
       </ul>
@@ -501,6 +529,25 @@
 <td>✔️</td>
 <td>BALLEJOS Lilian</td>
 <td>Mise à jour du Site en prévision de Vendredi</td>
+</tr>
+</tbody></table>
+<h3 id='22-06-22-jeudi'>22/06/22 (Jeudi)</h3>
+<table><thead>
+<tr>
+<th>Avancé</th>
+<th>Membre</th>
+<th>Tâche</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>✔️</td>
+<td>BALLEJOS Lilian</td>
+<td>Remplissage du site pour la présentation vendredi</td>
+</tr>
+<tr>
+<td>✔️</td>
+<td>Commun</td>
+<td>Finalisation du Chef d&#39;oeuvre</td>
 </tr>
 </tbody></table>
 <h1 id='xfenetre'>Xfenetré</h1><h2 id='ballejos-lilian'>BALLEJOS Lilian</h2><h3 id='explication-et-code'>Explication et Code</h3>
@@ -1318,7 +1365,282 @@ Ensuite j&#39;affiche frame par frame un oiseau qui traverse l&#39;écran de gau
 <p style="text-align: center;"><iframe width="80%" height="315" src="https://www.youtube.com/embed/XjAD57nNzGw" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe></p>
 <h2 id='leger-bertrand-3'>LEGER Bertrand</h2><h3 id='explication-et-code-8'>Explication et Code</h3>
 <p>Principe  : afficher le ciel en fond, le panier à droite et faire arriver le ballon de basket (en le faisant tourner) dans le panier avec un arc parabolique typique d&#39;un tir de basketball.</p>
-<h3 id='video-8'>Vidéo</h3>
+<h3 id='video-8'>Vidéo</h3><h2 id='cornuez-charlotte-3'>CORNUEZ Charlotte</h2><h3 id='explication-et-code-9'>Explication et Code</h3>
+<p>Affichage d&#39;un jardin puis d&#39;un nuage et enfin d&#39;un dinosaure qui court.
+J&#39;affiche en fond un jardin avec un nuage qui traverse le haut du jardin. 
+En bas de l&#39;image, on peut voir un dinosaure bleu qui traverse en courant </p>
+<div class="highlight"><pre class="highlight c tab-c"><code><span class="n">SDL_Texture</span> <span class="o">*</span><span class="nf">ImageEnTexture</span><span class="p">(</span><span class="kt">char</span> <span class="o">*</span><span class="n">file_image_name</span><span class="p">,</span> <span class="n">SDL_Window</span> <span class="o">*</span><span class="n">window</span><span class="p">,</span> <span class="n">SDL_Renderer</span> <span class="o">*</span><span class="n">renderer</span><span class="p">)</span>
+<span class="p">{</span>
+  <span class="n">SDL_Surface</span> <span class="o">*</span><span class="n">my_image</span> <span class="o">=</span> <span class="nb">NULL</span><span class="p">;</span>   <span class="c1">// Variable de passage</span>
+  <span class="n">SDL_Texture</span> <span class="o">*</span><span class="n">my_texture</span> <span class="o">=</span> <span class="nb">NULL</span><span class="p">;</span> <span class="c1">// La texture</span>
+
+  <span class="n">my_image</span> <span class="o">=</span> <span class="n">IMG_Load</span><span class="p">(</span><span class="n">file_image_name</span><span class="p">);</span> <span class="c1">// Chargement de l'image dans la surface</span>
+                                        <span class="c1">// image=SDL_LoadBMP(file_image_name); fonction standard de la SDL,</span>
+                                        <span class="c1">// uniquement possible si l'image est au format bmp */</span>
+  <span class="k">if</span> <span class="p">(</span><span class="n">my_image</span> <span class="o">==</span> <span class="nb">NULL</span><span class="p">)</span>
+    <span class="n">end_sdl</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="s">"Chargement de l'image impossible"</span><span class="p">,</span> <span class="n">window</span><span class="p">,</span> <span class="n">renderer</span><span class="p">);</span>
+
+  <span class="n">my_texture</span> <span class="o">=</span> <span class="n">SDL_CreateTextureFromSurface</span><span class="p">(</span><span class="n">renderer</span><span class="p">,</span> <span class="n">my_image</span><span class="p">);</span> <span class="c1">// Chargement de l'image de la surface vers la texture</span>
+  <span class="n">SDL_FreeSurface</span><span class="p">(</span><span class="n">my_image</span><span class="p">);</span>                                     <span class="c1">// la SDL_Surface ne sert que comme élément transitoire</span>
+  <span class="k">if</span> <span class="p">(</span><span class="n">my_texture</span> <span class="o">==</span> <span class="nb">NULL</span><span class="p">)</span>
+    <span class="n">end_sdl</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="s">"Echec de la transformation de la surface en texture"</span><span class="p">,</span> <span class="n">window</span><span class="p">,</span> <span class="n">renderer</span><span class="p">);</span>
+
+  <span class="k">return</span> <span class="n">my_texture</span><span class="p">;</span>
+<span class="p">}</span>
+
+
+
+<span class="kt">void</span> <span class="nf">AffichageTextureFenetreComplete</span><span class="p">(</span><span class="n">SDL_Texture</span> <span class="o">*</span><span class="n">my_texture</span><span class="p">,</span> <span class="n">SDL_Window</span> <span class="o">*</span><span class="n">window</span><span class="p">,</span>
+                                     <span class="n">SDL_Renderer</span> <span class="o">*</span><span class="n">renderer</span><span class="p">)</span>
+<span class="p">{</span>
+  <span class="n">SDL_Rect</span>
+      <span class="n">source</span> <span class="o">=</span> <span class="p">{</span><span class="mi">0</span><span class="p">},</span>            <span class="c1">// Rectangle définissant la zone de la texture à récupérer</span>
+      <span class="n">window_dimensions</span> <span class="o">=</span> <span class="p">{</span><span class="mi">0</span><span class="p">},</span> <span class="c1">// Rectangle définissant la fenêtre, on n'utilisera que largeur et hauteur</span>
+      <span class="n">destination</span> <span class="o">=</span> <span class="p">{</span><span class="mi">0</span><span class="p">};</span>       <span class="c1">// Rectangle définissant où la zone_source doit être déposée dans le renderer</span>
+
+  <span class="n">SDL_GetWindowSize</span><span class="p">(</span>
+      <span class="n">window</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">window_dimensions</span><span class="p">.</span><span class="n">w</span><span class="p">,</span>
+      <span class="o">&amp;</span><span class="n">window_dimensions</span><span class="p">.</span><span class="n">h</span><span class="p">);</span> <span class="c1">// Récupération des dimensions de la fenêtre</span>
+  <span class="n">SDL_QueryTexture</span><span class="p">(</span><span class="n">my_texture</span><span class="p">,</span> <span class="nb">NULL</span><span class="p">,</span> <span class="nb">NULL</span><span class="p">,</span>
+                   <span class="o">&amp;</span><span class="n">source</span><span class="p">.</span><span class="n">w</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">source</span><span class="p">.</span><span class="n">h</span><span class="p">);</span> <span class="c1">// Récupération des dimensions de l'image</span>
+
+  <span class="n">destination</span> <span class="o">=</span> <span class="n">window_dimensions</span><span class="p">;</span> <span class="c1">// On fixe les dimensions de l'affichage à  celles de la fenêtre</span>
+
+  <span class="cm">/* On veut afficher la texture de façon à ce que l'image occupe la totalité de la fenêtre */</span>
+
+  <span class="n">SDL_RenderCopy</span><span class="p">(</span><span class="n">renderer</span><span class="p">,</span> <span class="n">my_texture</span><span class="p">,</span>
+                 <span class="o">&amp;</span><span class="n">source</span><span class="p">,</span>
+                 <span class="o">&amp;</span><span class="n">destination</span><span class="p">);</span> <span class="c1">// Création de l'élément à afficher</span>
+<span class="p">}</span>
+
+<span class="kt">void</span> <span class="nf">AnimationImage</span><span class="p">(</span><span class="n">SDL_Texture</span> <span class="o">*</span><span class="n">my_texture</span><span class="p">,</span>
+                    <span class="n">SDL_Window</span> <span class="o">*</span><span class="n">window</span><span class="p">,</span>
+                    <span class="n">SDL_Renderer</span> <span class="o">*</span><span class="n">renderer</span><span class="p">,</span>
+                    <span class="kt">int</span> <span class="n">i</span><span class="p">)</span>
+<span class="p">{</span>
+  <span class="n">SDL_Rect</span>
+      <span class="n">source</span> <span class="o">=</span> <span class="p">{</span><span class="mi">0</span><span class="p">},</span>            <span class="c1">// Rectangle définissant la zone de la texture à récupérer</span>
+      <span class="n">window_dimensions</span> <span class="o">=</span> <span class="p">{</span><span class="mi">0</span><span class="p">},</span> <span class="c1">// Rectangle définissant la fenêtre, on n'utilisera que largeur et hauteur</span>
+      <span class="n">destination</span> <span class="o">=</span> <span class="p">{</span><span class="mi">0</span><span class="p">};</span>       <span class="c1">// Rectangle définissant où la zone_source doit être déposée dans le renderer</span>
+
+  <span class="n">SDL_GetWindowSize</span><span class="p">(</span>
+      <span class="n">window</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">window_dimensions</span><span class="p">.</span><span class="n">w</span><span class="p">,</span>
+      <span class="o">&amp;</span><span class="n">window_dimensions</span><span class="p">.</span><span class="n">h</span><span class="p">);</span> <span class="c1">// Récupération des dimensions de la fenêtre</span>
+  <span class="n">SDL_QueryTexture</span><span class="p">(</span><span class="n">my_texture</span><span class="p">,</span> <span class="nb">NULL</span><span class="p">,</span> <span class="nb">NULL</span><span class="p">,</span>
+                   <span class="o">&amp;</span><span class="n">source</span><span class="p">.</span><span class="n">w</span><span class="p">,</span>
+                   <span class="o">&amp;</span><span class="n">source</span><span class="p">.</span><span class="n">h</span><span class="p">);</span> <span class="c1">// Récupération des dimensions de l'image</span>
+
+  <span class="cm">/* On décide de déplacer dans la fenêtre         cette image */</span>
+  <span class="kt">float</span> <span class="n">zoom</span> <span class="o">=</span> <span class="mi">0</span><span class="p">.</span><span class="mi">25</span><span class="p">;</span> <span class="c1">// Facteur de zoom entre l'image source et l'image affichée</span>
+
+  <span class="n">destination</span><span class="p">.</span><span class="n">w</span> <span class="o">=</span> <span class="n">source</span><span class="p">.</span><span class="n">w</span> <span class="o">*</span> <span class="n">zoom</span><span class="p">;</span> <span class="c1">// On applique le zoom sur la largeur</span>
+  <span class="n">destination</span><span class="p">.</span><span class="n">h</span> <span class="o">=</span> <span class="n">source</span><span class="p">.</span><span class="n">h</span> <span class="o">*</span> <span class="n">zoom</span><span class="p">;</span> <span class="c1">// On applique le zoom sur la hauteur</span>
+  <span class="n">destination</span><span class="p">.</span><span class="n">y</span> <span class="o">=</span>
+      <span class="p">(</span><span class="n">window_dimensions</span><span class="p">.</span><span class="n">w</span> <span class="o">-</span> <span class="n">destination</span><span class="p">.</span><span class="n">w</span><span class="p">)</span> <span class="o">/</span> <span class="mi">6</span><span class="p">;</span>   <span class="c1">// On centre en haut</span>
+  <span class="kt">float</span> <span class="n">h</span> <span class="o">=</span> <span class="p">(</span><span class="n">window_dimensions</span><span class="p">.</span><span class="n">h</span> <span class="o">-</span> <span class="n">destination</span><span class="p">.</span><span class="n">h</span><span class="p">);</span> <span class="c1">// largeur du déplacement à effectuer</span>
+
+  <span class="n">destination</span><span class="p">.</span><span class="n">x</span> <span class="o">=</span> <span class="n">h</span> <span class="o">*</span> <span class="mi">0</span><span class="p">.</span><span class="mo">005</span> <span class="o">*</span> <span class="n">i</span><span class="p">;</span> <span class="c1">// hauteur en fonction du numéro d'image</span>
+
+  <span class="n">SDL_RenderCopy</span><span class="p">(</span><span class="n">renderer</span><span class="p">,</span> <span class="n">my_texture</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">source</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">destination</span><span class="p">);</span> <span class="c1">// Préparation de l'affichage</span>
+                                                               <span class="c1">// Pause en ms</span>
+<span class="p">}</span>
+
+<span class="kt">void</span> <span class="nf">AnimationSprite</span><span class="p">(</span><span class="n">SDL_Texture</span> <span class="o">*</span><span class="n">my_texture</span><span class="p">,</span>
+                     <span class="n">SDL_Window</span> <span class="o">*</span><span class="n">window</span><span class="p">,</span>
+                     <span class="n">SDL_Renderer</span> <span class="o">*</span><span class="n">renderer</span><span class="p">,</span>
+                     <span class="n">SDL_Texture</span> <span class="o">*</span><span class="n">nuage</span><span class="p">,</span>
+                     <span class="n">SDL_Texture</span> <span class="o">*</span><span class="n">fond</span><span class="p">)</span>
+<span class="p">{</span>
+  <span class="n">SDL_Rect</span>
+      <span class="n">source</span> <span class="o">=</span> <span class="p">{</span><span class="mi">0</span><span class="p">},</span>            <span class="c1">// Rectangle définissant la zone totale de la planche</span>
+      <span class="n">window_dimensions</span> <span class="o">=</span> <span class="p">{</span><span class="mi">0</span><span class="p">},</span> <span class="c1">// Rectangle définissant la fenêtre, on n'utilisera que largeur et hauteur</span>
+      <span class="n">destination</span> <span class="o">=</span> <span class="p">{</span><span class="mi">0</span><span class="p">},</span>       <span class="c1">// Rectangle définissant où la zone_source doit être déposée dans le renderer</span>
+      <span class="n">state</span> <span class="o">=</span> <span class="p">{</span><span class="mi">0</span><span class="p">};</span>             <span class="c1">// Rectangle de la vignette en cours dans la planche</span>
+
+  <span class="n">SDL_GetWindowSize</span><span class="p">(</span><span class="n">window</span><span class="p">,</span> <span class="c1">// Récupération des dimensions de la fenêtre</span>
+                    <span class="o">&amp;</span><span class="n">window_dimensions</span><span class="p">.</span><span class="n">w</span><span class="p">,</span>
+                    <span class="o">&amp;</span><span class="n">window_dimensions</span><span class="p">.</span><span class="n">h</span><span class="p">);</span>
+  <span class="n">SDL_QueryTexture</span><span class="p">(</span><span class="n">my_texture</span><span class="p">,</span> <span class="c1">// Récupération des dimensions de l'image</span>
+                   <span class="nb">NULL</span><span class="p">,</span> <span class="nb">NULL</span><span class="p">,</span>
+                   <span class="o">&amp;</span><span class="n">source</span><span class="p">.</span><span class="n">w</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">source</span><span class="p">.</span><span class="n">h</span><span class="p">);</span>
+
+  <span class="cm">/* Mais pourquoi prendre la totalité de l'image, on peut n'en afficher qu'un morceau, et changer de morceau :-) */</span>
+
+  <span class="kt">int</span> <span class="n">nb_images</span> <span class="o">=</span> <span class="mi">9</span><span class="p">;</span>                   <span class="c1">// Il y a 8 vignette dans la ligne de l'image qui nous intéresse</span>
+  <span class="kt">float</span> <span class="n">zoom</span> <span class="o">=</span> <span class="mi">6</span><span class="p">;</span>                      <span class="c1">// zoom, car ces images sont un peu petites</span>
+  <span class="kt">int</span> <span class="n">offset_x</span> <span class="o">=</span> <span class="n">source</span><span class="p">.</span><span class="n">w</span> <span class="o">/</span> <span class="n">nb_images</span><span class="p">,</span> <span class="c1">// La largeur d'une vignette de l'image, marche car la planche est bien réglée</span>
+      <span class="n">offset_y</span> <span class="o">=</span> <span class="n">source</span><span class="p">.</span><span class="n">h</span> <span class="o">/</span> <span class="mi">4</span> <span class="o">+</span> <span class="mi">1</span><span class="p">;</span>     <span class="c1">// La hauteur d'une vignette de l'image, marche car la planche est bien réglée</span>
+
+  <span class="n">state</span><span class="p">.</span><span class="n">x</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>            <span class="c1">// La première vignette est en début de ligne</span>
+  <span class="n">state</span><span class="p">.</span><span class="n">y</span> <span class="o">=</span> <span class="mi">3</span> <span class="o">*</span> <span class="n">offset_y</span><span class="p">;</span> <span class="c1">// On s'intéresse à la 4ème ligne, le bonhomme qui court</span>
+  <span class="n">state</span><span class="p">.</span><span class="n">w</span> <span class="o">=</span> <span class="n">offset_x</span><span class="p">;</span>     <span class="c1">// Largeur de la vignette</span>
+  <span class="n">state</span><span class="p">.</span><span class="n">h</span> <span class="o">=</span> <span class="n">offset_y</span><span class="p">;</span>     <span class="c1">// Hauteur de la vignette</span>
+
+  <span class="n">destination</span><span class="p">.</span><span class="n">w</span> <span class="o">=</span> <span class="n">offset_x</span> <span class="o">*</span> <span class="n">zoom</span><span class="p">;</span> <span class="c1">// Largeur du sprite à l'écran</span>
+  <span class="n">destination</span><span class="p">.</span><span class="n">h</span> <span class="o">=</span> <span class="n">offset_y</span> <span class="o">*</span> <span class="n">zoom</span><span class="p">;</span> <span class="c1">// Hauteur du sprite à l'écran</span>
+
+  <span class="n">destination</span><span class="p">.</span><span class="n">y</span> <span class="o">=</span> <span class="c1">// La course se fait en milieu d'écran (en vertical)</span>
+      <span class="p">(</span><span class="n">window_dimensions</span><span class="p">.</span><span class="n">h</span> <span class="o">-</span> <span class="n">destination</span><span class="p">.</span><span class="n">h</span><span class="p">)</span> <span class="o">/</span> <span class="mi">2</span><span class="p">;</span>
+
+  <span class="n">SDL_Event</span> <span class="n">event</span><span class="p">;</span>
+  <span class="n">SDL_bool</span> <span class="n">program_on</span> <span class="o">=</span> <span class="n">SDL_TRUE</span><span class="p">;</span>
+  <span class="kt">int</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+
+  <span class="k">while</span> <span class="p">(</span><span class="n">program_on</span><span class="p">)</span>
+  <span class="p">{</span>
+
+    <span class="k">if</span> <span class="p">(</span><span class="n">SDL_PollEvent</span><span class="p">(</span><span class="o">&amp;</span><span class="n">event</span><span class="p">))</span>
+    <span class="p">{</span> <span class="c1">// Tant que la file des évènements stockés n'est pas vide et qu'on n'a pas</span>
+      <span class="c1">// terminé le programme Défiler l'élément en tête de file dans 'event'</span>
+      <span class="k">switch</span> <span class="p">(</span><span class="n">event</span><span class="p">.</span><span class="n">type</span><span class="p">)</span>
+      <span class="p">{</span>                         <span class="c1">// En fonction de la valeur du type de cet évènement</span>
+      <span class="k">case</span> <span class="n">SDL_QUIT</span><span class="p">:</span>            <span class="c1">// Un évènement simple, on a cliqué sur la x de la // fenêtre</span>
+        <span class="n">program_on</span> <span class="o">=</span> <span class="n">SDL_FALSE</span><span class="p">;</span> <span class="c1">// Il est temps d'arrêter le programme</span>
+        <span class="k">break</span><span class="p">;</span>
+      <span class="k">case</span> <span class="n">SDL_KEYDOWN</span><span class="p">:</span> <span class="c1">// Le type de event est : une touche appuyée</span>
+                        <span class="c1">// comme la valeur du type est SDL_Keydown, dans la partie 'union' de</span>
+                        <span class="c1">// l'event, plusieurs champs deviennent pertinents</span>
+        <span class="k">switch</span> <span class="p">(</span><span class="n">event</span><span class="p">.</span><span class="n">key</span><span class="p">.</span><span class="n">keysym</span><span class="p">.</span><span class="n">sym</span><span class="p">)</span>
+        <span class="p">{</span>        <span class="c1">// la touche appuyée est ...</span>
+        <span class="nl">default:</span> <span class="c1">// Une touche appuyée qu'on ne traite pas</span>
+          <span class="k">break</span><span class="p">;</span>
+        <span class="p">}</span>
+        <span class="k">break</span><span class="p">;</span>
+      <span class="p">}</span>
+    <span class="p">}</span>
+    <span class="n">SDL_RenderClear</span><span class="p">(</span><span class="n">renderer</span><span class="p">);</span>
+
+    <span class="n">AffichageTextureFenetreComplete</span><span class="p">(</span><span class="n">fond</span><span class="p">,</span> <span class="n">window</span><span class="p">,</span> <span class="n">renderer</span><span class="p">);</span>
+    <span class="n">AnimationImage</span><span class="p">(</span><span class="n">nuage</span><span class="p">,</span> <span class="n">window</span><span class="p">,</span> <span class="n">renderer</span><span class="p">,</span> <span class="n">i</span><span class="p">);</span>
+    <span class="n">destination</span><span class="p">.</span><span class="n">x</span> <span class="o">=</span> <span class="n">i</span> <span class="o">*</span> <span class="mi">4</span><span class="p">;</span>   <span class="c1">// Position en x pour l'affichage du sprite</span>
+    <span class="n">state</span><span class="p">.</span><span class="n">x</span> <span class="o">+=</span> <span class="n">offset_x</span><span class="p">;</span> <span class="c1">// On passe à la vignette suivante dans l'image</span>
+    <span class="n">state</span><span class="p">.</span><span class="n">x</span> <span class="o">%=</span> <span class="n">source</span><span class="p">.</span><span class="n">w</span><span class="p">;</span> <span class="c1">// La vignette qui suit celle de fin de ligne est</span>
+    <span class="c1">// celle de début de ligne</span>
+    <span class="n">SDL_RenderCopy</span><span class="p">(</span><span class="n">renderer</span><span class="p">,</span> <span class="n">my_texture</span><span class="p">,</span> <span class="c1">// Préparation de l'affichage</span>
+                   <span class="o">&amp;</span><span class="n">state</span><span class="p">,</span>
+                   <span class="o">&amp;</span><span class="n">destination</span><span class="p">);</span>
+
+    <span class="n">SDL_RenderPresent</span><span class="p">(</span><span class="n">renderer</span><span class="p">);</span>
+    <span class="n">i</span><span class="o">++</span><span class="p">;</span>
+
+    <span class="n">SDL_Delay</span><span class="p">(</span><span class="mi">100</span><span class="p">);</span> <span class="c1">// Petite pause</span>
+  <span class="p">}</span>
+<span class="p">}</span>
+</code></pre></div><h3 id='video-9'>Vidéo</h3>
+<p style="text-align: center;"><iframe width="80%" height="315" src="https://www.youtube.com/embed/kCX8HTbOmO4" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe></p>
+<h1 id='jeu-de-la-vie'>Jeu de la vie</h1><h2 id='principe-implemente'>Principe implémenté</h2>
+<p>Nous avons implémenté un jeu de la vie en mode &quot;limite&quot; et Tor.
+On démarage on clique sur les cases de l&#39;écran que l&#39;on souhaitre mettre en cellule vivante.</p>
+
+<p>Durant la préparation on peut cliquer sur:</p>
+
+<ul>
+<li><strong>w</strong> : pour enregistrer la dernière configuration</li>
+<li><strong>x</strong> : pour charger la dernière configuration</li>
+<li><strong>v</strong> : pour Clear le tableau et supprimer toute les cellules vivantes</li>
+</ul>
+
+<p>On démarre la simulation avec <strong>SPACE</strong>.</p>
+
+<p>A tout moment durant la simulation on peut cliquer sur <strong>c</strong> pour changer le mode et sur la flèche de droite ou de gauche pour accélèrer ou ralentir la simulation !</p>
+
+<p>On detecte à chaque itération si on a pas stagné et que plus rien ne bouge !</p>
+
+<p>Les masques de vie et de mort sont très facilement modifiables dans le code et les règles sont visibles graphiquement sur la fenêtre SDL en haut !</p>
+<h3 id='probleme-rencontre'>Problème rencontré</h3>
+<p>Nous avons recontré un problème que nous avons solutionné comme nous allons vous l&#39;expliquer plus tard</p>
+<h3 id='explication'>Explication</h3>
+<p>On a voulu faire une taille de fenetre responsive mais lorsqu&#39;on fait cela on rencontre des problèmes car pour tracer la grille du jeu on divise la fenetre par le nombre de case de notre tableau C.
+A cette etape si la fenetre n&#39;est pas divisible par le nombre de case du tableau alors on fait des arrondis et un enchainement d&#39;arrondi de calcul provoque le fait que le damier ne couvre pas toute la fenêtre !</p>
+
+<p style="text-align: center;"><img style="width: 80%" src="images/erreurVie-c338ac79.png"/></p>
+<h3 id='solution'>Solution</h3>
+<p>On pose une taille de fenêtre fixe au démarrage (800x825 car 25 px pour le menu) et on divise la fenêtre par le nombre de case du tableau en s&#39;assurant que le nombre de case est un diviseur de 800.</p>
+<h2 id='video-10'>Video</h2>
+<p>Voici une démonstration vidéo de notre programme</p>
+
+<p style="text-align: center;"><iframe width="80%" height="315" src="https://www.youtube.com/embed/JhQonr1lVa0" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe></p>
+<h1 id='chef-d-39-oeuvre'>Chef d&#39;oeuvre</h1><h2 id='presentation'>Présentation</h2>
+<p>Nous avons codé une version améliorée du fameux <strong>Snake</strong>. Dans celui-ci, le but n&#39;esp plus seulement de manger toutes les pommes mais aussi de survivre le plus longtemps possible ! En effet l le score est lié au temps qui s&#39;écoule durant la partie. Pour forcer l&#39;utilisateur à jouer avec les pommes on mis un multiplicateur de point chaque seconde en fonction de la taille du serpent. De plus, ce dit serpent possède plusieurs état tel que &quot;rapide&quot;, &quot;très rapide&quot; ou encore endromi. Le choix de l&#39;état de notre serpent est choisit selon <strong>une chaine de Markov</strong> à chaque fois que le serpent mange une pomme !</p>
+
+<p>Les règles on était créées par Bertrand. Les voicis:</p>
+
+<table><thead>
+<tr>
+<th></th>
+<th>Classique</th>
+<th>Lent</th>
+<th>Rapide</th>
+<th>Très rapide</th>
+<th>Endormi</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>Classique</td>
+<td>0.4</td>
+<td>0.1</td>
+<td>0.3</td>
+<td>0.15</td>
+<td>0.05</td>
+</tr>
+<tr>
+<td>Lent</td>
+<td>0.5</td>
+<td>0.15</td>
+<td>0.25</td>
+<td>0</td>
+<td>0.1</td>
+</tr>
+<tr>
+<td>Rapide</td>
+<td>0.14</td>
+<td>0.03</td>
+<td>0.5</td>
+<td>0.3</td>
+<td>0.03</td>
+</tr>
+<tr>
+<td>Très rapide</td>
+<td>0.08</td>
+<td>0.07</td>
+<td>0.15</td>
+<td>0.2</td>
+<td>0.6</td>
+</tr>
+<tr>
+<td>Endormi</td>
+<td>0</td>
+<td>0.3</td>
+<td>0</td>
+<td>0</td>
+<td>0.7</td>
+</tr>
+</tbody></table>
+
+<p>On a essayé de donner un sens à ces valeurs</p>
+
+<p>blablabla</p>
+
+<p>On enregistre le meilleur score dans un fichier pour les futures executions.</p>
+
+<p>Nous nous sommes séparés les tâches par personnes:</p>
+
+<ul>
+<li>Lilian a géré toutes la partie graphique</li>
+<li>Bertrand et Charlotte tous les algorithmes de déplacement du serpents dans le tableau et liés aux chaines de Markov.</li>
+<li>Nous sommes aidé les un les autres sur certains points quand un de nos camarades commencaient à peiner.</li>
+</ul>
+<h2 id='video-11'>Vidéo</h2>
+<p style="text-align: center;"><iframe width="80%" height="315" src="https://www.youtube.com/embed/NMooU7Xmg0M" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe></p>
+<h2 id='a-ameliorer'>A améliorer</h2>
+<p>Voici quelques idées de choses à améliorer sur notre projet si on avait eu plus de temps:</p>
+
+<ul>
+<li>Rajouter des murs de manières aléatoires si le joueur ne ramasse pas de pomme</li>
+<li>Permettre de rejouer apres une defaite</li>
+<li>Rajouter un sprite de tete pour le serpent</li>
+</ul>
+
       </div>
       <div class="dark-box">
           <div class="lang-selector">
