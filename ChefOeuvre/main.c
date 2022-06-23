@@ -83,7 +83,7 @@ int main(int argc, char **argv)
 
     /*Recupération meilleur score*/
 
-    int meilleurScore = 10;
+    int meilleurScore = MeilleurScore(0);
 
     /*Appel de la fonction qui gère les événments*/
 

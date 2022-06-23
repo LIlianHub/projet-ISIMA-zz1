@@ -341,6 +341,7 @@ void GestionEvenement(SDL_Window *window, SDL_Renderer *renderer, TTF_Font *font
                 PassageTableauCoor(position[0][0], position[0][1], &x_explo, &y_explo);
                 pos_explosion.x = x_explo;
                 pos_explosion.y = y_explo;
+                meilleurScore = MeilleurScore(score);
             }
             if (iter_explo < 25)
             {

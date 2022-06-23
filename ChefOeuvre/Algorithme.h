@@ -8,5 +8,6 @@ void InitialisationSerpent(int **tableau);
 void decalagedroite(int **serpent, int direction, int aManger, int * taille_serpent);
 void InitPlateau(int ** plateau);
 int TestDeplacement(int **serpent, int direction, int *taille_serpent, int **plateau);
+int MeilleurScore(int ScoreActuel);
 
 #endif

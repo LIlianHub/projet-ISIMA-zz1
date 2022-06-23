@@ -107,25 +107,25 @@ void decalagedroite(int **serpent, int direction, int aManger, int *taille_serpe
     switch (direction)
     {
     case 0: // Le serpent va en haut
-        //printf("haut\n");
+        // printf("haut\n");
         serpent[0][0] = x0 - 1;
         serpent[0][1] = y0;
 
         break;
     case 1: // Le serpent va en bas
-        //printf("bas\n");
+        // printf("bas\n");
         serpent[0][0] = x0 + 1;
         serpent[0][1] = y0;
 
         break;
     case 2: // Le serpent va à droite
-        //printf("droite\n");
+        // printf("droite\n");
         serpent[0][0] = x0;
         serpent[0][1] = y0 + 1;
 
         break;
     case 3: // Le serpent va à gauche
-        //printf("gauche\n");
+        // printf("gauche\n");
         serpent[0][0] = x0;
         serpent[0][1] = y0 - 1;
         break;
@@ -140,23 +140,24 @@ void decalagedroite(int **serpent, int direction, int aManger, int *taille_serpe
     }
 }
 
-
 /* test sur serpent */
-//verifie si le serpent 'sauto touche
-//2 si ok et 0 si mort
+// verifie si le serpent 'sauto touche
+// 2 si ok et 0 si mort
 
-int TestCollisionSerpent(int ** serpent, int TeteI, int TeteJ, int * taille_serpent){
+int TestCollisionSerpent(int **serpent, int TeteI, int TeteJ, int *taille_serpent)
+{
     int retour = 2;
     int i = 0;
-    while(i < (*taille_serpent) && retour == 2){
-        if(serpent[i][0] == TeteI && serpent[i][1] == TeteJ){
+    while (i < (*taille_serpent) && retour == 2)
+    {
+        if (serpent[i][0] == TeteI && serpent[i][1] == TeteJ)
+        {
             retour = 0;
         }
         i++;
     }
     return retour;
 }
-
 
 /*renvoie 2 si classique 0 si mort 1 si mange pomme*/
 int TestDeplacement(int **serpent, int direction, int *taille_serpent, int **plateau)
@@ -167,7 +168,7 @@ int TestDeplacement(int **serpent, int direction, int *taille_serpent, int **pla
 
     switch (direction)
     {
-    case 0://haut
+    case 0: // haut
         TeteI -= 1;
         break;
     case 1: // Le serpent va en bas
@@ -183,17 +184,48 @@ int TestDeplacement(int **serpent, int direction, int *taille_serpent, int **pla
         break;
     }
 
-    if(plateau[TeteI][TeteJ] == 1){
-        info = 1; //MANGE POMME
+    if (plateau[TeteI][TeteJ] == 1)
+    {
+        info = 1; // MANGE POMME
     }
-    else if(plateau[TeteI][TeteJ] == 2){
-        info = 0; //meurt par mur
+    else if (plateau[TeteI][TeteJ] == 2)
+    {
+        info = 0; // meurt par mur
     }
-    else{
+    else
+    {
         info = TestCollisionSerpent(serpent, TeteI, TeteJ, taille_serpent);
     }
 
     decalagedroite(serpent, direction, info, taille_serpent);
 
     return info;
+}
+
+/*score*/
+
+int MeilleurScore(int ScoreActuel)
+{
+    int bestscore;
+    char PremiereLigne[10];
+
+    FILE *score = fopen("score/score.txt", "r+");
+    if (score == NULL)
+    {
+        printf("erreur de fichier");
+        exit(1);
+    }
+
+    bestscore = atoi(fgets(PremiereLigne, 10, score));
+
+    if (bestscore < ScoreActuel)
+    {
+
+        bestscore = ScoreActuel;
+        rewind(score);
+        fprintf(score, "%d", bestscore);
+    }
+
+    fclose(score);
+    return bestscore;
 }
