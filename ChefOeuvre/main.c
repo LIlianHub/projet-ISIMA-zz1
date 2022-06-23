@@ -5,6 +5,7 @@
 
 #include "Config.h"
 #include "Graphique.h"
+#include "Algorithme.h"
 
 /*PARTIE MAIN*/
 /* Uniquement les libérations et allocations de structures*/
@@ -74,21 +75,11 @@ int main(int argc, char **argv)
 
     // Allocation des Tableaux
 
-    int **position = NULL;
+    int **position_snake = NULL;
     int **plateau = NULL;
 
-    // a supprimer
-
-    plateau = (int **)malloc(sizeof(int*) * DIMENSION_TAB_JEU);
-    for (int j = 0; j < DIMENSION_TAB_JEU; j++)
-    {
-        plateau[j] = (int *)calloc(DIMENSION_TAB_JEU, sizeof(int));
-    }
-
-    for (int i = 0; i < DIMENSION_TAB_JEU; i++)
-    {
-        plateau[i][i] = 1;
-    }
+    plateau = creer_tableau(DIMENSION_TAB_JEU, DIMENSION_TAB_JEU);
+    position_snake = creer_tableau(DIMENSION_TAB_POS, 2);
 
     /*Recupération meilleur score*/
 
@@ -96,11 +87,14 @@ int main(int argc, char **argv)
 
     /*Appel de la fonction qui gère les événments*/
 
-    GestionEvenement(window, renderer, policeTitre, position, plateau, meilleurScore, logoMenu, pomme, explosion);
+    GestionEvenement(window, renderer, policeTitre, position_snake, plateau, meilleurScore, logoMenu, pomme, explosion);
 
     /* LIBERATION*/
 
     // Liberation des tableaux
+
+    liberer_tableau(plateau, DIMENSION_TAB_JEU);
+    liberer_tableau(position_snake, DIMENSION_TAB_POS);
 
     // LIbération SDL
     end_sdl(1, "Normal ending", window, renderer, policeTitre, logoMenu, pomme, explosion);

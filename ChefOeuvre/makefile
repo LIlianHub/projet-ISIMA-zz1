@@ -1,5 +1,5 @@
 SRC=main.c
-SRC+= Graphique.c
+SRC+= Graphique.c Algorithme.c
 EXE=Jeu
 
 CC=gcc

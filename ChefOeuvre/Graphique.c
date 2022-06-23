@@ -4,6 +4,7 @@
 #include <SDL2/SDL_image.h>
 
 #include "Config.h"
+#include "Algorithme.h"
 
 /*LIbération Propre de la SDL*/
 
@@ -236,13 +237,21 @@ void GestionEvenement(SDL_Window *window, SDL_Renderer *renderer, TTF_Font *font
     /*Variable utile*/
     SDL_bool activation = SDL_TRUE;
     SDL_Event event;
+
+
     /*Gestion animation explosion*/
     SDL_Rect etats[25];
     GenereTabExplosion(etats, explosion);
 
-    int test_explo = 0;
-    SDL_Rect test = {400, 440, FENETREWIDTH * TAILLE_EXPLOSION / DIMENSION_TAB_JEU, (FENETREHEIGHT - TAILLE_MENU) * TAILLE_EXPLOSION / DIMENSION_TAB_JEU};
+    /*Gestion Serpent*/
+    InitialisationSerpent(position);
+    int taille_serpent = 3;
+    afficher_tableau(position, DIMENSION_TAB_POS, 2);
+    
 
+    /* a degager*/
+    int test_explo = 0;
+    SDL_Rect test = {100, 100, FENETREWIDTH * TAILLE_EXPLOSION / DIMENSION_TAB_JEU, (FENETREHEIGHT - TAILLE_MENU) * TAILLE_EXPLOSION / DIMENSION_TAB_JEU};
     int x = 0, y = 0;
     PassageTableauCoor(1, 2, &x, &y);
     printf("-> %d %d <--\n", x, y);
@@ -286,18 +295,28 @@ void GestionEvenement(SDL_Window *window, SDL_Renderer *renderer, TTF_Font *font
             }
         }
 
+
+
+
         // Calcul du score en fonction du temps ecoulé
         score = (SDL_GetTicks() - timeDebut) / 1000; // en mili sec donc /1000 pour sec
 
-        AffichageGrillage(renderer, pomme, plateau);
-        AffichageMenu(renderer, font, logoMenu, meilleurScore, score);
-        if (test_explo < 25)
+        //SDL_RenderClear(renderer);
+        //AffichageGrillage(renderer, pomme, plateau);
+        //AffichageMenu(renderer, font, logoMenu, meilleurScore, score);
+        /*if (test_explo < 25)
         {
             Explosion(renderer, explosion, test, test_explo, etats);
             test_explo++;
             test_explo %=  24;
-        }
-        SDL_RenderPresent(renderer);
-        SDL_Delay(50); // depend pour fps avec horloge
+        }*/
+        //SDL_RenderPresent(renderer);
+
+        decalagedroite(position, 1, 1, &taille_serpent);
+
+
+        afficher_tableau(position, DIMENSION_TAB_POS, 2);
+        printf("taille serpent = %d\n", taille_serpent);
+        SDL_Delay(2000); // depend pour fps avec horloge
     }
 }
