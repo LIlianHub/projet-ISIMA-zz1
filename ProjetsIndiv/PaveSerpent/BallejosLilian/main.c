@@ -5,7 +5,7 @@
 
 /*Modifiable pour plus de rectangle ou des formes plus grosses*/
 #define NBR_RECTANGLE 100
-#define TAILLE_RECT 2
+#define TAILLE_RECT 10
 
 void end_sdl(char ok,            // fin normale : ok = 0 ; anormale ok = 1
              char const *msg,    // message à afficher

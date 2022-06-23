@@ -73,6 +73,13 @@ Avancé | Membre | Tâche
 ✔️| Commun | Commencement du premier chef d'oeuvre
 ✔️| BALLEJOS Lilian | Mise à jour du Site en prévision de Vendredi
 
+### 22/06/22 (Jeudi)
+
+Avancé | Membre | Tâche
+-------------- | -------------- | --------------
+✔️| BALLEJOS Lilian | Remplissage du site pour la présentation vendredi
+✔️| Commun |  Finalisation du Chef d'oeuvre
+
 
 # Xfenetré
 
@@ -965,3 +972,259 @@ void anim(SDL_Texture *ciel,
 Principe  : afficher le ciel en fond, le panier à droite et faire arriver le ballon de basket (en le faisant tourner) dans le panier avec un arc parabolique typique d'un tir de basketball.
 
 ### Vidéo
+
+## CORNUEZ Charlotte
+
+### Explication et Code
+
+Affichage d'un jardin puis d'un nuage et enfin d'un dinosaure qui court.
+J'affiche en fond un jardin avec un nuage qui traverse le haut du jardin. 
+En bas de l'image, on peut voir un dinosaure bleu qui traverse en courant 
+
+```c
+SDL_Texture *ImageEnTexture(char *file_image_name, SDL_Window *window, SDL_Renderer *renderer)
+{
+  SDL_Surface *my_image = NULL;   // Variable de passage
+  SDL_Texture *my_texture = NULL; // La texture
+
+  my_image = IMG_Load(file_image_name); // Chargement de l'image dans la surface
+                                        // image=SDL_LoadBMP(file_image_name); fonction standard de la SDL,
+                                        // uniquement possible si l'image est au format bmp */
+  if (my_image == NULL)
+    end_sdl(0, "Chargement de l'image impossible", window, renderer);
+
+  my_texture = SDL_CreateTextureFromSurface(renderer, my_image); // Chargement de l'image de la surface vers la texture
+  SDL_FreeSurface(my_image);                                     // la SDL_Surface ne sert que comme élément transitoire
+  if (my_texture == NULL)
+    end_sdl(0, "Echec de la transformation de la surface en texture", window, renderer);
+
+  return my_texture;
+}
+
+
+
+void AffichageTextureFenetreComplete(SDL_Texture *my_texture, SDL_Window *window,
+                                     SDL_Renderer *renderer)
+{
+  SDL_Rect
+      source = {0},            // Rectangle définissant la zone de la texture à récupérer
+      window_dimensions = {0}, // Rectangle définissant la fenêtre, on n'utilisera que largeur et hauteur
+      destination = {0};       // Rectangle définissant où la zone_source doit être déposée dans le renderer
+
+  SDL_GetWindowSize(
+      window, &window_dimensions.w,
+      &window_dimensions.h); // Récupération des dimensions de la fenêtre
+  SDL_QueryTexture(my_texture, NULL, NULL,
+                   &source.w, &source.h); // Récupération des dimensions de l'image
+
+  destination = window_dimensions; // On fixe les dimensions de l'affichage à  celles de la fenêtre
+
+  /* On veut afficher la texture de façon à ce que l'image occupe la totalité de la fenêtre */
+
+  SDL_RenderCopy(renderer, my_texture,
+                 &source,
+                 &destination); // Création de l'élément à afficher
+}
+
+void AnimationImage(SDL_Texture *my_texture,
+                    SDL_Window *window,
+                    SDL_Renderer *renderer,
+                    int i)
+{
+  SDL_Rect
+      source = {0},            // Rectangle définissant la zone de la texture à récupérer
+      window_dimensions = {0}, // Rectangle définissant la fenêtre, on n'utilisera que largeur et hauteur
+      destination = {0};       // Rectangle définissant où la zone_source doit être déposée dans le renderer
+
+  SDL_GetWindowSize(
+      window, &window_dimensions.w,
+      &window_dimensions.h); // Récupération des dimensions de la fenêtre
+  SDL_QueryTexture(my_texture, NULL, NULL,
+                   &source.w,
+                   &source.h); // Récupération des dimensions de l'image
+
+  /* On décide de déplacer dans la fenêtre         cette image */
+  float zoom = 0.25; // Facteur de zoom entre l'image source et l'image affichée
+
+  destination.w = source.w * zoom; // On applique le zoom sur la largeur
+  destination.h = source.h * zoom; // On applique le zoom sur la hauteur
+  destination.y =
+      (window_dimensions.w - destination.w) / 6;   // On centre en haut
+  float h = (window_dimensions.h - destination.h); // largeur du déplacement à effectuer
+
+  destination.x = h * 0.005 * i; // hauteur en fonction du numéro d'image
+
+  SDL_RenderCopy(renderer, my_texture, &source, &destination); // Préparation de l'affichage
+                                                               // Pause en ms
+}
+
+void AnimationSprite(SDL_Texture *my_texture,
+                     SDL_Window *window,
+                     SDL_Renderer *renderer,
+                     SDL_Texture *nuage,
+                     SDL_Texture *fond)
+{
+  SDL_Rect
+      source = {0},            // Rectangle définissant la zone totale de la planche
+      window_dimensions = {0}, // Rectangle définissant la fenêtre, on n'utilisera que largeur et hauteur
+      destination = {0},       // Rectangle définissant où la zone_source doit être déposée dans le renderer
+      state = {0};             // Rectangle de la vignette en cours dans la planche
+
+  SDL_GetWindowSize(window, // Récupération des dimensions de la fenêtre
+                    &window_dimensions.w,
+                    &window_dimensions.h);
+  SDL_QueryTexture(my_texture, // Récupération des dimensions de l'image
+                   NULL, NULL,
+                   &source.w, &source.h);
+
+  /* Mais pourquoi prendre la totalité de l'image, on peut n'en afficher qu'un morceau, et changer de morceau :-) */
+
+  int nb_images = 9;                   // Il y a 8 vignette dans la ligne de l'image qui nous intéresse
+  float zoom = 6;                      // zoom, car ces images sont un peu petites
+  int offset_x = source.w / nb_images, // La largeur d'une vignette de l'image, marche car la planche est bien réglée
+      offset_y = source.h / 4 + 1;     // La hauteur d'une vignette de l'image, marche car la planche est bien réglée
+
+  state.x = 0;            // La première vignette est en début de ligne
+  state.y = 3 * offset_y; // On s'intéresse à la 4ème ligne, le bonhomme qui court
+  state.w = offset_x;     // Largeur de la vignette
+  state.h = offset_y;     // Hauteur de la vignette
+
+  destination.w = offset_x * zoom; // Largeur du sprite à l'écran
+  destination.h = offset_y * zoom; // Hauteur du sprite à l'écran
+
+  destination.y = // La course se fait en milieu d'écran (en vertical)
+      (window_dimensions.h - destination.h) / 2;
+
+  SDL_Event event;
+  SDL_bool program_on = SDL_TRUE;
+  int i = 0;
+
+  while (program_on)
+  {
+
+    if (SDL_PollEvent(&event))
+    { // Tant que la file des évènements stockés n'est pas vide et qu'on n'a pas
+      // terminé le programme Défiler l'élément en tête de file dans 'event'
+      switch (event.type)
+      {                         // En fonction de la valeur du type de cet évènement
+      case SDL_QUIT:            // Un évènement simple, on a cliqué sur la x de la // fenêtre
+        program_on = SDL_FALSE; // Il est temps d'arrêter le programme
+        break;
+      case SDL_KEYDOWN: // Le type de event est : une touche appuyée
+                        // comme la valeur du type est SDL_Keydown, dans la partie 'union' de
+                        // l'event, plusieurs champs deviennent pertinents
+        switch (event.key.keysym.sym)
+        {        // la touche appuyée est ...
+        default: // Une touche appuyée qu'on ne traite pas
+          break;
+        }
+        break;
+      }
+    }
+    SDL_RenderClear(renderer);
+
+    AffichageTextureFenetreComplete(fond, window, renderer);
+    AnimationImage(nuage, window, renderer, i);
+    destination.x = i * 4;   // Position en x pour l'affichage du sprite
+    state.x += offset_x; // On passe à la vignette suivante dans l'image
+    state.x %= source.w; // La vignette qui suit celle de fin de ligne est
+    // celle de début de ligne
+    SDL_RenderCopy(renderer, my_texture, // Préparation de l'affichage
+                   &state,
+                   &destination);
+
+    SDL_RenderPresent(renderer);
+    i++;
+
+    SDL_Delay(100); // Petite pause
+  }
+}
+```
+
+### Vidéo
+
+<p style="text-align: center;"><iframe width="80%" height="315" src="https://www.youtube.com/embed/kCX8HTbOmO4" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe></p>
+
+# Jeu de la vie
+
+## Principe implémenté
+
+Nous avons implémenté un jeu de la vie en mode "limite" et Tor.
+On démarage on clique sur les cases de l'écran que l'on souhaitre mettre en cellule vivante.
+
+Durant la préparation on peut cliquer sur:
+
+* **w** : pour enregistrer la dernière configuration
+* **x** : pour charger la dernière configuration
+* **v** : pour Clear le tableau et supprimer toute les cellules vivantes
+
+On démarre la simulation avec **SPACE**.
+
+A tout moment durant la simulation on peut cliquer sur **c** pour changer le mode et sur la flèche de droite ou de gauche pour accélèrer ou ralentir la simulation !
+
+On detecte à chaque itération si on a pas stagné et que plus rien ne bouge !
+
+Les masques de vie et de mort sont très facilement modifiables dans le code et les règles sont visibles graphiquement sur la fenêtre SDL en haut !
+
+### Problème rencontré
+
+Nous avons recontré un problème que nous avons solutionné comme nous allons vous l'expliquer plus tard
+
+### Explication
+
+On a voulu faire une taille de fenetre responsive mais lorsqu'on fait cela on rencontre des problèmes car pour tracer la grille du jeu on divise la fenetre par le nombre de case de notre tableau C.
+A cette etape si la fenetre n'est pas divisible par le nombre de case du tableau alors on fait des arrondis et un enchainement d'arrondi de calcul provoque le fait que le damier ne couvre pas toute la fenêtre !
+
+<p style="text-align: center;"><img style="width: 80%" src="images/erreurVie.png"/></p>
+
+### Solution 
+
+On pose une taille de fenêtre fixe au démarrage (800x825 car 25 px pour le menu) et on divise la fenêtre par le nombre de case du tableau en s'assurant que le nombre de case est un diviseur de 800.
+
+## Video
+
+Voici une démonstration vidéo de notre programme
+
+<p style="text-align: center;"><iframe width="80%" height="315" src="https://www.youtube.com/embed/JhQonr1lVa0" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe></p>
+
+
+# Chef d'oeuvre
+
+## Présentation
+
+Nous avons codé une version améliorée du fameux **Snake**. Dans celui-ci, le but n'esp plus seulement de manger toutes les pommes mais aussi de survivre le plus longtemps possible ! En effet l le score est lié au temps qui s'écoule durant la partie. Pour forcer l'utilisateur à jouer avec les pommes on mis un multiplicateur de point chaque seconde en fonction de la taille du serpent. De plus, ce dit serpent possède plusieurs état tel que "rapide", "très rapide" ou encore endromi. Le choix de l'état de notre serpent est choisit selon **une chaine de Markov** à chaque fois que le serpent mange une pomme !
+
+Les règles on était créées par Bertrand. Les voicis:
+
+ | Classique | Lent | Rapide | Très rapide | Endormi
+-------------- | -------------- | -------------- | -------------- | -------------- | --------------
+Classique| 0.4 | 0.1 | 0.3 | 0.15 | 0.05
+Lent | 0.5 | 0.15 | 0.25 | 0 | 0.1
+Rapide | 0.14 | 0.03 | 0.5 | 0.3 | 0.03
+Très rapide | 0.08 | 0.07 | 0.15 | 0.2 | 0.6
+Endormi | 0 | 0.3 | 0 | 0 | 0.7
+
+On a essayé de donner un sens à ces valeurs
+
+blablabla
+
+
+On enregistre le meilleur score dans un fichier pour les futures executions.
+
+Nous nous sommes séparés les tâches par personnes:
+
+* Lilian a géré toutes la partie graphique
+* Bertrand et Charlotte tous les algorithmes de déplacement du serpents dans le tableau et liés aux chaines de Markov.
+* Nous sommes aidé les un les autres sur certains points quand un de nos camarades commencaient à peiner.
+
+## Vidéo
+
+<p style="text-align: center;"><iframe width="80%" height="315" src="https://www.youtube.com/embed/NMooU7Xmg0M" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe></p>
+
+## A améliorer
+
+Voici quelques idées de choses à améliorer sur notre projet si on avait eu plus de temps:
+
+* Rajouter des murs de manières aléatoires si le joueur ne ramasse pas de pomme
+* Permettre de rejouer apres une defaite
+* Rajouter un sprite de tete pour le serpent
