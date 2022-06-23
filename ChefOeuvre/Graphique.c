@@ -276,6 +276,8 @@ void GestionEvenement(SDL_Renderer *renderer, TTF_Font *font,
 {
     /*Variable utile*/
     SDL_bool activation = SDL_TRUE;
+    SDL_bool enJeu = SDL_FALSE;
+    SDL_bool depart = SDL_TRUE;
     SDL_Event event;
 
     /*Gestion animation explosion*/
@@ -306,7 +308,8 @@ void GestionEvenement(SDL_Renderer *renderer, TTF_Font *font,
 
     // score en fonction du temps qui passe
     int score = 0;
-    long timeDebut = SDL_GetTicks();
+    int multiplicateur = taille_serpent / 3;
+    long LastTick = 0;
 
     while (activation)
     {
@@ -333,6 +336,10 @@ void GestionEvenement(SDL_Renderer *renderer, TTF_Font *font,
                 case SDLK_DOWN:
                     direction = 1;
                     break;
+                case SDLK_SPACE:
+                    if (!enJeu)
+                        enJeu = SDL_TRUE;
+                    break;
                 default:
                     break;
                 }
@@ -356,56 +363,73 @@ void GestionEvenement(SDL_Renderer *renderer, TTF_Font *font,
         AffichageGrillage(renderer, pomme, plateau);
         AffichageMenu(renderer, font, logoMenu, meilleurScore, score);
 
-        /*Mort serpent*/
-        if (infoIter == 0) // fin de jeu
+        if (enJeu)
         {
-            if (iter_explo == 0)
-            { // premiere frame on calcul position
-                int x_explo, y_explo;
-                PassageTableauCoor(position[0][0], position[0][1], &x_explo, &y_explo);
-                pos_explosion.x = x_explo;
-                pos_explosion.y = y_explo;
-                meilleurScore = MeilleurScore(score);
-            }
-            if (iter_explo < 25)
+            if (depart)
             {
-                Explosion(renderer, explosion, pos_explosion, iter_explo, etats);
-                iter_explo++;
+                depart = !depart;
+                LastTick = SDL_GetTicks();
             }
-        }
 
-        else // en vie
-        {
-            // Calcul du score en fonction du temps ecoulé
-            score = (SDL_GetTicks() - timeDebut) / 1000; // en mili sec donc /1000 pour sec
-
-            if (etat_markov != 4)
-            { // pas endormi
-                infoIter = TestDeplacement(position, direction, &taille_serpent, plateau);
-                if (infoIter == 1) // il a mangé
+            /*Mort serpent*/
+            if (infoIter == 0) // fin de jeu
+            {
+                if (iter_explo == 0)
+                { // premiere frame on calcul position
+                    int x_explo, y_explo;
+                    PassageTableauCoor(position[0][0], position[0][1], &x_explo, &y_explo);
+                    pos_explosion.x = x_explo;
+                    pos_explosion.y = y_explo;
+                    meilleurScore = MeilleurScore(score);
+                }
+                if (iter_explo < 25)
                 {
-                    // on supprime la pomme
-                    SupprimePomme(plateau, position, direction);
-                    // on ajoute une nouvelle pomme
-                    posPomme(plateau, position, taille_serpent);
-                    // calcul de la nouvelle vitesse possible selon markov
-                    etat_markov = passageMarkov(etat_markov);
-                    //printf("etat_markov : %d\n", etat_markov);
-                    vitesse_prog = vitesseParEtat[etat_markov];
+                    Explosion(renderer, explosion, pos_explosion, iter_explo, etats);
+                    iter_explo++;
+                }
+                if(iter_explo == 25)
+                { // on a fini
+                    enJeu = SDL_FALSE;
                 }
             }
-            else
-            { // endormi juste on fait des trirages mais le serpent bouge po
-                etat_markov = passageMarkov(etat_markov);
-                vitesse_prog = vitesseParEtat[etat_markov];
-                //printf("etat_markov : %d\n", etat_markov);
-            }
 
+            else // en vie
+            {
+                // Calcul du score en fonction du temps ecoulé
+                score += ((SDL_GetTicks() - LastTick) / 25) * multiplicateur; // en mili sec donc /1000 pour sec
+                LastTick = SDL_GetTicks();
+
+                if (etat_markov != 4)
+                { // pas endormi
+                    infoIter = TestDeplacement(position, direction, &taille_serpent, plateau);
+                    if (infoIter == 1) // il a mangé
+                    {
+                        // on supprime la pomme
+                        SupprimePomme(plateau, position, direction);
+                        // on ajoute une nouvelle pomme
+                        posPomme(plateau, position, taille_serpent);
+                        // calcul de la nouvelle vitesse possible selon markov
+                        etat_markov = passageMarkov(etat_markov);
+                        // printf("etat_markov : %d\n", etat_markov);
+                        vitesse_prog = vitesseParEtat[etat_markov];
+                        multiplicateur = taille_serpent / 3; // update multiplicateur
+                    }
+                }
+                else
+                { // endormi juste on fait des trirages mais le serpent bouge po
+                    etat_markov = passageMarkov(etat_markov);
+                    vitesse_prog = vitesseParEtat[etat_markov];
+                    // printf("etat_markov : %d\n", etat_markov);
+                }
+
+                AffichageSerpent(position, renderer, taille_serpent);
+            }
+        }
+        if(depart) //menu demarrage on attend l'appuie sur espace
+        {
             AffichageSerpent(position, renderer, taille_serpent);
         }
-
         SDL_RenderPresent(renderer);
-
         SDL_Delay(vitesse_prog); // depend pour fps avec horloge
     }
 }
