@@ -184,9 +184,16 @@ void AffichageGrillage(SDL_Renderer *renderer, SDL_Texture *pomme, int **plateau
                 SDL_SetRenderDrawColor(renderer, 181, 223, 103, 255);
                 variation = SDL_TRUE;
             }
+
+            // si bordure
+            if (plateau[i][j] == 2)
+            {
+                SDL_SetRenderDrawColor(renderer, 0, 0, 0, 255);
+            }
+
             SDL_RenderFillRect(renderer, &element_grillage);
 
-            if (plateau[i][j])
+            if (plateau[i][j] == 1)
             {
                 AffichagePomme(renderer, pomme, element_grillage);
             }
@@ -195,6 +202,22 @@ void AffichageGrillage(SDL_Renderer *renderer, SDL_Texture *pomme, int **plateau
         element_grillage.x = 0;
         element_grillage.y += element_grillage.h;
         variation = !variation;
+    }
+}
+
+void AffichageSerpent(int **serpent, SDL_Renderer *renderer, int taille_serpent)
+{
+    SDL_Rect element_serpent = {0};
+    element_serpent.w = FENETREWIDTH / DIMENSION_TAB_JEU;
+    element_serpent.h = (FENETREHEIGHT - TAILLE_MENU) / DIMENSION_TAB_JEU;
+    int x, y;
+    for (int j = 0; j < taille_serpent; j++)
+    {
+        PassageTableauCoor(serpent[j][0], serpent[j][1], &x, &y);
+        element_serpent.x = x;
+        element_serpent.y = y;
+        SDL_SetRenderDrawColor(renderer, 90, 175, 237, 255);
+        SDL_RenderFillRect(renderer, &element_serpent);
     }
 }
 
@@ -238,23 +261,24 @@ void GestionEvenement(SDL_Window *window, SDL_Renderer *renderer, TTF_Font *font
     SDL_bool activation = SDL_TRUE;
     SDL_Event event;
 
-
     /*Gestion animation explosion*/
     SDL_Rect etats[25];
     GenereTabExplosion(etats, explosion);
+    int iter_explo = 0;
+    SDL_Rect pos_explosion = {0, 0, FENETREWIDTH * TAILLE_EXPLOSION / DIMENSION_TAB_JEU, (FENETREHEIGHT - TAILLE_MENU) * TAILLE_EXPLOSION / DIMENSION_TAB_JEU};
+
+    /*Gestion PLateau*/
+    InitPlateau(plateau);
 
     /*Gestion Serpent*/
     InitialisationSerpent(position);
     int taille_serpent = 3;
-    afficher_tableau(position, DIMENSION_TAB_POS, 2);
-    
 
-    /* a degager*/
-    int test_explo = 0;
-    SDL_Rect test = {100, 100, FENETREWIDTH * TAILLE_EXPLOSION / DIMENSION_TAB_JEU, (FENETREHEIGHT - TAILLE_MENU) * TAILLE_EXPLOSION / DIMENSION_TAB_JEU};
-    int x = 0, y = 0;
-    PassageTableauCoor(1, 2, &x, &y);
-    printf("-> %d %d <--\n", x, y);
+    /*direction initiale va a droite*/
+    int direction = 3;
+
+    /*info sur le deplacement*/
+    int infoIter = 2; // tout va bien
 
     // score en fonction du temps qui passe
     int score = 0;
@@ -273,21 +297,27 @@ void GestionEvenement(SDL_Window *window, SDL_Renderer *renderer, TTF_Font *font
             case SDL_KEYDOWN:
                 switch (event.key.keysym.sym)
                 {
-                case SDLK_SPACE:
-                    break;
                 case SDLK_LEFT:
+                    direction = 3;
                     break;
                 case SDLK_RIGHT:
+                    direction = 2;
+                    break;
+                case SDLK_UP:
+                    direction = 0;
+                    break;
+                case SDLK_DOWN:
+                    direction = 1;
                     break;
                 default:
                     break;
                 }
                 break;
+
             case SDL_MOUSEBUTTONDOWN: // Click souris
                 if (SDL_GetMouseState(NULL, NULL) &
                     SDL_BUTTON(SDL_BUTTON_LEFT))
                 { // clique droit
-                    printf("%d %d\n", event.button.x, event.button.y);
                 }
                 break;
             default: // poubelle à événement inutile
@@ -295,28 +325,40 @@ void GestionEvenement(SDL_Window *window, SDL_Renderer *renderer, TTF_Font *font
             }
         }
 
+        // Nettoyage render
+        SDL_RenderClear(renderer);
 
+        /*Affichage*/
+        AffichageGrillage(renderer, pomme, plateau);
+        AffichageMenu(renderer, font, logoMenu, meilleurScore, score);
 
-
-        // Calcul du score en fonction du temps ecoulé
-        score = (SDL_GetTicks() - timeDebut) / 1000; // en mili sec donc /1000 pour sec
-
-        //SDL_RenderClear(renderer);
-        //AffichageGrillage(renderer, pomme, plateau);
-        //AffichageMenu(renderer, font, logoMenu, meilleurScore, score);
-        /*if (test_explo < 25)
+        /*Mort serpent*/
+        if (infoIter == 0) // fin de jeu
         {
-            Explosion(renderer, explosion, test, test_explo, etats);
-            test_explo++;
-            test_explo %=  24;
-        }*/
-        //SDL_RenderPresent(renderer);
+            if (iter_explo == 0)
+            { // premiere frame on calcul position
+                int x_explo, y_explo;
+                PassageTableauCoor(position[0][0], position[0][1], &x_explo, &y_explo);
+                pos_explosion.x = x_explo;
+                pos_explosion.y = y_explo;
+            }
+            if (iter_explo < 25)
+            {
+                Explosion(renderer, explosion, pos_explosion, iter_explo, etats);
+                iter_explo++;
+            }
+        }
 
-        decalagedroite(position, 1, 1, &taille_serpent);
+        else // on continue
+        {
+            // Calcul du score en fonction du temps ecoulé
+            score = (SDL_GetTicks() - timeDebut) / 1000; // en mili sec donc /1000 pour sec
+            infoIter = TestDeplacement(position, direction, &taille_serpent, plateau);
+            AffichageSerpent(position, renderer, taille_serpent);
+        }
 
+        SDL_RenderPresent(renderer);
 
-        afficher_tableau(position, DIMENSION_TAB_POS, 2);
-        printf("taille serpent = %d\n", taille_serpent);
-        SDL_Delay(2000); // depend pour fps avec horloge
+        SDL_Delay(100); // depend pour fps avec horloge
     }
 }
