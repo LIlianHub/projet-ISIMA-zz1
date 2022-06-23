@@ -116,7 +116,7 @@ void Animation(SDL_Window *window,
 
   //découpage du sprite et on les met tous dans un tableau de SDL_Rect pour pouvoir les utilsez dans l'animation
   
-  SDL_Rect planche = {0};
+  SDL_Rect planche = {0}, destination2 = {0};
   SDL_QueryTexture(ballon, NULL, NULL, &planche.w, &planche.h);
   int offsetX = planche.w / 4;
   int offsetY = planche.h / 3; //3 lignes et 4 colonnes
@@ -135,7 +135,9 @@ void Animation(SDL_Window *window,
 	  indice++;
         }
     }
-      
+
+  
+  
 
   SDL_bool program_on = SDL_TRUE;
   SDL_Event event;
@@ -158,14 +160,27 @@ void Animation(SDL_Window *window,
 
       
       /*animation*/
-       
 
-      SDL_RenderClear(renderer);                                // Effacer l'image précédente
-      SDL_RenderCopy(renderer, ciel, &source, &destination);    // Préparation de l'affichage
-      AffichageObjet(renderer, panier, posPanier);              // Affichage du panier
-      SDL_RenderPresent(renderer);                              // Affichage de la nouvelle image
-      SDL_Delay(30);
+      SDL_Rect state = {0};
+      int speed = 9;
+      for (int x = 0; x <window_dimensions.w - destination2.w; x += speed){
+	destination2.x = x;
 
+	state.x +=etats[x%12].x;
+	state.x %=source.w;
+	
+	
+      
+
+	SDL_RenderClear(renderer);                                // Effacer l'image précédente
+
+	SDL_RenderCopy(renderer, ballon, &state, &destination2);   //ballon
+	
+	SDL_RenderCopy(renderer, ciel, &source, &destination);    // Préparation de l'affichage
+	AffichageObjet(renderer, panier, posPanier);              // Affichage du panier
+	SDL_RenderPresent(renderer);                              // Affichage de la nouvelle image
+	SDL_Delay(30);
+      }
     }
 }
 
@@ -193,7 +208,7 @@ int main(int argc, char **argv)
 	 screen.w, screen.h);
 
   /* Création de la fenêtre */
-  window = SDL_CreateWindow("3 POINTS !!!!!!!",
+  window = SDL_CreateWindow("3 POINTS !!!!!!! .... Ah non en fait...",
 			    SDL_WINDOWPOS_CENTERED,
 			    SDL_WINDOWPOS_CENTERED, screen.w * 0.66,
 			    screen.h * 0.66,
