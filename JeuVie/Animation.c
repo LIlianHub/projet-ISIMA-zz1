@@ -156,7 +156,7 @@ void Affichage(SDL_Window *window, SDL_Renderer *renderer, int FenetreW, int Fen
 
         SDL_Surface *text_surface3 = NULL; // la surface  (uniquement transitoire)
 
-        SDL_Color color2 = {255,0,0,255};
+        SDL_Color color2 = {255, 0, 0, 255};
 
         text_surface3 = TTF_RenderText_Blended(FontTitre, "On stagne !", color2); // création du texte dans la surface
 
