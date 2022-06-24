@@ -1385,7 +1385,7 @@ On enregistre le meilleur score dans un fichier pour les futures exécutions.
 
 Nous nous sommes séparés les tâches par personnes:
 
-* Lilian a géré toutes la partie graphique
+* Lilian a géré toute la partie graphique
 * Bertrand et Charlotte ont géré tous les algorithmes de déplacement du serpents dans le tableau et liés aux chaines de Markov.
 * Nous nous sommes aidés les uns les autres sur certains points quand un de nos camarades commencait à peiner.
 
