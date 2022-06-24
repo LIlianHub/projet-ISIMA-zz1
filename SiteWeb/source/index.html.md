@@ -70,15 +70,15 @@ Avancé | Membre | Tâche
 -------------- | -------------- | --------------
 ✔️| Commun | Finalisation du Jeu de la vie
 ✔️| Commun | Répartition des tâches du "Premier Chef d'Oeuvre"
-✔️| Commun | Commencement du premier chef d'oeuvre
-✔️| BALLEJOS Lilian | Mise à jour du Site en prévision de Vendredi
+✔️| Commun | Commencement du premier Chef d'Oeuvre
+✔️| BALLEJOS Lilian | Mise à jour du site en prévision de vendredi
 
 ### 22/06/22 (Jeudi)
 
 Avancé | Membre | Tâche
 -------------- | -------------- | --------------
-✔️| BALLEJOS Lilian | Remplissage du site pour la présentation vendredi
-✔️| Commun |  Finalisation du Chef d'oeuvre
+✔️| BALLEJOS Lilian | Remplissage du site pour la présentation de vendredi
+✔️| Commun |  Finalisation du Chef d'Oeuvre
 
 
 # Xfenetré
@@ -417,8 +417,8 @@ Les fenêtres s'affichent petit à petit pour former un U. Puis elles se rassemb
 
 ### Explication et Code
 
-Mise en place d'un programme qui créée une fenêtre blanche et fais apparaitre deux ellipses qui se croisent à intervales réguliers et forment des ronds.
-Pour faire cela il a suffit de changer le rayon des cercles sur la composantes X et Y en le décalant de 10 de taille. Ensuite on inverse le rayon de la composante X et Y entre les deux ellipses afin de les inverser entre elles ! De plus on joue avec les composantes de couleur pour changer la couleur des carrés qui forment les ellipses.
+Mise en place d'un programme qui crée une fenêtre blanche et fait apparaître deux ellipses qui se croisent à intervalles réguliers et forment des ronds.
+Pour faire cela, il a suffit de changer le rayon des cercles sur les composantes X et Y en le décalant de 10 de taille. Ensuite on inverse le rayon des composante X et Y entre les deux ellipses afin de les inverser entre elles ! De plus on joue avec les composantes de couleur pour changer la couleur des carrés qui forment les ellipses.
 
 ```c
 void draw(SDL_Renderer *renderer, int largeur, int hauteur)
@@ -824,7 +824,7 @@ void draw(SDL_Renderer* renderer) {
 ### Explication et Code
 
 Placement d'une image de fond de nuage en mouvement qui va de gauche à droite et se replace à gauche quand elle va déborder !
-J'ai ensuite posé une texture de sol **très** inspirée de l'univers d'un plombier Italien rouge.
+J'ai ensuite posé une texture de sol **très** inspirée de l'univers d'un plombier italien rouge.
 Ensuite j'affiche frame par frame un oiseau qui traverse l'écran de gauche à droite !
 
 ```c
@@ -1151,7 +1151,7 @@ void Animation(SDL_Window *window,
 
 Affichage d'un jardin puis d'un nuage et enfin d'un dinosaure qui court.
 J'affiche en fond un jardin avec un nuage qui traverse le haut du jardin. 
-En bas de l'image, on peut voir un dinosaure bleu qui traverse en courant 
+En bas du nuage, on peut voir un dinosaure bleu qui traverse en courant. 
 
 ```c
 SDL_Texture *ImageEnTexture(char *file_image_name, SDL_Window *window, SDL_Renderer *renderer)
@@ -1321,8 +1321,8 @@ void AnimationSprite(SDL_Texture *my_texture,
 
 ## Principe implémenté
 
-Nous avons implémenté un jeu de la vie en mode "limite" et Tor.
-On démarage on clique sur les cases de l'écran que l'on souhaitre mettre en cellule vivante.
+Nous avons implémenté un jeu de la vie en mode "limite" et en mode Tor.
+Au démarage on clique sur les cases de l'écran que l'on souhaite mettre en cellule vivante.
 
 Durant la préparation on peut cliquer sur:
 
@@ -1334,18 +1334,18 @@ On démarre la simulation avec **SPACE**.
 
 A tout moment durant la simulation on peut cliquer sur **c** pour changer le mode et sur la flèche de droite ou de gauche pour accélèrer ou ralentir la simulation !
 
-On detecte à chaque itération si on a pas stagné et que plus rien ne bouge !
+On détecte à chaque itération si on a pas stagné et que plus rien ne bouge !
 
 Les masques de vie et de mort sont très facilement modifiables dans le code et les règles sont visibles graphiquement sur la fenêtre SDL en haut !
 
 ### Problème rencontré
 
-Nous avons recontré un problème que nous avons solutionné comme nous allons vous l'expliquer plus tard
+Nous avons recontré un problème que nous avons solutionné comme nous allons vous l'expliquer plus bas.
 
 ### Explication
 
-On a voulu faire une taille de fenetre responsive mais lorsqu'on fait cela on rencontre des problèmes car pour tracer la grille du jeu on divise la fenetre par le nombre de case de notre tableau C.
-A cette etape si la fenetre n'est pas divisible par le nombre de case du tableau alors on fait des arrondis et un enchainement d'arrondi de calcul provoque le fait que le damier ne couvre pas toute la fenêtre !
+On a voulu faire une taille de fenêtre responsive mais lorsque l'on fait cela on rencontre des problèmes car pour tracer la grille du jeu on divise la fenetre par le nombre de case de notre tableau C.
+A cette étape si la fenêtre n'est pas divisible par le nombre de case du tableau alors on fait des arrondis et un enchaînement d'arrondis de calculs provoque le fait que le damier ne couvre pas toute la fenêtre !
 
 <p style="text-align: center;"><img style="width: 80%" src="images/erreurVie.png"/></p>
 
@@ -1364,9 +1364,9 @@ Voici une démonstration vidéo de notre programme
 
 ## Présentation
 
-Nous avons codé une version améliorée du fameux **Snake**. Dans celui-ci, le but n'esp plus seulement de manger toutes les pommes mais aussi de survivre le plus longtemps possible ! En effet l le score est lié au temps qui s'écoule durant la partie. Pour forcer l'utilisateur à jouer avec les pommes on mis un multiplicateur de point chaque seconde en fonction de la taille du serpent. De plus, ce dit serpent possède plusieurs état tel que "rapide", "très rapide" ou encore endromi. Le choix de l'état de notre serpent est choisit selon **une chaine de Markov** à chaque fois que le serpent mange une pomme !
+Nous avons codé une version améliorée du fameux **Snake**. Dans celui-ci, le but n'est plus seulement de manger toutes les pommes mais aussi de survivre le plus longtemps possible ! En effet le score est lié au temps qui s'écoule durant la partie. Pour forcer l'utilisateur à jouer avec les pommes on a mis un multiplicateur de points à chaque seconde en fonction de la taille du serpent. De plus, ce dit serpent possède plusieurs états tels que "rapide", "très rapide" ou encore endromi. Le choix de l'état de notre serpent est choisi selon **une chaine de Markov** à chaque fois que le serpent mange une pomme !
 
-Les règles on était créées par Bertrand. Les voicis:
+Les règles ont été créées par Bertrand. Les voici:
 
  | Classique | Lent | Rapide | Très rapide | Endormi
 -------------- | -------------- | -------------- | -------------- | -------------- | --------------
@@ -1378,16 +1378,16 @@ Endormi | 0 | 0.3 | 0 | 0 | 0.7
 
 On a essayé de donner un sens à ces valeurs
 
-blablabla
+Nous avons essayé de modéliser la matrice de Markov telle que   :
+lorsque le serpent mange une pomme, il a une bonne chance de rester à la même vitesse ou de passer à la vitesse supérieur (pour rendre le jeu plus dure puisque le but n'est pas de finir le snake mais de tenir le plus longtemps) et en suivant la logique de la digestion, si il est rapide alors il a mangé beaucoup de pommes et donc il doit digérer donc il a aussi une chance de s'endormir qui augmente avec la vitesse. Lorsqu'il se réveille le serpent est un peu encore endormi donc il passe forcement à la plus petite vitesse.
 
-
-On enregistre le meilleur score dans un fichier pour les futures executions.
+On enregistre le meilleur score dans un fichier pour les futures exécutions.
 
 Nous nous sommes séparés les tâches par personnes:
 
 * Lilian a géré toutes la partie graphique
-* Bertrand et Charlotte tous les algorithmes de déplacement du serpents dans le tableau et liés aux chaines de Markov.
-* Nous sommes aidé les un les autres sur certains points quand un de nos camarades commencaient à peiner.
+* Bertrand et Charlotte ont géré tous les algorithmes de déplacement du serpents dans le tableau et liés aux chaines de Markov.
+* Nous nous sommes aidés les uns les autres sur certains points quand un de nos camarades commencait à peiner.
 
 ## Vidéo
 
@@ -1395,8 +1395,8 @@ Nous nous sommes séparés les tâches par personnes:
 
 ## A améliorer
 
-Voici quelques idées de choses à améliorer sur notre projet si on avait eu plus de temps:
+Voici quelques idées de choses à améliorer sur notre projet si nous avions eu plus de temps:
 
 * Rajouter des murs de manières aléatoires si le joueur ne ramasse pas de pomme
-* Permettre de rejouer apres une defaite
-* Rajouter un sprite de tete pour le serpent
+* Permettre de rejouer après une défaite
+* Rajouter un sprite de tête pour le serpent
