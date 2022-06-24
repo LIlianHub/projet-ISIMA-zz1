@@ -25,7 +25,7 @@ meta:
 # Accueil
 ## Membres du Groupe 31
 
-Bienvenue sur le site web des membres du groupe 31 du Projet ZZ1 2022, nous sommes
+Bienvenue sur le site web des membres du groupe 31 du Projet ZZ1 2022, nous sommes :
 
 * BALLEJOS Lilian
 * CORNUEZ Charlotte
