@@ -1,6 +1,6 @@
 # Projet ZZ1 du Groupe 31
 
-## Membre
+## Membres
 
 * BALLEJOS Lilian
 * CORNUEZ Charlotte
@@ -13,6 +13,9 @@
 * ChefOeuvre: Contient notre chef d'oeuvre (projet de la première semaine) "Serpent"
 * SiteWeb: Contient notre site web et le logiciel qui le génère
 
+## Support de présentation
+
+Notre site Web se trouve à ce lien [ici](https://perso.isima.fr/~liballejos/projetZZ1)
 
 
 
