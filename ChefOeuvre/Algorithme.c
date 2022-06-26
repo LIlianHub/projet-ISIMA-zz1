@@ -320,6 +320,68 @@ void posPomme(int **plateau,
     }
 }
 
+
+/*GestionMuret*/
+
+
+void posMuret(int **plateau,
+	      int **serpent,
+	      int tailleSerpent)
+{
+
+  int i, j, m;
+  int compteur = 0;
+  int caseVide;
+
+  int caseDispo = ((DIMENSION_TAB_JEU - 2) * (DIMENSION_TAB_JEU - 2)) - tailleSerpent - 1;
+
+  int placement = (rand() % caseDispo) + 1;
+
+  for( i = 1 ; i < DIMENSION_TAB_JEU -1 ; i++)
+    {
+      for ( j = 1 ; j < DIMENSION_TAB_JEU -1 ; j++)
+	{
+
+	  caseVide = 1;
+
+	  if ( plateau[i][j] == 1)   // on vérifie si la case est occupé par la pomme
+	    {
+
+	      caseVide = 0;
+	      
+	    }
+	  else
+	    {
+	      for( m = 0 ; m < tailleSerpent ; m++)
+		{
+		  if ((i == serpent[m][0] && j == serpent[m][1])) /* on vérifie si la case est
+								     occupé par le serpent*/
+		    {
+
+		      caseVide = 0;
+		
+		    }
+		}
+	    }
+	  if (caseVide == 1)
+	    {
+
+	      compteur ++;
+	      
+	    }
+	  if (compteur == placement)
+	    {
+
+	      plateau[i][j] = 10;       // en partant du principe qu'un muret au milieu du plateau = 10
+	      i = DIMENSION_TAB_JEU;    // on incrémente i et j de sorte qu'on sorte de la boucle
+	      j = DIMENSION_TAB_JEU;
+	      
+	    }
+	}
+    }
+}
+
+
 /* Supprime Pomme*/
 void SupprimePomme(int **plateau, int **serpent, int direction)
 {
