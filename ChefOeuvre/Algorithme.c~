@@ -297,7 +297,7 @@ void posPomme(int **plateau,
             for (m = 0; m < tailleSerpent; m++)
             {
 
-                if ((i == serpent[m][0] && j == serpent[m][1]))
+                if ((i == serpent[0][m] && j == serpent[1][m]))
                 {
 
                     caseVide = 0;
