@@ -1,0 +1,124 @@
+#include <stdio.h>
+#include <stdlib.h>
+
+#define DIMENSION_TAB_JEU 10
+#define NBRE_ETATS 16
+#define ALPHA 0.1
+#define LAMBDA 10
+
+
+
+typedef struct etat{
+  int nord;
+  int sud;
+  int est;
+  int ouest;
+  
+}etat;
+
+
+void afficher_tableau(float **tableau, int nb_lignes, int nb_colonnes)
+{
+  int i, j;
+  for (i = 0; i < nb_lignes; i++)
+    {
+
+      for (j = 0; j < nb_colonnes; j++)
+        {
+	  printf("%f ", tableau[i][j]);
+        }
+      printf("\n");
+    }
+  printf("\n");
+}
+float **creer_tableau(int nb_lignes, int nb_colonnes)
+{
+  float **tableau = (float **)malloc(nb_lignes * sizeof(float *));
+  int i;
+  for (i = 0; i < nb_lignes; i++)
+    {
+      tableau[i] = (float *)calloc(nb_colonnes, sizeof(float));
+    }
+  return tableau;
+}
+
+void liberer_tableau(int **tableau, int nb_lignes)
+{
+  int i;
+  for (i = 0; i < nb_lignes; i++)
+    {
+      free(tableau[i]);
+    }
+  free(tableau);
+}
+
+
+/*La Q_Table : 
+ *elle est de la forme :                                                  ACTIONS
+ *                             Q_Table       |     Gauche    |     Droite    |      Bas      |    Haut     |
+ *                   -----------------------------------------------------------------------------------------
+ * orientation :    état0:   (0,0,0,0)       |               |               |               |               |
+ *                  état2:   (0,0,0,1)       |               |               |               |               |
+ *                  état3:   (0,0,1,1)       |               |               |               |               |
+ *                              ...          |     ...       |     ...       |    ...        |     ...       |
+ *    ETATS                     ...          |     ...       |     ...       |    ...        |     ...       |
+ *   (16 états)                 ...          |     ...       |     ...       |    ...        |     ...       |
+ *                  état13:  (1,0,0,1)       |               |               |               |               |
+ *                  état14:  (1,0,1,1)       |               |               |               |               |
+ *                  état15:  (1,1,1,1)       |               |               |               |               |
+ *
+ */
+
+/* un épisode est une partie
+ * 
+ * les états sont composés de (nord,sud,est,ouest) = les différents composants sont des bools (ex :
+ * nord =1 si la pomme est au nord par rapport à la tête du serpent)
+ *
+ * les actions sont  : gauche(0), droite(1), bas(2), haut(3)
+ *
+ *
+ */
+
+
+
+/*explorationSerpent(pos_tete, posPomme, etat, listeEtat, listeAction, liste recompense,
+ *         tailleGrille, Q_Table)
+ *         => le serpent va dans direction aléatoire entre toutes les directions d'état = 1
+ *	          .update listeAction
+ *		  .update pos_tete
+ * 	 => on recalcule l'état avec la pos_tete et pos_Pomme
+ *	          .update listeEtat
+ *	 => testDéplacement pour savoir la récompense
+ *	          .update listeRecompense
+ *	     	  => Si recompense = - 1  : On stoppe l'épisode
+ *		  => Sinon : itération suivante
+ *
+ *
+ *
+ *        ===> On update la Q_Table avec les états
+ *
+ *        ___________> on répète on répère on répète pour avoir une Q_table la plus représentative
+ */
+
+
+/*exploitationSerpent(Q_table, pos_tete, posPomme)
+ *
+ *             => le serpent va faire l'action avec la plus grande QValue en fonction de l'état ou
+ *             il est
+ *                           .update pos_tete
+ *             => on recalcule l'état avec la pose_tete et posPomme
+ *                           .update etat
+ *             => testDeplacement pour savoir la récompense
+ *                     => Si pomme touchée continuer exploitation
+ *                     => Si un mur est touché, perdu 
+ */
+
+
+
+/*int main (){
+  float ** Q_Table = creer_tableau(nbre_Lignes_Q_Table, 4);
+  afficher_tableau(Q_Table, nbre_Lignes_Q_Table, 4);
+
+  return 0;
+  }*/
+
