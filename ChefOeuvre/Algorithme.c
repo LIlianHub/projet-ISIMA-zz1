@@ -297,7 +297,7 @@ void posPomme(int **plateau,
             for (m = 0; m < tailleSerpent; m++)
             {
 
-                if ((i == serpent[0][m] && j == serpent[1][m]))
+                if ((i == serpent[m][0] && j == serpent[m][1]))
                 {
 
                     caseVide = 0;
@@ -319,6 +319,8 @@ void posPomme(int **plateau,
         }
     }
 }
+
+
 
 /* Supprime Pomme*/
 void SupprimePomme(int **plateau, int **serpent, int direction)
