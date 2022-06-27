@@ -29,7 +29,8 @@ void end_sdl(char ok,
              TTF_Font *font,
              SDL_Texture *logo,
              SDL_Texture *pomme,
-             SDL_Texture *explosion)
+             SDL_Texture *explosion,
+             SDL_Texture *table_serpent)
 {
     char msg_formated[255];
     int l;
@@ -75,6 +76,12 @@ void end_sdl(char ok,
     {
         SDL_DestroyTexture(explosion);
         explosion = NULL;
+    }
+
+    if (table_serpent != NULL)
+    {
+        SDL_DestroyTexture(table_serpent);
+        table_serpent = NULL;
     }
 
     TTF_Quit();
@@ -175,7 +182,7 @@ void AffichagePomme(SDL_Renderer *renderer, SDL_Texture *pomme, SDL_Rect pos)
     SDL_RenderCopy(renderer, pomme, &image, &pos);
 }
 
-void AffichageGrillage(SDL_Renderer *renderer, SDL_Texture *pomme, int **plateau)
+void AffichageGrillage(SDL_Renderer *renderer, SDL_Texture *pomme, int **plateau, SDL_Rect etats_serpent[6][16], SDL_Texture *table_serpent)
 {
     SDL_Rect element_grillage;
     element_grillage.x = 0;
@@ -183,29 +190,18 @@ void AffichageGrillage(SDL_Renderer *renderer, SDL_Texture *pomme, int **plateau
     element_grillage.w = FENETREWIDTH / DIMENSION_TAB_JEU;
     element_grillage.h = (FENETREHEIGHT - TAILLE_MENU) / DIMENSION_TAB_JEU;
 
-    SDL_bool variation = SDL_FALSE;
     for (int i = 0; i < DIMENSION_TAB_JEU; i++)
     {
         for (int j = 0; j < DIMENSION_TAB_JEU; j++)
         {
-            if (variation)
-            {
-                SDL_SetRenderDrawColor(renderer, 252, 189, 119, 255);
-                variation = SDL_FALSE;
-            }
-            else
-            {
-                SDL_SetRenderDrawColor(renderer, 255, 255, 255, 255);
-                variation = SDL_TRUE;
-            }
 
+            // sol
+            SDL_RenderCopy(renderer, table_serpent, &etats_serpent[0][3], &element_grillage);
             // si bordure
             if (plateau[i][j] == 2)
             {
-                SDL_SetRenderDrawColor(renderer, 0, 0, 0, 255);
+                SDL_RenderCopy(renderer, table_serpent, &etats_serpent[0][6], &element_grillage);
             }
-
-            SDL_RenderFillRect(renderer, &element_grillage);
 
             if (plateau[i][j] == 1)
             {
@@ -215,26 +211,131 @@ void AffichageGrillage(SDL_Renderer *renderer, SDL_Texture *pomme, int **plateau
         }
         element_grillage.x = 0;
         element_grillage.y += element_grillage.h;
-        variation = !variation;
     }
 }
 
-void AffichageSerpent(int **serpent, SDL_Renderer *renderer, int taille_serpent)
+/* LE SERPENT*/
+void PlaceTeteSerpent(SDL_Renderer *renderer, int direction, SDL_Texture *table_serpent, SDL_Rect etats_serpent[6][16], SDL_Rect pos)
+{
+    switch (direction)
+    {
+    case 0:
+        SDL_RenderCopy(renderer, table_serpent, &etats_serpent[2][3], &pos);
+        break;
+    case 1:
+        SDL_RenderCopy(renderer, table_serpent, &etats_serpent[4][3], &pos);
+        break;
+    case 2:
+        SDL_RenderCopy(renderer, table_serpent, &etats_serpent[5][3], &pos);
+        break;
+    case 3:
+        SDL_RenderCopy(renderer, table_serpent, &etats_serpent[3][3], &pos);
+        break;
+    default:
+        break;
+    }
+}
+
+void PlaceCorpsSerpent(SDL_Renderer *renderer, int courant, SDL_Texture *table_serpent, SDL_Rect etats_serpent[6][16], SDL_Rect pos){
+    int prec = courant - 1;
+    if(prec < 0)
+        prec = DIMENSION_TAB_POS - 1;
+    int suiv = courant + 1;
+    suiv %= DIMENSION_TAB_POS;
+
+    
+
+}
+
+
+void AffichageSerpent(int **serpent, SDL_Renderer *renderer, int taille_serpent, int teteSerpent, int direction, SDL_Texture *table_serpent, SDL_Rect etats_serpent[6][16])
 {
     SDL_Rect element_serpent = {0};
     element_serpent.w = FENETREWIDTH / DIMENSION_TAB_JEU;
     element_serpent.h = (FENETREHEIGHT - TAILLE_MENU) / DIMENSION_TAB_JEU;
     int x, y;
+    int parcours = teteSerpent;
+
     for (int j = 0; j < taille_serpent; j++)
     {
-        if (j == 0)
-            SDL_SetRenderDrawColor(renderer, 0, 0, 255, 255);
-        else
-            SDL_SetRenderDrawColor(renderer, 90, 175, 237, 255);
-        PassageTableauCoor(serpent[j][0], serpent[j][1], &x, &y);
+        PassageTableauCoor(serpent[parcours][0], serpent[parcours][1], &x, &y);
         element_serpent.x = x;
         element_serpent.y = y;
-        SDL_RenderFillRect(renderer, &element_serpent);
+        if (j == 0)
+            PlaceTeteSerpent(renderer, direction, table_serpent, etats_serpent, element_serpent);
+        else
+        {
+            SDL_SetRenderDrawColor(renderer, 90, 175, 237, 255);
+            SDL_RenderFillRect(renderer, &element_serpent);
+        }
+
+        parcours = (parcours + 1);
+        parcours %= DIMENSION_TAB_POS;
+    }
+}
+
+/*InitTextureSerpent*/
+void InitTextureSerpent(SDL_Rect etat_serpent[6][16], SDL_Texture *table_serpent)
+{
+    SDL_Rect planche = {0};
+    SDL_QueryTexture(table_serpent, NULL, NULL, &planche.w, &planche.h);
+    int offsetX = planche.w / 16;
+    int offsetY = planche.h / 22; // 5 lignes et 5 colonnes
+
+    // texture sol et mur
+    int i = 0;
+    for (int j = 0; j < 16; j++)
+    {
+        etat_serpent[i][j].x = j * offsetX;
+        etat_serpent[i][j].y = offsetY;
+        etat_serpent[i][j].w = offsetX;
+        etat_serpent[i][j].h = offsetY;
+    }
+
+    // texture corps
+    i++;
+    for (int j = 0; j < 16; j++)
+    {
+        etat_serpent[i][j].x = j * offsetX;
+        etat_serpent[i][j].y = 16 * offsetY;
+        etat_serpent[i][j].w = offsetX;
+        etat_serpent[i][j].h = offsetY;
+    }
+
+    i++;
+    for (int j = 0; j < 16; j++)
+    {
+        etat_serpent[i][j].x = j * offsetX;
+        etat_serpent[i][j].y = 17 * offsetY;
+        etat_serpent[i][j].w = offsetX;
+        etat_serpent[i][j].h = offsetY;
+    }
+
+    i++;
+    for (int j = 0; j < 16; j++)
+    {
+        etat_serpent[i][j].x = j * offsetX;
+        etat_serpent[i][j].y = 18 * offsetY;
+        etat_serpent[i][j].w = offsetX;
+        etat_serpent[i][j].h = offsetY;
+    }
+
+    i++;
+    for (int j = 0; j < 16; j++)
+    {
+        etat_serpent[i][j].x = j * offsetX;
+        etat_serpent[i][j].y = 19 * offsetY;
+        etat_serpent[i][j].w = offsetX;
+        etat_serpent[i][j].h = offsetY;
+    }
+
+    i++;
+    for (int j = 0; j < 16; j++)
+    {
+        etat_serpent[i][j].x = j * offsetX;
+        etat_serpent[i][j].y = 20 * offsetY;
+        etat_serpent[i][j].w = offsetX;
+        etat_serpent[i][j].h = offsetY;
     }
 }
 
@@ -267,49 +368,77 @@ void Explosion(SDL_Renderer *renderer, SDL_Texture *explosion, SDL_Rect pos, int
     SDL_RenderCopy(renderer, explosion, &etats[etat], &pos);
 }
 
+/*Initialisation*/
+void Initialisation(SDL_bool *enJeu, SDL_bool *depart, int *iter_explo, int **serpent, int **plateau, int *taille_serpent,
+                    int *direction, int *infoIter, int *etat_markov, int *vitesse_markov, int *score, int *multiplicateur, long *lastTick,
+                    int *teteSerpent)
+{
+    *enJeu = SDL_FALSE;
+    *depart = SDL_TRUE;
+    *iter_explo = 0;
+    *taille_serpent = 3;
+    InitialisationSerpent(serpent, taille_serpent);
+    *direction = 3;
+    *infoIter = 2;
+    InitPlateau(plateau);
+    posPomme(plateau, serpent, *taille_serpent);
+    *etat_markov = 0;
+    *vitesse_markov = vitesseParEtat[*etat_markov];
+    *score = 0;
+    *multiplicateur = *taille_serpent / 3;
+    *lastTick = 0;
+    *teteSerpent = 0;
+}
+
+/*Iteration enJeu*/
+
 /*Boucle Principale de Gestion d'événement*/
 
 void GestionEvenement(SDL_Renderer *renderer, TTF_Font *font,
-                      int **position, int **plateau,
+                      int **serpent, int **plateau,
                       int meilleurScore, SDL_Texture *logoMenu,
-                      SDL_Texture *pomme, SDL_Texture *explosion)
+                      SDL_Texture *pomme, SDL_Texture *explosion,
+                      SDL_Texture *table_serpent)
 {
+
     /*Variable utile*/
     SDL_bool activation = SDL_TRUE;
-    SDL_bool enJeu = SDL_FALSE;
-    SDL_bool depart = SDL_TRUE;
+    SDL_bool enJeu;
+    SDL_bool depart;
     SDL_Event event;
 
     /*Gestion animation explosion*/
     SDL_Rect etats[25];
     GenereTabExplosion(etats, explosion);
-    int iter_explo = 0;
+    int iter_explo;
     SDL_Rect pos_explosion = {0, 0, FENETREWIDTH * TAILLE_EXPLOSION / DIMENSION_TAB_JEU, (FENETREHEIGHT - TAILLE_MENU) * TAILLE_EXPLOSION / DIMENSION_TAB_JEU};
 
+    /*Gestion animation Serpent*/
+    SDL_Rect etats_serpent[6][16];
+    InitTextureSerpent(etats_serpent, table_serpent);
+
     /*Gestion Serpent*/
-    InitialisationSerpent(position);
-    int taille_serpent = 3;
+    int taille_serpent;
+    int teteSerpent;
 
-    /*Gestion PLateau*/
-    InitPlateau(plateau);
-    // on pose la premiere pomme
-    posPomme(plateau, position, taille_serpent);
-
-    /*direction initiale va a gauche*/
-    int direction = 3;
+    /*direction serpent a chaque itératiion*/
+    int direction;
 
     /*info sur le deplacement*/
-    int infoIter = 2; // tout va bien
+    int infoIter;
 
     /*Gestion Markov*/
     // etat initiale 0 vitesse classique
-    int etat_markov = 0;
-    int vitesse_prog = vitesseParEtat[etat_markov];
+    int etat_markov;
+    int vitesse_prog;
 
     // score en fonction du temps qui passe
-    int score = 0;
-    int multiplicateur = taille_serpent / 3;
-    long LastTick = 0;
+    int score;
+    ;
+    int multiplicateur;
+    long lastTick;
+
+    Initialisation(&enJeu, &depart, &iter_explo, serpent, plateau, &taille_serpent, &direction, &infoIter, &etat_markov, &vitesse_prog, &score, &multiplicateur, &lastTick, &teteSerpent);
 
     while (activation)
     {
@@ -325,16 +454,20 @@ void GestionEvenement(SDL_Renderer *renderer, TTF_Font *font,
                 switch (event.key.keysym.sym)
                 {
                 case SDLK_LEFT:
-                    direction = 3;
+                    if (direction != 2)
+                        direction = 3;
                     break;
                 case SDLK_RIGHT:
-                    direction = 2;
+                    if (direction != 3)
+                        direction = 2;
                     break;
                 case SDLK_UP:
-                    direction = 0;
+                    if (direction != 1)
+                        direction = 0;
                     break;
                 case SDLK_DOWN:
-                    direction = 1;
+                    if (direction != 0)
+                        direction = 1;
                     break;
                 case SDLK_SPACE:
                     if (!enJeu)
@@ -345,7 +478,7 @@ void GestionEvenement(SDL_Renderer *renderer, TTF_Font *font,
                 }
                 break;
 
-            case SDL_MOUSEBUTTONDOWN: // Click souris
+            case SDL_MOUSEBUTTONDOWN: // Click droit
                 if (SDL_GetMouseState(NULL, NULL) &
                     SDL_BUTTON(SDL_BUTTON_LEFT))
                 { // clique droit
@@ -360,7 +493,7 @@ void GestionEvenement(SDL_Renderer *renderer, TTF_Font *font,
         SDL_RenderClear(renderer);
 
         /*Affichage*/
-        AffichageGrillage(renderer, pomme, plateau);
+        AffichageGrillage(renderer, pomme, plateau, etats_serpent, table_serpent);
         AffichageMenu(renderer, font, logoMenu, meilleurScore, score);
 
         if (enJeu)
@@ -368,7 +501,7 @@ void GestionEvenement(SDL_Renderer *renderer, TTF_Font *font,
             if (depart)
             {
                 depart = !depart;
-                LastTick = SDL_GetTicks();
+                lastTick = SDL_GetTicks();
             }
 
             /*Mort serpent*/
@@ -377,7 +510,7 @@ void GestionEvenement(SDL_Renderer *renderer, TTF_Font *font,
                 if (iter_explo == 0)
                 { // premiere frame on calcul position
                     int x_explo, y_explo;
-                    PassageTableauCoor(position[0][0], position[0][1], &x_explo, &y_explo);
+                    PassageTableauCoor(serpent[teteSerpent][0], serpent[teteSerpent][1], &x_explo, &y_explo);
                     pos_explosion.x = x_explo;
                     pos_explosion.y = y_explo;
                     meilleurScore = MeilleurScore(score);
@@ -387,7 +520,7 @@ void GestionEvenement(SDL_Renderer *renderer, TTF_Font *font,
                     Explosion(renderer, explosion, pos_explosion, iter_explo, etats);
                     iter_explo++;
                 }
-                if(iter_explo == 25)
+                if (iter_explo == 25)
                 { // on a fini
                     enJeu = SDL_FALSE;
                 }
@@ -396,18 +529,18 @@ void GestionEvenement(SDL_Renderer *renderer, TTF_Font *font,
             else // en vie
             {
                 // Calcul du score en fonction du temps ecoulé
-                score += ((SDL_GetTicks() - LastTick) / 25) * multiplicateur; // en mili sec donc /1000 pour sec
-                LastTick = SDL_GetTicks();
+                score += ((SDL_GetTicks() - lastTick) / 25) * multiplicateur; // en mili sec donc /1000 pour sec
+                lastTick = SDL_GetTicks();
 
                 if (etat_markov != 4)
                 { // pas endormi
-                    infoIter = TestDeplacement(position, direction, &taille_serpent, plateau);
+                    infoIter = TestDeplacement(serpent, direction, &taille_serpent, plateau, &teteSerpent);
                     if (infoIter == 1) // il a mangé
                     {
                         // on supprime la pomme
-                        SupprimePomme(plateau, position, direction);
+                        SupprimePomme(plateau, serpent, direction, teteSerpent);
                         // on ajoute une nouvelle pomme
-                        posPomme(plateau, position, taille_serpent);
+                        posPomme(plateau, serpent, taille_serpent);
                         // calcul de la nouvelle vitesse possible selon markov
                         etat_markov = passageMarkov(etat_markov);
                         // printf("etat_markov : %d\n", etat_markov);
@@ -422,12 +555,12 @@ void GestionEvenement(SDL_Renderer *renderer, TTF_Font *font,
                     // printf("etat_markov : %d\n", etat_markov);
                 }
 
-                AffichageSerpent(position, renderer, taille_serpent);
+                AffichageSerpent(serpent, renderer, taille_serpent, teteSerpent, direction, table_serpent, etats_serpent);
             }
         }
-        if(depart) //menu demarrage on attend l'appuie sur espace
+        if (depart) // menu demarrage on attend l'appuie sur espace
         {
-            AffichageSerpent(position, renderer, taille_serpent);
+            AffichageSerpent(serpent, renderer, taille_serpent, teteSerpent, direction, table_serpent, etats_serpent);
         }
         SDL_RenderPresent(renderer);
         SDL_Delay(vitesse_prog); // depend pour fps avec horloge

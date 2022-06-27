@@ -109,103 +109,67 @@ void afficher_tableau(int **tableau, int nb_lignes, int nb_colonnes)
 }
 
 /* Création du serpent au milieu du cadre */
-void InitialisationSerpent(int **tableau)
+void InitialisationSerpent(int **tableau, int *tailleSerpent)
 {
-    int i, j;
-    for (i = 0; i < 3; i++)
+    int i;
+    for (i = 0; i < (*tailleSerpent); i++)
     {
         tableau[i][1] = (DIMENSION_TAB_JEU / 2) - 2 + i;
         tableau[i][0] = DIMENSION_TAB_JEU / 2;
-    }
-    for (j = 3; j < DIMENSION_TAB_POS; j++)
-    {
-        tableau[j][0] = -1;
-        tableau[j][1] = -1;
     }
 }
 
 /* Création des probabilités de changement de place de la pomme : matrice de Markov */
 
-void decalagedroite(int **serpent, int direction, int aManger, int *taille_serpent)
+void UpdateSerpent(int **serpent, int aManger, int *taille_serpent, int * teteSerpent, int TeteI, int TeteJ)
 {
-    int x0, y0, i;
-    /*on enregistre tete serpent*/
-    x0 = serpent[0][0];
-    y0 = serpent[0][1];
-
-    /* On décale a droite */
-    // on enregistre fin si il a mangé pomme
-    int save_finX = serpent[(*taille_serpent) - 1][0];
-    int save_finY = serpent[(*taille_serpent) - 1][1];
-
-    for (i = (*taille_serpent) - 1; i > 0; i--)
+    //update de la tete
+    (*teteSerpent)--;
+    if(*teteSerpent < 0)
     {
-        serpent[i][0] = serpent[i - 1][0];
-        serpent[i][1] = serpent[i - 1][1];
+        *teteSerpent = DIMENSION_TAB_POS - 1;
     }
 
-    switch (direction)
-    {
-    case 0: // Le serpent va en haut
-        // printf("haut\n");
-        serpent[0][0] = x0 - 1;
-        serpent[0][1] = y0;
+    serpent[*teteSerpent][0] = TeteI;
+    serpent[*teteSerpent][1] = TeteJ;
 
-        break;
-    case 1: // Le serpent va en bas
-        // printf("bas\n");
-        serpent[0][0] = x0 + 1;
-        serpent[0][1] = y0;
-
-        break;
-    case 2: // Le serpent va à droite
-        // printf("droite\n");
-        serpent[0][0] = x0;
-        serpent[0][1] = y0 + 1;
-
-        break;
-    case 3: // Le serpent va à gauche
-        // printf("gauche\n");
-        serpent[0][0] = x0;
-        serpent[0][1] = y0 - 1;
-        break;
-    default:
-        break;
-    }
+    //update queue
     if (aManger == 1)
     {
-        serpent[*taille_serpent][0] = save_finX;
-        serpent[*taille_serpent][1] = save_finY;
         (*taille_serpent)++;
     }
 }
 
 /* test sur serpent */
-// verifie si le serpent s'     auto touche
+// verifie si le serpent s'auto touche
 // 2 si ok et 0 si mort
 
-int TestCollisionSerpent(int **serpent, int TeteI, int TeteJ, int *taille_serpent)
+int TestCollisionSerpent(int **serpent, int TeteI, int TeteJ, int *taille_serpent, int *teteSerpent)
 {
     int retour = 2;
-    int i = 0;
-    while (i < (*taille_serpent) && retour == 2)
+    int cpt = 0;
+    int parcours = *teteSerpent;
+    while (cpt < (*taille_serpent) && retour == 2)
     {
-        if (serpent[i][0] == TeteI && serpent[i][1] == TeteJ)
+        if (serpent[parcours][0] == TeteI && serpent[parcours][1] == TeteJ)
         {
             retour = 0;
         }
-        i++;
+        cpt++;
+        parcours = (parcours + 1);
+        parcours %= DIMENSION_TAB_POS;
     }
     return retour;
 }
 
 /*renvoie 2 si classique 0 si mort 1 si mange pomme*/
-int TestDeplacement(int **serpent, int direction, int *taille_serpent, int **plateau)
+int TestDeplacement(int **serpent, int direction, int *taille_serpent, int **plateau, int * teteSerpent)
 {
     int info = 2; // tout est bon en supposition
-    int TeteI = serpent[0][0];
-    int TeteJ = serpent[0][1];
+    int TeteI = serpent[*teteSerpent][0];
+    int TeteJ = serpent[*teteSerpent][1];
 
+    /*on regarde ce qui se passe*/
     switch (direction)
     {
     case 0: // haut
@@ -234,10 +198,10 @@ int TestDeplacement(int **serpent, int direction, int *taille_serpent, int **pla
     }
     else
     {
-        info = TestCollisionSerpent(serpent, TeteI, TeteJ, taille_serpent);
+        info = TestCollisionSerpent(serpent, TeteI, TeteJ, taille_serpent, teteSerpent);
     }
 
-    decalagedroite(serpent, direction, info, taille_serpent);
+    UpdateSerpent(serpent, info, taille_serpent, teteSerpent, TeteI, TeteJ);
 
     return info;
 }
@@ -383,21 +347,21 @@ void posMuret(int **plateau,
 
 
 /* Supprime Pomme*/
-void SupprimePomme(int **plateau, int **serpent, int direction)
+void SupprimePomme(int **plateau, int **serpent, int direction, int teteSerpent)
 {
     switch (direction)
     {
     case 0: // haut
-        plateau[serpent[0][0]][serpent[0][1]] = 0;
+        plateau[serpent[teteSerpent][0]][serpent[teteSerpent][1]] = 0;
         break;
     case 1: // Le serpent va en bas
-        plateau[serpent[0][0]][serpent[0][1]] = 0;
+        plateau[serpent[teteSerpent][0]][serpent[teteSerpent][1]] = 0;
         break;
     case 2: // Le serpent va à droite
-        plateau[serpent[0][0]][serpent[0][1]] = 0;
+        plateau[serpent[teteSerpent][0]][serpent[teteSerpent][1]] = 0;
         break;
     case 3: // Le serpent va à gauche
-        plateau[serpent[0][0]][serpent[0][1]] = 0;
+        plateau[serpent[teteSerpent][0]][serpent[teteSerpent][1]] = 0;
         break;
     default:
         break;
