@@ -30,13 +30,13 @@ int passageMarkov(int EtatPrec)
 {
     int i;
     int pourcent = (rand() % 101);
-    //printf("pourcentage : %d \n",pourcent);
+    // printf("pourcentage : %d \n",pourcent);
 
     int cumul = 0;
     for (i = 0; i < NB_ETATS; i++)
     {
         cumul += markov[EtatPrec][i] * 100;
-        //printf("cumul : %d \n",cumul);
+        // printf("cumul : %d \n",cumul);
         if (pourcent < cumul)
         {
             EtatPrec = i;
@@ -121,11 +121,11 @@ void InitialisationSerpent(int **tableau, int *tailleSerpent)
 
 /* Création des probabilités de changement de place de la pomme : matrice de Markov */
 
-void UpdateSerpent(int **serpent, int aManger, int *taille_serpent, int * teteSerpent, int TeteI, int TeteJ)
+void UpdateSerpent(int **serpent, int aManger, int *taille_serpent, int *teteSerpent, int TeteI, int TeteJ)
 {
-    //update de la tete
+    // update de la tete
     (*teteSerpent)--;
-    if(*teteSerpent < 0)
+    if (*teteSerpent < 0)
     {
         *teteSerpent = DIMENSION_TAB_POS - 1;
     }
@@ -133,7 +133,7 @@ void UpdateSerpent(int **serpent, int aManger, int *taille_serpent, int * teteSe
     serpent[*teteSerpent][0] = TeteI;
     serpent[*teteSerpent][1] = TeteJ;
 
-    //update queue
+    // update queue
     if (aManger == 1)
     {
         (*taille_serpent)++;
@@ -163,7 +163,7 @@ int TestCollisionSerpent(int **serpent, int TeteI, int TeteJ, int *taille_serpen
 }
 
 /*renvoie 2 si classique 0 si mort 1 si mange pomme*/
-int TestDeplacement(int **serpent, int direction, int *taille_serpent, int **plateau, int * teteSerpent)
+int TestDeplacement(int **serpent, int direction, int *taille_serpent, int **plateau, int *teteSerpent)
 {
     int info = 2; // tout est bon en supposition
     int TeteI = serpent[*teteSerpent][0];
@@ -192,9 +192,9 @@ int TestDeplacement(int **serpent, int direction, int *taille_serpent, int **pla
     {
         info = 1; // MANGE POMME
     }
-    else if (plateau[TeteI][TeteJ] == 2)
+    else if (plateau[TeteI][TeteJ] == 2 || plateau[TeteI][TeteJ] == 3)
     {
-        info = 0; // meurt par mur
+        info = 0; // meurt par mur ou cactus
     }
     else
     {
@@ -238,9 +238,10 @@ int MeilleurScore(int ScoreActuel)
 
 void posPomme(int **plateau,
               int **serpent,
-              int tailleSerpent)
+              int tailleSerpent,
+              int teteSerpent)
 {
-
+    //printf("tete: %d\n", teteSerpent);
     int i, j, m;
     int compteur = 0;
     int caseVide;
@@ -257,15 +258,16 @@ void posPomme(int **plateau,
         {
             // printf("compteur : %d\n", compteur);
             caseVide = 1;
+            int courant = teteSerpent;
 
             for (m = 0; m < tailleSerpent; m++)
             {
-
-                if ((i == serpent[m][0] && j == serpent[m][1]))
+                if ((i == serpent[courant][0] && j == serpent[courant][1]))
                 {
-
                     caseVide = 0;
                 }
+                courant = courant + 1;
+                courant %= DIMENSION_TAB_POS;
             }
             if (caseVide == 1)
             {
@@ -284,86 +286,71 @@ void posPomme(int **plateau,
     }
 }
 
-
 /*GestionMuret*/
 
-
 void posMuret(int **plateau,
-	      int **serpent,
-	      int tailleSerpent)
+              int **serpent,
+              int tailleSerpent,
+              int teteSerpent)
 {
 
-  int i, j, m;
-  int compteur = 0;
-  int caseVide;
+    int i, j, m;
+    int compteur = 0;
+    int caseVide;
 
-  int caseDispo = ((DIMENSION_TAB_JEU - 2) * (DIMENSION_TAB_JEU - 2)) - tailleSerpent - 1;
+    int caseDispo = ((DIMENSION_TAB_JEU - 2) * (DIMENSION_TAB_JEU - 2)) - tailleSerpent - 1;
 
-  int placement = (rand() % caseDispo) + 1;
+    int placement = (rand() % caseDispo) + 1;
 
-  for( i = 1 ; i < DIMENSION_TAB_JEU -1 ; i++)
+    for (i = 1; i < DIMENSION_TAB_JEU - 1; i++)
     {
-      for ( j = 1 ; j < DIMENSION_TAB_JEU -1 ; j++)
-	{
+        for (j = 1; j < DIMENSION_TAB_JEU - 1; j++)
+        {
 
-	  caseVide = 1;
+            caseVide = 1;
 
-	  if ( plateau[i][j] == 1)   // on vérifie si la case est occupé par la pomme
-	    {
+            if (plateau[i][j] == 1) // on vérifie si la case est occupé par la pomme
+            {
 
-	      caseVide = 0;
-	      
-	    }
-	  else
-	    {
-	      for( m = 0 ; m < tailleSerpent ; m++)
-		{
-		  if ((i == serpent[m][0] && j == serpent[m][1])) /* on vérifie si la case est
-								     occupé par le serpent*/
-		    {
+                caseVide = 0;
+            }
+            else
+            {
+                int courant = teteSerpent;
+                for (m = 0; m < tailleSerpent; m++)
+                {
+                    if ((i == serpent[courant][0] && j == serpent[courant][1])) /* on vérifie si la case est
+                                               occupé par le serpent*/
+                    {
+                        caseVide = 0;
+                    }
+                    courant = courant + 1;
+                    courant %= DIMENSION_TAB_POS;
+                }
+            }
+            if (caseVide == 1)
+            {
 
-		      caseVide = 0;
-		
-		    }
-		}
-	    }
-	  if (caseVide == 1)
-	    {
+                compteur++;
+            }
+            if (compteur == placement)
+            {
 
-	      compteur ++;
-	      
-	    }
-	  if (compteur == placement)
-	    {
-
-	      plateau[i][j] = 10;       // en partant du principe qu'un muret au milieu du plateau = 10
-	      i = DIMENSION_TAB_JEU;    // on incrémente i et j de sorte qu'on sorte de la boucle
-	      j = DIMENSION_TAB_JEU;
-	      
-	    }
-	}
+                plateau[i][j] = 3;    // en partant du principe qu'un muret au milieu du plateau = 10
+                i = DIMENSION_TAB_JEU; // on incrémente i et j de sorte qu'on sorte de la boucle
+                j = DIMENSION_TAB_JEU;
+            }
+        }
     }
 }
 
 
-/* Supprime Pomme*/
-void SupprimePomme(int **plateau, int **serpent, int direction, int teteSerpent)
-{
-    switch (direction)
-    {
-    case 0: // haut
-        plateau[serpent[teteSerpent][0]][serpent[teteSerpent][1]] = 0;
-        break;
-    case 1: // Le serpent va en bas
-        plateau[serpent[teteSerpent][0]][serpent[teteSerpent][1]] = 0;
-        break;
-    case 2: // Le serpent va à droite
-        plateau[serpent[teteSerpent][0]][serpent[teteSerpent][1]] = 0;
-        break;
-    case 3: // Le serpent va à gauche
-        plateau[serpent[teteSerpent][0]][serpent[teteSerpent][1]] = 0;
-        break;
-    default:
-        break;
+void ClearMap(int ** plateau){
+    for(int i = 1; i < DIMENSION_TAB_JEU - 1; i++){ //on compte pas les bordures
+        for(int j = 1; j < DIMENSION_TAB_JEU - 1; j++){
+            if(plateau[i][j] != 0){ //on supprime tous les murs et la pomme mangée
+                plateau[i][j] = 0;
+            }
+        }
     }
 }
