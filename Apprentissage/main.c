@@ -30,6 +30,7 @@ int main(int argc, char **argv)
     SDL_Texture *pomme = NULL;
     SDL_Texture *explosion = NULL;
     SDL_Texture *table_serpent = NULL;
+    SDL_Texture *menu = NULL;
 
     // Initialisation de la SDL  + gestion de l'échec possible
     if (SDL_Init(SDL_INIT_VIDEO) != 0)
@@ -48,39 +49,43 @@ int main(int argc, char **argv)
                               SDL_WINDOW_OPENGL);
 
     if (window == NULL)
-        end_sdl(0, "ERROR WINDOW CREATION", window, renderer, policeTitre, logoMenu, pomme, explosion, table_serpent);
+        end_sdl(0, "ERROR WINDOW CREATION", window, renderer, policeTitre, logoMenu, pomme, explosion, table_serpent, menu);
 
     // Création du renderer
     renderer = SDL_CreateRenderer(window, -1,
                                   SDL_RENDERER_ACCELERATED | SDL_RENDERER_PRESENTVSYNC);
     if (renderer == NULL)
-        end_sdl(0, "ERROR RENDERER CREATION", window, renderer, policeTitre, logoMenu, pomme, explosion, table_serpent);
+        end_sdl(0, "ERROR RENDERER CREATION", window, renderer, policeTitre, logoMenu, pomme, explosion, table_serpent, menu);
 
     // Le render mode couleur alpha pour la transparence
     SDL_SetRenderDrawBlendMode(renderer, SDL_BLENDMODE_BLEND);
 
     // Création police
     if (TTF_Init() < 0)
-        end_sdl(0, "Couldn't initialize SDL TTF", window, renderer, policeTitre, logoMenu, pomme, explosion, table_serpent);
+        end_sdl(0, "Couldn't initialize SDL TTF", window, renderer, policeTitre, logoMenu, pomme, explosion, table_serpent, menu);
     policeTitre = TTF_OpenFont("fonts/arial.ttf", TAILLE_MENU);
 
     // Image
 
     logoMenu = IMG_LoadTexture(renderer, "./img/logo.png");
     if (logoMenu == NULL)
-        end_sdl(0, "Erreur chargement logo", window, renderer, policeTitre, logoMenu, pomme, explosion, table_serpent);
+        end_sdl(0, "Erreur chargement logo", window, renderer, policeTitre, logoMenu, pomme, explosion, table_serpent, menu);
 
     pomme = IMG_LoadTexture(renderer, "./img/pomme.png");
     if (pomme == NULL)
-        end_sdl(0, "Erreur chargement pomme", window, renderer, policeTitre, logoMenu, pomme, explosion, table_serpent);
+        end_sdl(0, "Erreur chargement pomme", window, renderer, policeTitre, logoMenu, pomme, explosion, table_serpent, menu);
 
     explosion = IMG_LoadTexture(renderer, "./img/explosion.png");
     if (pomme == NULL)
-        end_sdl(0, "Erreur chargement explosion", window, renderer, policeTitre, logoMenu, pomme, explosion, table_serpent);
+        end_sdl(0, "Erreur chargement explosion", window, renderer, policeTitre, logoMenu, pomme, explosion, table_serpent, menu);
 
     table_serpent = IMG_LoadTexture(renderer, "./img/serpent.png");
     if (pomme == NULL)
-        end_sdl(0, "Erreur chargement serpent", window, renderer, policeTitre, logoMenu, pomme, explosion, table_serpent);
+        end_sdl(0, "Erreur chargement serpent", window, renderer, policeTitre, logoMenu, pomme, explosion, table_serpent, menu);
+
+    menu = IMG_LoadTexture(renderer, "./img/menu.png");
+    if (menu == NULL)
+        end_sdl(0, "Erreur chargement menu", window, renderer, policeTitre, logoMenu, pomme, explosion, table_serpent, menu);
 
     // Allocation des Tableaux
 
@@ -94,9 +99,12 @@ int main(int argc, char **argv)
 
     int meilleurScore = MeilleurScore(0);
 
+    /* Mode couleur pour transparence*/
+    SDL_SetRenderDrawBlendMode(renderer, SDL_BLENDMODE_BLEND);
+
     /*Appel de la fonction qui gère les événments*/
 
-    GestionEvenement(renderer, policeTitre, position_snake, plateau, meilleurScore, logoMenu, pomme, explosion, table_serpent);
+    GestionEvenement(renderer, policeTitre, position_snake, plateau, meilleurScore, logoMenu, pomme, explosion, table_serpent, menu);
 
     /* LIBERATION*/
 
@@ -106,6 +114,6 @@ int main(int argc, char **argv)
     liberer_tableau(position_snake, DIMENSION_TAB_POS);
 
     // LIbération SDL
-    end_sdl(1, "Normal ending", window, renderer, policeTitre, logoMenu, pomme, explosion, table_serpent);
+    end_sdl(1, "Normal ending", window, renderer, policeTitre, logoMenu, pomme, explosion, table_serpent, menu);
     return EXIT_SUCCESS;
 }

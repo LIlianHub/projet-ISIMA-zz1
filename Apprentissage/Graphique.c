@@ -30,7 +30,8 @@ void end_sdl(char ok,
              SDL_Texture *logo,
              SDL_Texture *pomme,
              SDL_Texture *explosion,
-             SDL_Texture *table_serpent)
+             SDL_Texture *table_serpent,
+             SDL_Texture *menu)
 {
     char msg_formated[255];
     int l;
@@ -84,6 +85,12 @@ void end_sdl(char ok,
         table_serpent = NULL;
     }
 
+    if (menu != NULL)
+    {
+        SDL_DestroyTexture(menu);
+        menu = NULL;
+    }
+
     TTF_Quit();
     SDL_Quit();
 
@@ -118,7 +125,6 @@ void AffichageLogo(SDL_Renderer *renderer, SDL_Texture *my_texture)
     SDL_RenderCopy(renderer, my_texture, &image, &boite_logo);
 }
 
-/*voir les tests*/
 void AffichageScore(SDL_Renderer *renderer, TTF_Font *police, int score, int meilleurScore)
 {
     SDL_Color colorBest = {255, 0, 0, 255};
@@ -160,7 +166,7 @@ void AffichageScore(SDL_Renderer *renderer, TTF_Font *police, int score, int mei
 }
 
 /*Menu en haut*/
-void AffichageMenu(SDL_Renderer *renderer, TTF_Font *police, SDL_Texture *logo, int meilleurScore, int score)
+void AffichageMenuJeu(SDL_Renderer *renderer, TTF_Font *police, SDL_Texture *logo, int meilleurScore, int score)
 {
     SDL_Rect fond_menu;
     fond_menu.x = 0;
@@ -439,7 +445,7 @@ void Explosion(SDL_Renderer *renderer, SDL_Texture *explosion, SDL_Rect pos, int
 /*Initialisation*/
 void Initialisation(SDL_bool *enJeu, SDL_bool *depart, int *iter_explo, int **serpent, int **plateau, int *taille_serpent,
                     int *direction, int *infoIter, int *etat_markov, int *vitesse_markov, int *score, int *multiplicateur, long *lastTick,
-                    int *teteSerpent, int *nbItePosMur, SDL_bool *perdu)
+                    int *teteSerpent, int *nbItePosMur, SDL_bool *dansJeu, SDL_bool *dansMenu)
 {
     *enJeu = SDL_FALSE;
     *depart = SDL_TRUE;
@@ -455,17 +461,18 @@ void Initialisation(SDL_bool *enJeu, SDL_bool *depart, int *iter_explo, int **se
     *multiplicateur = *taille_serpent / 3;
     *lastTick = 0;
     *nbItePosMur = 0;
-    *perdu = SDL_FALSE;
     InitPlateau(plateau);
     ClearMap(plateau);
     posPomme(plateau, serpent, *taille_serpent, *teteSerpent);
+    *dansJeu = SDL_FALSE;
+    *dansMenu = SDL_TRUE;
 }
 
 /*Iteration enJeu*/
 
 void IterEnJeu(SDL_bool *depart, long *lastTick, int *infoIter, int *iter_explo, int *meilleurScore, int *score, SDL_bool *enJeu, int *etat_markov, int *vitesse_prog,
                int *multiplicateur, int *nbItePosMur, int *direction, int **serpent, int **plateau, int *taille_serpent, int *teteSerpent, SDL_Texture *explosion, SDL_Rect etats[25],
-               SDL_Texture *table_serpent, SDL_Rect etats_serpent[6][16], SDL_Renderer *renderer, SDL_Rect *pos_explosion, SDL_bool *perdu)
+               SDL_Texture *table_serpent, SDL_Rect etats_serpent[6][16], SDL_Renderer *renderer, SDL_Rect *pos_explosion, SDL_bool *dansJeu, SDL_bool *dansMenu)
 {
     if (*depart)
     {
@@ -492,7 +499,8 @@ void IterEnJeu(SDL_bool *depart, long *lastTick, int *infoIter, int *iter_explo,
         if (*iter_explo == 25)
         { // on a fini
             *enJeu = SDL_FALSE;
-            *perdu = SDL_TRUE;
+            *dansJeu = SDL_FALSE;
+            *dansMenu = SDL_TRUE;
         }
     }
 
@@ -540,9 +548,60 @@ void IterEnJeu(SDL_bool *depart, long *lastTick, int *infoIter, int *iter_explo,
 
 /*Iter menu*/
 
-void IterMenu(SDL_Renderer *renderer)
+void IterMenu(SDL_Renderer *renderer, SDL_Texture *menu)
 {
-    
+    SDL_Rect posMenu = {0, 0, FENETREWIDTH, FENETREHEIGHT};
+    SDL_RenderCopy(renderer, menu, NULL, &posMenu);
+}
+
+int DetectBoutonMenu(float x, float y)
+{
+    float echelleW = ((float)FENETREWIDTH / 800);
+    float echelleH = ((float)FENETREHEIGHT / 860) / 800;
+    int retour = 0;
+    if (x >= 60 * echelleW && x <= 360 * echelleW && y >= 470 * echelleH && y <= 620 * echelleH)
+    {
+        retour = 1;
+    }
+
+    if (x >= FENETREWIDTH - 360 * echelleW && x <= FENETREWIDTH - (60 * echelleW) && y >= 470 * echelleH && y <= 620 * echelleH)
+    {
+        retour = 2;
+    }
+
+    return retour;
+}
+
+void OverBoutonMenu(SDL_Renderer *renderer, float x, float y)
+{
+    SDL_SetRenderDrawColor(renderer, 255, 255, 255, 100);
+    int info = DetectBoutonMenu(x, y);
+    if (info == 1)
+    {
+        SDL_Rect posMenu = {60, 470, 300, 150};
+        SDL_RenderFillRect(renderer, &posMenu);
+    }
+
+    if (info == 2)
+    {
+        SDL_Rect posMenu2 = {FENETREWIDTH - (60 + 300), 470, 300, 150};
+        SDL_RenderFillRect(renderer, &posMenu2);
+    }
+}
+
+void ChoixMenu(float x, float y, SDL_bool *dansJeu, SDL_bool *dansMenu)
+{
+    int info = DetectBoutonMenu(x, y);
+    if (info == 1)
+    {
+        *dansJeu = SDL_TRUE;
+        *dansMenu = SDL_FALSE;
+    }
+
+    if (info == 2)
+    {
+        printf("AI\n");
+    }
 }
 
 /*Boucle Principale de Gestion d'événement*/
@@ -551,15 +610,16 @@ void GestionEvenement(SDL_Renderer *renderer, TTF_Font *font,
                       int **serpent, int **plateau,
                       int meilleurScore, SDL_Texture *logoMenu,
                       SDL_Texture *pomme, SDL_Texture *explosion,
-                      SDL_Texture *table_serpent)
+                      SDL_Texture *table_serpent, SDL_Texture *menuTexture)
 {
 
     /*Variable utile*/
     SDL_bool activation = SDL_TRUE;
     SDL_bool enJeu;
-    SDL_bool perdu;
     SDL_bool depart;
     SDL_Event event;
+    SDL_bool dansJeu;
+    SDL_bool dansMenu;
 
     /*Gestion animation explosion*/
     SDL_Rect etats[25];
@@ -594,7 +654,7 @@ void GestionEvenement(SDL_Renderer *renderer, TTF_Font *font,
 
     Initialisation(&enJeu, &depart, &iter_explo, serpent, plateau, &taille_serpent, &direction, &infoIter,
                    &etat_markov, &vitesse_prog, &score,
-                   &multiplicateur, &lastTick, &teteSerpent, &nbItePosMur, &perdu);
+                   &multiplicateur, &lastTick, &teteSerpent, &nbItePosMur, &dansJeu, &dansMenu);
 
     while (activation)
     {
@@ -626,14 +686,8 @@ void GestionEvenement(SDL_Renderer *renderer, TTF_Font *font,
                         direction = 1;
                     break;
                 case SDLK_SPACE:
-                    if (!enJeu)
+                    if (dansJeu)
                         enJeu = SDL_TRUE;
-                    if (perdu)
-                    {
-                        Initialisation(&enJeu, &depart, &iter_explo, serpent, plateau, &taille_serpent, &direction, &infoIter,
-                                       &etat_markov, &vitesse_prog, &score,
-                                       &multiplicateur, &lastTick, &teteSerpent, &nbItePosMur, &perdu);
-                    }
                     break;
                 default:
                     break;
@@ -643,7 +697,11 @@ void GestionEvenement(SDL_Renderer *renderer, TTF_Font *font,
             case SDL_MOUSEBUTTONDOWN: // Click droit
                 if (SDL_GetMouseState(NULL, NULL) &
                     SDL_BUTTON(SDL_BUTTON_LEFT))
-                { // clique droit
+                {
+                    if (dansMenu)
+                    {
+                        ChoixMenu(event.button.x, event.button.y, &dansJeu, &dansMenu);
+                    }
                 }
                 break;
             default: // poubelle à événement inutile
@@ -654,20 +712,27 @@ void GestionEvenement(SDL_Renderer *renderer, TTF_Font *font,
         // Nettoyage render
         SDL_RenderClear(renderer);
 
-        /*Affichage*/
-        AffichageGrillage(renderer, pomme, plateau, etats_serpent, table_serpent);
-        AffichageMenu(renderer, font, logoMenu, meilleurScore, score);
-
-        if (enJeu)
+        if (dansJeu) // dans le mode jeu
         {
-            IterEnJeu(&depart, &lastTick, &infoIter, &iter_explo, &meilleurScore, &score, &enJeu, &etat_markov,
-                      &vitesse_prog, &multiplicateur, &nbItePosMur, &direction, serpent, plateau, &taille_serpent, &teteSerpent,
-                      explosion, etats, table_serpent, etats_serpent, renderer, &pos_explosion, &perdu);
+            AffichageGrillage(renderer, pomme, plateau, etats_serpent, table_serpent);
+            AffichageMenuJeu(renderer, font, logoMenu, meilleurScore, score);
+            if (depart) // menu demarrage on attend l'appuie sur espace
+            {
+                AffichageSerpent(serpent, renderer, taille_serpent, teteSerpent, direction, table_serpent, etats_serpent, etat_markov);
+            }
+            if (enJeu)
+            {
+
+                IterEnJeu(&depart, &lastTick, &infoIter, &iter_explo, &meilleurScore, &score, &enJeu, &etat_markov,
+                          &vitesse_prog, &multiplicateur, &nbItePosMur, &direction, serpent, plateau, &taille_serpent, &teteSerpent,
+                          explosion, etats, table_serpent, etats_serpent, renderer, &pos_explosion, &dansJeu, &dansMenu);
+            }
         }
 
-        if (depart && !perdu) // menu demarrage on attend l'appuie sur espace
+        if (dansMenu) // dans le menu
         {
-            AffichageSerpent(serpent, renderer, taille_serpent, teteSerpent, direction, table_serpent, etats_serpent, etat_markov);
+            IterMenu(renderer, menuTexture);
+            OverBoutonMenu(renderer, event.motion.x, event.motion.y);
         }
 
         SDL_Delay(vitesse_prog);
