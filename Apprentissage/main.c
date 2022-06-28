@@ -35,7 +35,7 @@ int main(int argc, char **argv)
         printf("Mode Apprentissage\n");
         //init liste etat possible apprentissage
         etat_t * listeEtat = NULL;
-        genereTableauEtat(listeEtat);
+        listeEtat = genereTableauEtat(listeEtat);
         int nbIteration;
         sscanf(argv[2],"%d",&nbIteration);
         MainApprentissage(listeEtat, nbIteration, plateau, position_snake);

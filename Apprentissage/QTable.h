@@ -8,7 +8,7 @@ typedef struct etat
 } etat_t;
 
 
-void genereTableauEtat(etat_t *liste_etats);
+etat_t * genereTableauEtat();
 void MainApprentissage(etat_t *listeEtat, int nbIteration, int **serpent, int **plateau);
 
 #endif

@@ -40,9 +40,9 @@ void AffichageTabFloat(float **tab, int nb_ligne, int nb_colonne)
     printf("\n");
 }
 
-void genereTableauEtat(etat_t *liste_etats)
+etat_t *genereTableauEtat()
 {
-    liste_etats = (etat_t *)malloc(sizeof(etat_t) * NBRE_ETATS_APPRENTISSAGE);
+    etat_t *liste_etats = (etat_t *)malloc(sizeof(etat_t) * NBRE_ETATS_APPRENTISSAGE);
     liste_etats[0].nord_sud = -1;
     liste_etats[0].ouest_est = -1;
     liste_etats[1].nord_sud = -1;
@@ -235,7 +235,7 @@ int quelAction(etat_t etatActuel)
     int tmp;
     int actionActuel = 4;
 
-    if (abs(etatActuel.nord_sud + etatActuel.ouest_est) == 2) // 2 directions possibles
+    if ((abs(etatActuel.nord_sud) + abs(etatActuel.ouest_est)) == 2) // 2 directions possibles
     {
         tmp = rand() % 2; // représente notre proba aléatoire uniforme
 
@@ -377,7 +377,8 @@ void explorationSerpent(int *pos_i_tete, int *pos_j_tete, int *pos_i_pomme, int 
     while (i < TAILLEMAX_APPRENTISSAGE)
     {
         listeEtats[i] = EtatActuel(*pos_j_tete, *pos_i_tete, *pos_j_pomme, *pos_i_pomme); // on update la listeEtat
-
+        // printf("Etat actuel : %d\n", listeEtats[i]);
+        printf("Action actuelle : %d, %d\n", liste_etats[listeEtats[i]].nord_sud, liste_etats[listeEtats[i]].ouest_est);
         listeActions[i] = quelAction(liste_etats[listeEtats[i]]);                               // on update la listeAction
         tmp = TestDeplacement(serpent, listeActions[i], taille_serpent, plateau, &teteSerpent); // on bouge le serpent
         if (tmp == 2)
@@ -449,18 +450,19 @@ void MainApprentissage(etat_t *listeEtat, int nbIteration, int **serpent, int **
         }
     }
 
+  
     while (iteration < nbIteration)
-    {
-        // Initilialisation simulation de partie sans interface graphique
-        int taille_serpent = SERPENT_DEMARRAGE;
-        InitPlateau(plateau);
-        InitialisationSerpent(serpent, &taille_serpent);
-        int teteSerpent = 0;
-        int iPomme, jPomme;
-        posPommeAvecCo(plateau, serpent, taille_serpent, teteSerpent, &iPomme, &jPomme);
-        explorationSerpent(&serpent[teteSerpent][0], &serpent[teteSerpent][1], &iPomme, &jPomme, &taille_serpent, plateau, serpent, QTable, listeEtat, 0.1, GAMMA, teteSerpent);
-        AffichageTabFloat(QTable, NBRE_ETATS_APPRENTISSAGE, NBRE_ACTION_APPRENTISSAGE);
-    }
+     {
+         // Initilialisation simulation de partie sans interface graphique
+         int taille_serpent = SERPENT_DEMARRAGE;
+         InitPlateau(plateau);
+         InitialisationSerpent(serpent, &taille_serpent);
+         int teteSerpent = 0;
+         int iPomme, jPomme;
+         posPommeAvecCo(plateau, serpent, taille_serpent, teteSerpent, &iPomme, &jPomme);
+         explorationSerpent(&serpent[teteSerpent][0], &serpent[teteSerpent][1], &iPomme, &jPomme, &taille_serpent, plateau, serpent, QTable, listeEtat, 0.1, GAMMA, teteSerpent);
+         AffichageTabFloat(QTable, NBRE_ETATS_APPRENTISSAGE, NBRE_ACTION_APPRENTISSAGE);
+     }
 
     LibererTabFloat(QTable, NBRE_ETATS_APPRENTISSAGE);
 }
