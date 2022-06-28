@@ -4,9 +4,8 @@
 
 
 #define DIMENSION_TAB_JEU 10
-#define NBRE_ETATS 16
-#define ALPHA 0.1
-#define LAMBDA 10
+#define NBRE_ETATS 9
+#define EPSILON
 
 
 
@@ -54,7 +53,7 @@ void liberer_tableau(int **tableau, int nb_lignes)
 
 /*La Q_Table : 
  *elle est de la forme :                                                  ACTIONS
- *                             Q_Table       |     Gauche    |     Droite    |      Bas      |    Haut     |
+ *                             Q_Table       |     Haut      |     Bas       |    Droite     |    Gauche     |
  *                   -----------------------------------------------------------------------------------------
  * orientation :    état0:     (-1,-1)       |               |               |               |               |
  *                  état1:     (-1,0 )       |               |               |               |               |
@@ -72,8 +71,7 @@ void liberer_tableau(int **tableau, int nb_lignes)
  * les états sont composés de (nord(1)/memeHauteur(0)/sud(-1),ouest(1)/memeColonne(0)/est(-1)) = les différents composants sont des bools (ex :
  * nord =1 si la pomme est au nord par rapport à la tête du serpent et =-1 si la pomme est au sud )
  *
- * les actions sont  : gauche(0), droite(1), bas(2), haut(3)
- *
+ * les actions sont   : Haut(0), Bas(1), Droite(2), Gauche(3)
  *
  */
 
@@ -83,27 +81,31 @@ etat calculEtat(int pos_x_tete, int pos_y_tete, int pos_x_pomme, int pos_y_pomme
 {
   etat etatActuel;
 
-  if(pos_x_tete < pos_x_pomme)
+  if(pos_x_tete < pos_x_pomme)    //la pomme est à l'est de la la tête
     {
       etatActuel.ouest_est = -1;
     }
-  else if(pos_x_tete > pos_x_pomme)
+  else if(pos_x_tete > pos_x_pomme) // A l'ouest
     {
       etatActuel.ouest_est = 1;
     }
+  else
+    {
+      etatActuel.ouest_est = 0; // sur la même colonne
+    }
 
   
-  if(pos_y_tete < pos_y_pomme)
+  if(pos_y_tete < pos_y_pomme) // La pomme est au sud de la tête
     {
       etatActuel.nord_sud = -1;
     }
-  else if(pos_y_tete > pos_y_pomme)
+  else if(pos_y_tete > pos_y_pomme) // Au nord
     {
       etatActuel.nord_sud = 1;
     }
   else
     {
-      etatActuel.nord_sud = 0;
+      etatActuel.nord_sud = 0; //même ligne
     }
 
   
@@ -123,22 +125,22 @@ int quelAction (etat etatActuel)
 	{
 	  if(etatActuel.nord_sud > 0)
 	    {
-	      actionActuel = 3;
+	      actionActuel = 0;
 	    }
 	  else
 	    {
-	      actionActuel = 2;
+	      actionActuel = 1;
 	    }
 	}
       else                                                 // sinon ce sera la colonne
 	{
 	  if(etatActuel.ouest_est > 0)
 	    {
-	      actionActuel = 1;
+	      actionActuel = 3;
 	    }
 	  else
 	    {
-	      actionActuel = 0;
+	      actionActuel = 2;
 	    }
 	}
       
@@ -147,22 +149,22 @@ int quelAction (etat etatActuel)
     {
       if(etatActuel.nord_sud > 0)
 	{
-	  actionActuel = 3;
+	  actionActuel = 0;
 	}
       else
 	{
-	  actionActuel = 2;
+	  actionActuel = 1;
 	}
     }
   else if (abs(etatActuel.ouest_est) == 1)                 //bonne ligne - mauvaise colonne
     {
       if(etatActuel.ouest_est > 0)
 	{
-	  actionActuel = 1;
+	  actionActuel = 3;
 	}
       else
 	{
-	  actionActuel = 0;
+	  actionActuel = 2;
 	}
     }
   return actionActuel;
@@ -193,21 +195,54 @@ int quelAction (etat etatActuel)
 
 
 
-void explorationSerpent(int pos_x_tete, int pos_y_tete, int pos_x_pomme, int pos_y_pomme, etat * listeEtats , int ** listeAction_Gain, int tailleMax)
+void explorationSerpent(int *pos_x_tete, int *pos_y_tete, int *pos_x_pomme, int *pos_y_pomme, etat *
+			listeEtats , int ** listeAction_Gain, int tailleMax, int *taille_serpent,
+			int **plateau, int ** serpent, float ** Q_Table)
 {
   int i = 0;
+  float alpha = 0.1;
+  int tmp, fin, max;
   
   while(i < tailleMax)
     {
-      listeEtats[i] = calculEtat(pos_x_tete, pos_y_tete, pos_x_pomme, pos_y_pomme);
+      listeEtats[i] = calculEtat(*pos_x_tete, *pos_y_tete, *pos_x_pomme, *pos_y_pomme);
+      
       listeAction_Gain[i][0] = quelAction(listeEtats[i]);
-      listeAction
-      
-      
+      tmp = TestDeplacement(serpent,listeAction_Gain[i][0],taille_serpent, plateau, pos_x_tete, pos_y_tete);
+
+      if(tmp == 2)
+	{
+	  listeAction_Gain[i][1] = 0;
+	}
+      else if(tmp == 1)
+	{
+	  listeAction_Gain[i][1] = 1 ; 
+	}
+      else
+	{
+	  listeAction_Gain[i][1] = -1;
+	  fin = i;
+	  i = tailleMax;
+	}
       i ++;
     }
+  if(i == tailleMax) {
+    //veut dire que l'on s'est arrété parce que on a dépassé la tailleMax d'états
+    //on alloue aussi mais avec un epsilon alpha (moins représentatif)
+    fin = tailleMax;
+    alpha = 0.05;
+  }
 
-  
+  //       ===> On update la Q_Table avec les états 
+  Q_Table[fin - 1 ][listeAction_Gain[fin - 1 ][0]] += EPSILON * (listeAction_Gain[fin - 1 ][1]  -
+  Q_Table[fin - 1 ][listeAction_Gain[fin - 1 ][0]]   )  ;
+
+  for ( i = fin-2 ; i >= 0 ; i --)
+    {
+      
+      max = 
+      
+    }
 }
 
 
@@ -224,6 +259,10 @@ void explorationSerpent(int pos_x_tete, int pos_y_tete, int pos_x_pomme, int pos
  *                     => Si pomme touchée continuer exploitation
  *                     => Si un mur est touché, perdu 
  */
+
+
+
+
 
 
 int main (){

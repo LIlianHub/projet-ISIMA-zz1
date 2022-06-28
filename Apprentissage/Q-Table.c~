@@ -1,5 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include <time.h>
+
 
 #define DIMENSION_TAB_JEU 10
 #define NBRE_ETATS 16
@@ -9,11 +11,8 @@
 
 
 typedef struct etat{
-  int nord;
-  int sud;
-  int est;
-  int ouest;
-  
+  int nord_sud;
+  int ouest_est;
 }etat;
 
 
@@ -55,39 +54,132 @@ void liberer_tableau(int **tableau, int nb_lignes)
 
 /*La Q_Table : 
  *elle est de la forme :                                                  ACTIONS
- *                             Q_Table       |     Gauche    |     Droite    |      Bas      |    Haut     |
+ *                             Q_Table       |     Haut      |     Bas       |    Droite     |    Gauche     |
  *                   -----------------------------------------------------------------------------------------
- * orientation :    état0:   (0,0,0,0)       |               |               |               |               |
- *                  état2:   (0,0,0,1)       |               |               |               |               |
- *                  état3:   (0,0,1,1)       |               |               |               |               |
- *                              ...          |     ...       |     ...       |    ...        |     ...       |
- *    ETATS                     ...          |     ...       |     ...       |    ...        |     ...       |
- *   (16 états)                 ...          |     ...       |     ...       |    ...        |     ...       |
- *                  état13:  (1,0,0,1)       |               |               |               |               |
- *                  état14:  (1,0,1,1)       |               |               |               |               |
- *                  état15:  (1,1,1,1)       |               |               |               |               |
- *
+ * orientation :    état0:     (-1,-1)       |               |               |               |               |
+ *                  état1:     (-1,0 )       |               |               |               |               |
+ *                  état2:     (-1,1 )       |               |               |               |               |
+ *    ETATS         état3:     ( 0,-1)       |               |               |               |               |
+ *   (9 états)      état4:     ( 0,0 )       |               |               |               |               |
+ *                  état5:     ( 0,1 )       |               |               |               |               |
+ *                  état6:     ( 1,-1)       |               |               |               |               |
+ *                  état7:     ( 1,0 )       |               |               |               |               |
+ *                  état8:     ( 1,1 )       |               |               |               |               |
  */
 
 /* un épisode est une partie
  * 
- * les états sont composés de (nord,sud,est,ouest) = les différents composants sont des bools (ex :
- * nord =1 si la pomme est au nord par rapport à la tête du serpent)
+ * les états sont composés de (nord(1)/memeHauteur(0)/sud(-1),ouest(1)/memeColonne(0)/est(-1)) = les différents composants sont des bools (ex :
+ * nord =1 si la pomme est au nord par rapport à la tête du serpent et =-1 si la pomme est au sud )
  *
- * les actions sont  : gauche(0), droite(1), bas(2), haut(3)
- *
+ * les actions sont   : Haut(0), Bas(1), Droite(2), Gauche(3)
  *
  */
 
 
 
-/*explorationSerpent(pos_tete, posPomme, etat, listeEtat, listeAction, liste recompense,
- *         tailleGrille, Q_Table)
- *         => le serpent va dans direction aléatoire entre toutes les directions d'état = 1
- *	          .update listeAction
+etat calculEtat(int pos_x_tete, int pos_y_tete, int pos_x_pomme, int pos_y_pomme)
+{
+  etat etatActuel;
+
+  if(pos_x_tete < pos_x_pomme)    //la pomme est à l'est de la la tête
+    {
+      etatActuel.ouest_est = -1;
+    }
+  else if(pos_x_tete > pos_x_pomme) // A l'ouest
+    {
+      etatActuel.ouest_est = 1;
+    }
+  else
+    {
+      etatActuel.ouest_est = 0; // sur la même colonne
+    }
+
+  
+  if(pos_y_tete < pos_y_pomme) // La pomme est au sud de la tête
+    {
+      etatActuel.nord_sud = -1;
+    }
+  else if(pos_y_tete > pos_y_pomme) // Au nord
+    {
+      etatActuel.nord_sud = 1;
+    }
+  else
+    {
+      etatActuel.nord_sud = 0; //même ligne
+    }
+
+  
+  return etatActuel;
+}
+
+int quelAction (etat etatActuel)
+{
+  int tmp;
+  int actionActuel = 4;
+
+  if(abs(etatActuel.nord_sud + etatActuel.ouest_est) == 2) //2 directions possibles
+    {
+      tmp = rand()%2;                                      // représente notre proba aléatoire uniforme 
+      
+      if(tmp == 0)                                         // on dit que si ==0 alors on agira sur la ligne
+	{
+	  if(etatActuel.nord_sud > 0)
+	    {
+	      actionActuel = 0;
+	    }
+	  else
+	    {
+	      actionActuel = 1;
+	    }
+	}
+      else                                                 // sinon ce sera la colonne
+	{
+	  if(etatActuel.ouest_est > 0)
+	    {
+	      actionActuel = 3;
+	    }
+	  else
+	    {
+	      actionActuel = 2;
+	    }
+	}
+      
+    }
+  else if(abs(etatActuel.nord_sud) == 1 )                  //bonne colonne - mauvaise ligne
+    {
+      if(etatActuel.nord_sud > 0)
+	{
+	  actionActuel = 0;
+	}
+      else
+	{
+	  actionActuel = 1;
+	}
+    }
+  else if (abs(etatActuel.ouest_est) == 1)                 //bonne ligne - mauvaise colonne
+    {
+      if(etatActuel.ouest_est > 0)
+	{
+	  actionActuel = 3;
+	}
+      else
+	{
+	  actionActuel = 2;
+	}
+    }
+  return actionActuel;
+}
+
+/*explorationSerpent(pos_tete, posPomme, listeEtat, listeAction, liste recompense, Q_Table)
+ *        
+ *        => On calcul l'état avec la pos_tete et pos_pomme
+ *                .update listeEtat        (FAIT)
+ *        
+ *        => le serpent va dans direction aléatoire entre toutes les directions d'état = 1 et -1
+ *	          .update listeAction      (FAIT)
  *		  .update pos_tete
- * 	 => on recalcule l'état avec la pos_tete et pos_Pomme
- *	          .update listeEtat
+ *
  *	 => testDéplacement pour savoir la récompense
  *	          .update listeRecompense
  *	     	  => Si recompense = - 1  : On stoppe l'épisode
@@ -99,6 +191,54 @@ void liberer_tableau(int **tableau, int nb_lignes)
  *
  *        ___________> on répète on répère on répète pour avoir une Q_table la plus représentative
  */
+
+
+
+
+
+void explorationSerpent(int *pos_x_tete, int *pos_y_tete, int *pos_x_pomme, int *pos_y_pomme, etat *
+			listeEtats , int ** listeAction_Gain, int tailleMax, int *taille_serpent,
+			int **plateau, int ** serpent/*Q_table*/)
+{
+  int i = 0;
+  int tmp;
+  
+  while(i < tailleMax)
+    {
+      listeEtats[i] = calculEtat(*pos_x_tete, *pos_y_tete, *pos_x_pomme, *pos_y_pomme);
+      
+      listeAction_Gain[i][0] = quelAction(listeEtats[i]);
+      tmp = TestDeplacement(serpent,listeAction_Gain[i][0],taille_serpent, plateau, pos_x_tete, pos_y_tete);
+
+      if(tmp == 2)
+	{
+	  listeAction_Gain[i][1] = 0;
+	}
+      else if(tmp == 1)
+	{
+	  listeAction_Gain[i][1] = 1 ; 
+	}
+      else
+	{
+	  listeAction_Gain[i][1] = -1;
+	  i = tailleMax;
+	}
+      i ++;
+    }
+  if(i == tailleMax +1) {
+    //normal on s'arrete à la fin de la run
+    
+  }
+  else{
+    //veut dire que l'on s'est arrété parce que on a dépassé la tailleMax d'états
+    //on alloue aussi mais avec un epsilon alpha (moins représentatif)
+  }
+  //       ===> On update la Q_Table avec les états 
+  
+  
+}
+
+
 
 
 /*exploitationSerpent(Q_table, pos_tete, posPomme)
@@ -115,10 +255,13 @@ void liberer_tableau(int **tableau, int nb_lignes)
 
 
 
-/*int main (){
-  float ** Q_Table = creer_tableau(nbre_Lignes_Q_Table, 4);
-  afficher_tableau(Q_Table, nbre_Lignes_Q_Table, 4);
 
+
+
+int main (){
+
+  srand(time(NULL)); 
+ 
+  
   return 0;
-  }*/
-
+  }
