@@ -307,8 +307,8 @@ void EcritureQtable(float **Q, int nbLigne, int nbColonne)
             fprintf(Historique, "\n");
         }
         fprintf(Historique, "\n");
+        fclose(Historique);
     }
-    fclose(Historique);
 
     if ((Last = fopen("saveQTable/LastQtable.txt", "w")) != NULL)
     {
@@ -320,8 +320,8 @@ void EcritureQtable(float **Q, int nbLigne, int nbColonne)
             }
             fprintf(Last, "\n");
         }
+        fclose(Last);
     }
-    fclose(Last);
 }
 
 void RecupQtable(float **Q, int nbLigne, int nbColonne)
@@ -337,9 +337,8 @@ void RecupQtable(float **Q, int nbLigne, int nbColonne)
                 fscanf(Save, "%f ", &Q[i][j]);
             }
         }
+        fclose(Save);
     }
-
-    fclose(Save);
 }
 
 /*explorationSerpent(pos_tete, posPomme, listeEtat, listeAction, liste recompense, Q_Table)
@@ -379,9 +378,9 @@ void explorationSerpent(int *pos_i_tete, int *pos_j_tete, int *pos_i_pomme, int 
     while (i < TAILLEMAX_APPRENTISSAGE)
     {
         listeEtats[i] = EtatActuel(*pos_j_tete, *pos_i_tete, *pos_j_pomme, *pos_i_pomme); // on update la listeEtat
-        //printf("Action actuelle : %d, %d\n", liste_etats[listeEtats[i]].nord_sud, liste_etats[listeEtats[i]].ouest_est);
+        // printf("Action actuelle : %d, %d\n", liste_etats[listeEtats[i]].nord_sud, liste_etats[listeEtats[i]].ouest_est);
         listeActions[i] = quelAction(liste_etats[listeEtats[i]]); // on update la listeAction
-        //printf("Action actuelle : %d\n", listeActions[i]);
+        // printf("Action actuelle : %d\n", listeActions[i]);
         tmp = TestDeplacement(serpent, listeActions[i], taille_serpent, plateau, &teteSerpent); // on bouge le serpent
 
         if (tmp == 2)
@@ -402,8 +401,6 @@ void explorationSerpent(int *pos_i_tete, int *pos_j_tete, int *pos_i_pomme, int 
         i++;
     }
 
-    
-
     if (i == TAILLEMAX_APPRENTISSAGE)
     {
         // veut dire que l'on s'est arrété parce que on a dépassé la tailleMax d'états
@@ -411,13 +408,13 @@ void explorationSerpent(int *pos_i_tete, int *pos_j_tete, int *pos_i_pomme, int 
         fin = TAILLEMAX_APPRENTISSAGE;
         epsilon = 0.05;
     }
-    
+
     //       ===> On update la Q_Table avec les états
     printf("%d %d %d\n", listeEtats[fin - 1], listeActions[fin - 1], fin - 1);
     printf("%f ", Q_Table[listeEtats[fin - 1]][listeActions[fin - 1]]);
     /*Q_Table[listeEtats[fin - 1]][listeActions[fin - 1]] += epsilon * (listeRecompense[fin - 1] -
                                                                       Q_Table[listeEtats[fin - 1]][listeActions[fin - 1]]);*/
-    
+
     /*for (i = fin - 2; i >= 0; i++)
     {
         for (j = 0; j < 4; j++)
@@ -429,7 +426,7 @@ void explorationSerpent(int *pos_i_tete, int *pos_j_tete, int *pos_i_pomme, int 
             Q_Table[listeEtats[i]][listeActions[i]] += epsilon * (listeRecompense[i] + (gamma * max) - Q_Table[listeEtats[i]][listeActions[i]]);
         }
     }*/
-    //printf("Apprentissage Fait !\n");
+    // printf("Apprentissage Fait !\n");
 }
 
 /*exploitationSerpent(Q_table, pos_tete, posPomme)
@@ -457,7 +454,7 @@ void MainApprentissage(etat_t *listeEtat, int nbIteration, int **serpent, int **
         }
     }
 
-    while (iteration < nbIteration)
+    while (iteration <= nbIteration)
     {
         // Initilialisation simulation de partie sans interface graphique
         int taille_serpent = SERPENT_DEMARRAGE;
@@ -468,7 +465,11 @@ void MainApprentissage(etat_t *listeEtat, int nbIteration, int **serpent, int **
         posPommeAvecCo(plateau, serpent, taille_serpent, teteSerpent, &iPomme, &jPomme);
         explorationSerpent(&serpent[teteSerpent][0], &serpent[teteSerpent][1], &iPomme, &jPomme, &taille_serpent, plateau, serpent, QTable, listeEtat, 0.1, GAMMA, teteSerpent);
         //AffichageTabFloat(QTable, NBRE_ETATS_APPRENTISSAGE, NBRE_ACTION_APPRENTISSAGE);
+        if (iteration % 100 == 0){ //ON SAVE LES Q TABLES TOUTES LES 100 ITÉRATIONS POUR Obersver l'apprentissage
+            EcritureQtable(QTable, NBRE_ETATS_APPRENTISSAGE, NBRE_ACTION_APPRENTISSAGE);
+        }
     }
+
 
     LibererTabFloat(QTable, NBRE_ETATS_APPRENTISSAGE);
 }
