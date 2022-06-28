@@ -1,12 +1,12 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <time.h>
-
-
+ 
 #define DIMENSION_TAB_JEU 10
+#define DIMENSION_TAB_POS (DIMENSION_TAB_JEU-2) * (DIMENSION_TAB_JEU-2)
 #define NBRE_ETATS 9
 #define GAMMA 0.5
-
+#define TAILLEMAX 100
 
 
 
@@ -18,7 +18,7 @@ typedef struct etat{
 
 void genereTableauEtat(etat * liste_etats)
 {
-    liste_etats = (etat *)malloc(sizeof(etat) * 9);
+    liste_etats = (etat *)malloc(sizeof(etat) * NBRE_ETATS);
     liste_etats[0].nord_sud = -1;
     liste_etats[0].ouest_est = -1;
     liste_etats[1].nord_sud = -1;
@@ -75,6 +75,58 @@ void liberer_tableau(int **tableau, int nb_lignes)
 }
 
 
+void posPommeAvecCo(int **plateau,
+              int **serpent,
+              int tailleSerpent,
+              int teteSerpent, int * posI, int * posJ)
+{
+    //printf("tete: %d\n", teteSerpent);
+    int i, j, m;
+    int compteur = 0;
+    int caseVide;
+
+    int caseDispo = ((DIMENSION_TAB_JEU - 2) * (DIMENSION_TAB_JEU - 2)) - tailleSerpent;
+    // printf("caseDispo : %d\n", caseDispo);
+    int placement = (rand() % caseDispo) + 1;
+    // printf("placement : %d\n\n", placement);
+
+    for (i = 1; i < DIMENSION_TAB_JEU - 1; i++)
+    {
+
+        for (j = 1; j < DIMENSION_TAB_JEU - 1; j++)
+        {
+            // printf("compteur : %d\n", compteur);
+            caseVide = 1;
+            int courant = teteSerpent;
+
+            for (m = 0; m < tailleSerpent; m++)
+            {
+                if ((i == serpent[courant][0] && j == serpent[courant][1]))
+                {
+                    caseVide = 0;
+                }
+                courant = courant + 1;
+                courant %= DIMENSION_TAB_POS;
+            }
+            if (caseVide == 1)
+            {
+
+                compteur++;
+            }
+            if (compteur == placement)
+            {
+
+                plateau[i][j] = 1;
+                *posI = i;
+                *posJ = j;
+                i = DIMENSION_TAB_JEU; // on incrémente i et j de sorte qu'on sorte de la boucle
+                j = DIMENSION_TAB_JEU;
+            }
+            // printf("compteurFinBoucle : %d\n", compteur);
+        }
+    }
+}
+
 /*La Q_Table : 
  *elle est de la forme :                                                  ACTIONS
  *                                       Q_Table       |     Haut      |     Bas       |    Droite     |    Gauche     |
@@ -101,7 +153,7 @@ void liberer_tableau(int **tableau, int nb_lignes)
 
 
 
-etat calculEtat(int pos_x_tete, int pos_y_tete, int pos_x_pomme, int pos_y_pomme)
+/*etat calculEtat(int pos_x_tete, int pos_y_tete, int pos_x_pomme, int pos_y_pomme)
 {
   etat etatActuel;
 
@@ -135,7 +187,7 @@ etat calculEtat(int pos_x_tete, int pos_y_tete, int pos_x_pomme, int pos_y_pomme
   
   return etatActuel;
 }
-
+*/
 
 
 int EtatActuel(int teteSx, int teteSy, int pommex, int pommey)
@@ -251,6 +303,58 @@ int quelAction (etat etatActuel)
   return actionActuel;
 }
 
+void EcritureQtable(float **Q, int nbLigne, int nbColonne)
+{
+    FILE *Historique;
+    FILE *Last;
+    int i, j;
+
+    // on ecrit l'historique dans un fichier
+    if ((Historique = fopen("saveQTable/EvolutionQTable.txt", "a+")) != NULL)
+    {
+        for (i = 0; i < nbLigne; i++)
+        {
+            for (j = 0; j < nbColonne; j++)
+            {
+                fprintf(Historique, "%f ", Q[i][j]);
+            }
+            fprintf(Historique, "\n");
+        }
+        fprintf(Historique, "\n");
+    }
+    fclose(Historique);
+
+    if ((Last = fopen("saveQTable/LastQtable.txt", "w")) != NULL)
+    {
+        for (int i = 0; i < nbLigne; i++)
+        {
+            for (int j = 0; j < nbColonne; j++)
+            {
+                fprintf(Last, "%f ", Q[i][j]);
+            }
+            fprintf(Last, "\n");
+        }
+    }
+    fclose(Last);
+}
+
+void RecupQtable(float **Q, int nbLigne, int nbColonne){
+    FILE *Save;
+
+    if ((Save = fopen("saveQTable/LastQtable.txt", "r")) != NULL)
+    {
+        for (int i = 0; i < nbLigne; i++)
+        {
+            for (int j = 0; j < nbColonne; j++)
+            {
+                fscanf(Save, "%f ", &Q[i][j]);
+            }
+        }
+    }
+
+    fclose(Save);
+}
+
 /*explorationSerpent(pos_tete, posPomme, listeEtat, listeAction, liste recompense, Q_Table)
  *        
  *        => On calcul l'état avec la pos_tete et pos_pomme
@@ -276,44 +380,49 @@ int quelAction (etat etatActuel)
 
 
 
-void explorationSerpent(int *pos_x_tete, int *pos_y_tete, int *pos_x_pomme, int *pos_y_pomme, int *
-   			listeEtats , int * listeActions, int * listeRecompense, int tailleMax, int *taille_serpent,
-			int **plateau, int ** serpent, float ** Q_Table, etat * liste_etats)
+void explorationSerpent(int *pos_x_tete, int *pos_y_tete, int *pos_x_pomme, int *pos_y_pomme,
+			int *taille_serpent, int **plateau, int ** serpent, float ** Q_Table,
+			etat * liste_etats, float epsilon, float gamma, int teteSerpent)
 {
+  int listeEtats[TAILLEMAX] = {0};
+  int listeActions[TAILLEMAX] = {0};
+  int listeRecompense[TAILLEMAX] = {0};
+  
   int i = 0;
-  float epsilon = 0.1;
-  float gamma  = 0;
   int fin = 0;
   int max = 0;
   int tmp, j;
   
-  while(i < tailleMax)
+  while(i < TAILLEMAX)
     {
-      listeEtats[i] = EtatActuel(*pos_x_tete, *pos_y_tete, *pos_x_pomme, *pos_y_pomme);
+      listeEtats[i] = EtatActuel(*pos_x_tete, *pos_y_tete, *pos_x_pomme, *pos_y_pomme); /*on update
+											  la listeEtat*/
       
-      listeActions[i] = quelAction( liste_etats [ listeEtats [i] ] );
-      tmp = TestDeplacement(serpent,listeActions[i],taille_serpent, plateau, pos_x_tete, pos_y_tete);
+      listeActions[i] = quelAction( liste_etats [ listeEtats [i] ] ); /*on update la listeAction*/
+      tmp = TestDeplacement(serpent,listeActions[i],taille_serpent, plateau, pos_x_tete,
+			    pos_y_tete); /*on bouge le serpent*/
 
       if(tmp == 2)
 	{
-	  listeRecompense [i] = 0;
+	  listeRecompense [i] = 0; // le serpent avance 
 	}
       else if(tmp == 1)
 	{
-	  listeRecompense [i] = 1 ; 
+	  listeRecompense [i] = 1 ;
+	  posPommeAvecCo(plateau, serpent, *taille_serpent, teteSerpent, pos_x_pomme, pos_y_pomme); 
 	}
       else
 	{
 	  listeRecompense [i] = -1;
 	  fin = i;
-	  i = tailleMax;
+	  i = TAILLEMAX;
 	}
       i ++;
     }
-  if(i == tailleMax) {
+  if(i == TAILLEMAX) {
     //veut dire que l'on s'est arrété parce que on a dépassé la tailleMax d'états
     //on alloue aussi mais avec un epsilon epsilon (moins représentatif)
-    fin = tailleMax ;
+    fin = TAILLEMAX;
     epsilon = 0.05;
   }
 
@@ -359,10 +468,20 @@ void explorationSerpent(int *pos_x_tete, int *pos_y_tete, int *pos_x_pomme, int 
 
 int main (){
 
-  srand(time(NULL)); 
-  etat * liste_etats;
-  genereTableauEtat(liste_etats);
+  srand(time(NULL));
+
 
   
+  etat * liste_etats = NULL;
+  genereTableauEtat(liste_etats);
+
+  //WHILE ( le nombre de d'itération)
+        //j'initialise la grille
+        //j'initialise la Q-table
+        //je recup position serpent, pomme
+        /*explorationSerpent(pos_x_tete, *pos_y_tete, *pos_x_pomme, *pos_y_pomme, tailleMax,
+		      *taille_serpent, **plateau, **serpent, **Q_Table, *liste_etats, epsilon, gamma
+		      );*/
+        
   return 0;
   }
