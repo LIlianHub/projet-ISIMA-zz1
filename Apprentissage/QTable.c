@@ -402,6 +402,8 @@ void explorationSerpent(int *pos_i_tete, int *pos_j_tete, int *pos_i_pomme, int 
         i++;
     }
 
+    
+
     if (i == TAILLEMAX_APPRENTISSAGE)
     {
         // veut dire que l'on s'est arrété parce que on a dépassé la tailleMax d'états
@@ -411,7 +413,7 @@ void explorationSerpent(int *pos_i_tete, int *pos_j_tete, int *pos_i_pomme, int 
     }
     
     //       ===> On update la Q_Table avec les états
-    printf("%d %d\n", listeEtats[fin - 1], listeActions[fin - 1]);
+    printf("%d %d %d\n", listeEtats[fin - 1], listeActions[fin - 1], fin - 1);
     printf("%f ", Q_Table[listeEtats[fin - 1]][listeActions[fin - 1]]);
     /*Q_Table[listeEtats[fin - 1]][listeActions[fin - 1]] += epsilon * (listeRecompense[fin - 1] -
                                                                       Q_Table[listeEtats[fin - 1]][listeActions[fin - 1]]);*/
