@@ -8,6 +8,7 @@
 #include "Config.h"
 #include "Graphique.h"
 #include "Algorithme.h"
+#include "QTable.h"
 
 /*PARTIE MAIN*/
 /* Uniquement les libérations et allocations de structures*/
@@ -29,9 +30,17 @@ int main(int argc, char **argv)
     position_snake = creer_tableau(DIMENSION_TAB_POS, 2);
 
     // mode apprentissage
-    if (argc == 2 && !strcmp(argv[1], "apprend"))
+    if (argc == 3 && !strcmp(argv[1], "apprend"))
     {
-        printf("apprentissage\n");
+        printf("Mode Apprentissage\n");
+        //init liste etat possible apprentissage
+        etat_t * listeEtat = NULL;
+        genereTableauEtat(listeEtat);
+        int nbIteration;
+        sscanf(argv[2],"%d",&nbIteration);
+        MainApprentissage(listeEtat, nbIteration, plateau, position_snake);
+        free(listeEtat);
+
     }
 
     // mode graphique
