@@ -17,5 +17,6 @@
 
 #define SERPENT_DEMARRAGE 3
 
+#define AVEC_CACTUS 0
 
 #endif

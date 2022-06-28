@@ -103,7 +103,7 @@ void AffichageGrillage(SDL_Renderer *renderer, SDL_Texture *pomme, int **plateau
         {
 
             // sol
-            random = rand() % 3;
+            random = rand() % 4; //random entre les 4 frames de sol
             SDL_RenderCopy(renderer, table_serpent, &etats_serpent[0][random], &element_grillage);
             // si bordure
             if (plateau[i][j] == 2)
@@ -168,13 +168,13 @@ void PlaceCorpsSerpent(SDL_Renderer *renderer, int courant, SDL_Texture *table_s
 
     if ((courI == (precI - 1)) && (courJ == precJ))
     {
-        if ((courI == suivI) && ((courJ + 1 )== suivJ))
+        if ((courI == suivI) && ((courJ + 1) == suivJ))
         {
             SDL_RenderCopy(renderer, table_serpent, &etats_serpent[1][5], &pos);
         }
         else if ((courI == suivI) && ((courJ - 1) == suivJ))
         {
-            //printf("yoyo");
+            // printf("yoyo");
             SDL_RenderCopy(renderer, table_serpent, &etats_serpent[1][2], &pos);
         }
         else if ((suivI == (courI - 1)) && (courJ == suivJ))
@@ -214,13 +214,13 @@ void PlaceCorpsSerpent(SDL_Renderer *renderer, int courant, SDL_Texture *table_s
     }
     else if ((courI == (precI + 1)) && (courJ == precJ))
     {
-        if ((suivI == courI) && (suivJ == (courJ +1)))
+        if ((suivI == courI) && (suivJ == (courJ + 1)))
         {
             SDL_RenderCopy(renderer, table_serpent, &etats_serpent[1][3], &pos);
         }
         else if ((suivI == courI) && (suivJ == (courJ - 1)))
         {
-            //printf("cécé");
+            // printf("cécé");
             SDL_RenderCopy(renderer, table_serpent, &etats_serpent[1][4], &pos);
         }
         else if ((suivI == (courI + 1)) && (suivJ == courJ))
@@ -354,11 +354,14 @@ void IterEnJeu(SDL_bool *depart, long *lastTick, int *infoIter, int *iter_explo,
             } // il a pas mangé
             else
             {
-                *nbItePosMur += 1;
-                if (*nbItePosMur == ITER_POUR_MUR)
+                if (AVEC_CACTUS) //possible de jouer avec ou sans cactus selon config.h
                 {
-                    posMuret(plateau, serpent, *direction, *teteSerpent);
-                    *nbItePosMur = 0;
+                    *nbItePosMur += 1;
+                    if (*nbItePosMur == ITER_POUR_MUR)
+                    {
+                        posMuret(plateau, serpent, *direction, *teteSerpent);
+                        *nbItePosMur = 0;
+                    }
                 }
             }
         }
