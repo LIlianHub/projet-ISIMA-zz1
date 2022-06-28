@@ -15,7 +15,7 @@
 
 #define ITER_POUR_MUR 10
 
-#define SERPENT_DEMARRAGE 5
+#define SERPENT_DEMARRAGE 3
 
 
 #endif
