@@ -4,10 +4,6 @@
 #include "Config.h"
 
 /*MARKOV*/
-
-// nbres de règles de notre tableau de markov
-int NB_ETATS = 5;
-
 /*
  *tableau de markov qui va contenir les probabilités
  *de passer entre les différents états :
@@ -17,6 +13,7 @@ int NB_ETATS = 5;
  *vitesse*3 : indice 3
  *endormi   : indice 4
  */
+
 float markov[5][5] = {{0.4, 0.1, 0.3, 0.15, 0.05},
                       {0.5, 0.15, 0.25, 0, 0.1},
                       {0.14, 0.03, 0.5, 0.3, 0.03},
@@ -33,14 +30,14 @@ int passageMarkov(int EtatPrec)
     // printf("pourcentage : %d \n",pourcent);
 
     int cumul = 0;
-    for (i = 0; i < NB_ETATS; i++)
+    for (i = 0; i < NB_ETATS_MARKOV; i++)
     {
         cumul += markov[EtatPrec][i] * 100;
         // printf("cumul : %d \n",cumul);
         if (pourcent < cumul)
         {
             EtatPrec = i;
-            i = NB_ETATS;
+            i = NB_ETATS_MARKOV;
         }
     }
     return EtatPrec;

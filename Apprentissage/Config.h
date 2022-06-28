@@ -20,4 +20,6 @@
 
 #define AVEC_CACTUS 1
 
+#define NB_ETATS_MARKOV 5
+
 #endif
