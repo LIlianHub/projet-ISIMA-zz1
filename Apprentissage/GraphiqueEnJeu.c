@@ -7,8 +7,6 @@
 #include "Algorithme.h"
 #include "Graphique.h"
 
-
-
 /*AffichageLogoMenu*/
 
 void AffichageLogo(SDL_Renderer *renderer, SDL_Texture *my_texture)
@@ -97,6 +95,7 @@ void AffichageGrillage(SDL_Renderer *renderer, SDL_Texture *pomme, int **plateau
     element_grillage.y = TAILLE_MENU;
     element_grillage.w = FENETREWIDTH / DIMENSION_TAB_JEU;
     element_grillage.h = (FENETREHEIGHT - TAILLE_MENU) / DIMENSION_TAB_JEU;
+    int random;
 
     for (int i = 0; i < DIMENSION_TAB_JEU; i++)
     {
@@ -104,7 +103,8 @@ void AffichageGrillage(SDL_Renderer *renderer, SDL_Texture *pomme, int **plateau
         {
 
             // sol
-            SDL_RenderCopy(renderer, table_serpent, &etats_serpent[0][3], &element_grillage);
+            random = rand() % 3;
+            SDL_RenderCopy(renderer, table_serpent, &etats_serpent[0][random], &element_grillage);
             // si bordure
             if (plateau[i][j] == 2)
             {
@@ -151,7 +151,7 @@ void PlaceTeteSerpent(SDL_Renderer *renderer, int direction, SDL_Texture *table_
 
 void PlaceCorpsSerpent(SDL_Renderer *renderer, int courant, SDL_Texture *table_serpent, SDL_Rect etats_serpent[6][16], SDL_Rect pos, int **serpent)
 {
-    /*on a besoin du prec et du suivant*/
+    /*ON a besoin du precedent et du suivant*/
     int prec = courant - 1;
     if (prec < 0)
         prec = DIMENSION_TAB_POS - 1;
@@ -168,60 +168,62 @@ void PlaceCorpsSerpent(SDL_Renderer *renderer, int courant, SDL_Texture *table_s
 
     if ((courI == (precI - 1)) && (courJ == precJ))
     {
-        if ((courI == suivI) && (courJ + 1 == suivJ))
+        if ((courI == suivI) && ((courJ + 1 )== suivJ))
         {
             SDL_RenderCopy(renderer, table_serpent, &etats_serpent[1][5], &pos);
         }
-        else if ((courI == suivI) && (courJ - 1 == suivJ))
+        else if ((courI == suivI) && ((courJ - 1) == suivJ))
         {
-            SDL_RenderCopy(renderer, table_serpent, &etats_serpent[1][4], &pos);
+            //printf("yoyo");
+            SDL_RenderCopy(renderer, table_serpent, &etats_serpent[1][2], &pos);
         }
         else if ((suivI == (courI - 1)) && (courJ == suivJ))
         {
             SDL_RenderCopy(renderer, table_serpent, &etats_serpent[1][0], &pos);
         }
     }
-    else if ((courI == precI) && (courJ == precJ - 1))
+    else if ((courI == precI) && (courJ == (precJ - 1)))
     {
-        if ((courI + 1 == suivI) && (courJ == suivJ))
+        if (((courI + 1) == suivI) && (courJ == suivJ))
         {
             SDL_RenderCopy(renderer, table_serpent, &etats_serpent[1][5], &pos);
         }
-        else if ((courI - 1 == suivI) && (courJ == suivJ))
+        else if (((courI - 1) == suivI) && (courJ == suivJ))
         {
             SDL_RenderCopy(renderer, table_serpent, &etats_serpent[1][3], &pos);
         }
-        else if ((suivI == courI) && (suivJ == courJ - 1))
+        else if ((suivI == courI) && (suivJ == (courJ - 1)))
         {
             SDL_RenderCopy(renderer, table_serpent, &etats_serpent[1][1], &pos);
         }
     }
-    else if ((courI == precI) && (courJ == precJ + 1))
+    else if ((courI == precI) && (courJ == (precJ + 1)))
     {
-        if ((suivI == courI + 1) && (courJ == precJ))
+        if ((suivI == (courI + 1)) && (courJ == precJ))
         {
             SDL_RenderCopy(renderer, table_serpent, &etats_serpent[1][4], &pos);
         }
-        else if ((suivI == courI - 1) && (courJ == precJ))
+        else if ((suivI == (courI - 1)) && (courJ == precJ))
         {
             SDL_RenderCopy(renderer, table_serpent, &etats_serpent[1][2], &pos);
         }
-        else if ((courI == suivI) && (suivJ == courJ + 1))
+        else if ((courI == suivI) && (suivJ == (courJ + 1)))
         {
             SDL_RenderCopy(renderer, table_serpent, &etats_serpent[1][1], &pos);
         }
     }
-    else if ((courI == precI + 1) && (courJ == precJ))
+    else if ((courI == (precI + 1)) && (courJ == precJ))
     {
-        if ((suivI == courI) && (suivJ == courJ - 1))
-        {
-            SDL_RenderCopy(renderer, table_serpent, &etats_serpent[1][2], &pos);
-        }
-        else if ((suivI == courI) && (suivJ == courJ + 1))
+        if ((suivI == courI) && (suivJ == (courJ +1)))
         {
             SDL_RenderCopy(renderer, table_serpent, &etats_serpent[1][3], &pos);
         }
-        else if ((suivI == courI + 1) && (suivJ == courJ))
+        else if ((suivI == courI) && (suivJ == (courJ - 1)))
+        {
+            //printf("cécé");
+            SDL_RenderCopy(renderer, table_serpent, &etats_serpent[1][4], &pos);
+        }
+        else if ((suivI == (courI + 1)) && (suivJ == courJ))
         {
             SDL_RenderCopy(renderer, table_serpent, &etats_serpent[1][0], &pos);
         }
@@ -259,7 +261,6 @@ void PlaceQueueSerpent(SDL_Renderer *renderer, int courant, SDL_Texture *table_s
     }
 }
 
-
 void AffichageSerpent(int **serpent, SDL_Renderer *renderer, int taille_serpent, int teteSerpent, int direction, SDL_Texture *table_serpent, SDL_Rect etats_serpent[6][16], int etat)
 {
     SDL_Rect element_serpent = {0};
@@ -284,7 +285,6 @@ void AffichageSerpent(int **serpent, SDL_Renderer *renderer, int taille_serpent,
         parcours %= DIMENSION_TAB_POS;
     }
 }
-
 
 void Explosion(SDL_Renderer *renderer, SDL_Texture *explosion, SDL_Rect pos, int etat, SDL_Rect etats[25])
 {
