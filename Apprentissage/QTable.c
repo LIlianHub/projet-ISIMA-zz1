@@ -61,6 +61,8 @@ etat_t *genereTableauEtat()
     liste_etats[7].ouest_est = 0;
     liste_etats[8].nord_sud = 1;
     liste_etats[8].ouest_est = 1;
+
+    return liste_etats;
 }
 
 void posPommeAvecCo(int **plateau,
@@ -377,10 +379,11 @@ void explorationSerpent(int *pos_i_tete, int *pos_j_tete, int *pos_i_pomme, int 
     while (i < TAILLEMAX_APPRENTISSAGE)
     {
         listeEtats[i] = EtatActuel(*pos_j_tete, *pos_i_tete, *pos_j_pomme, *pos_i_pomme); // on update la listeEtat
-        // printf("Etat actuel : %d\n", listeEtats[i]);
-        printf("Action actuelle : %d, %d\n", liste_etats[listeEtats[i]].nord_sud, liste_etats[listeEtats[i]].ouest_est);
-        listeActions[i] = quelAction(liste_etats[listeEtats[i]]);                               // on update la listeAction
+        //printf("Action actuelle : %d, %d\n", liste_etats[listeEtats[i]].nord_sud, liste_etats[listeEtats[i]].ouest_est);
+        listeActions[i] = quelAction(liste_etats[listeEtats[i]]); // on update la listeAction
+        //printf("Action actuelle : %d\n", listeActions[i]);
         tmp = TestDeplacement(serpent, listeActions[i], taille_serpent, plateau, &teteSerpent); // on bouge le serpent
+
         if (tmp == 2)
         {
             listeRecompense[i] = 0; // le serpent avance
@@ -406,12 +409,14 @@ void explorationSerpent(int *pos_i_tete, int *pos_j_tete, int *pos_i_pomme, int 
         fin = TAILLEMAX_APPRENTISSAGE;
         epsilon = 0.05;
     }
-
+    
     //       ===> On update la Q_Table avec les états
-    Q_Table[listeEtats[fin - 1]][listeActions[fin - 1]] += epsilon * (listeRecompense[fin - 1] -
-                                                                      Q_Table[listeEtats[fin - 1]][listeActions[fin - 1]]);
-
-    for (i = fin - 2; i >= 0; i++)
+    printf("%d %d\n", listeEtats[fin - 1], listeActions[fin - 1]);
+    printf("%f ", Q_Table[listeEtats[fin - 1]][listeActions[fin - 1]]);
+    /*Q_Table[listeEtats[fin - 1]][listeActions[fin - 1]] += epsilon * (listeRecompense[fin - 1] -
+                                                                      Q_Table[listeEtats[fin - 1]][listeActions[fin - 1]]);*/
+    
+    /*for (i = fin - 2; i >= 0; i++)
     {
         for (j = 0; j < 4; j++)
         {
@@ -421,8 +426,8 @@ void explorationSerpent(int *pos_i_tete, int *pos_j_tete, int *pos_i_pomme, int 
             }
             Q_Table[listeEtats[i]][listeActions[i]] += epsilon * (listeRecompense[i] + (gamma * max) - Q_Table[listeEtats[i]][listeActions[i]]);
         }
-    }
-    printf("Apprentissage Fait !\n");
+    }*/
+    //printf("Apprentissage Fait !\n");
 }
 
 /*exploitationSerpent(Q_table, pos_tete, posPomme)
@@ -450,19 +455,18 @@ void MainApprentissage(etat_t *listeEtat, int nbIteration, int **serpent, int **
         }
     }
 
-  
     while (iteration < nbIteration)
-     {
-         // Initilialisation simulation de partie sans interface graphique
-         int taille_serpent = SERPENT_DEMARRAGE;
-         InitPlateau(plateau);
-         InitialisationSerpent(serpent, &taille_serpent);
-         int teteSerpent = 0;
-         int iPomme, jPomme;
-         posPommeAvecCo(plateau, serpent, taille_serpent, teteSerpent, &iPomme, &jPomme);
-         explorationSerpent(&serpent[teteSerpent][0], &serpent[teteSerpent][1], &iPomme, &jPomme, &taille_serpent, plateau, serpent, QTable, listeEtat, 0.1, GAMMA, teteSerpent);
-         AffichageTabFloat(QTable, NBRE_ETATS_APPRENTISSAGE, NBRE_ACTION_APPRENTISSAGE);
-     }
+    {
+        // Initilialisation simulation de partie sans interface graphique
+        int taille_serpent = SERPENT_DEMARRAGE;
+        InitPlateau(plateau);
+        InitialisationSerpent(serpent, &taille_serpent);
+        int teteSerpent = 0;
+        int iPomme, jPomme;
+        posPommeAvecCo(plateau, serpent, taille_serpent, teteSerpent, &iPomme, &jPomme);
+        explorationSerpent(&serpent[teteSerpent][0], &serpent[teteSerpent][1], &iPomme, &jPomme, &taille_serpent, plateau, serpent, QTable, listeEtat, 0.1, GAMMA, teteSerpent);
+        //AffichageTabFloat(QTable, NBRE_ETATS_APPRENTISSAGE, NBRE_ACTION_APPRENTISSAGE);
+    }
 
     LibererTabFloat(QTable, NBRE_ETATS_APPRENTISSAGE);
 }
