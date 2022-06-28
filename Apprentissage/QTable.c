@@ -473,3 +473,18 @@ void MainApprentissage(etat_t *listeEtat, int nbIteration, int **serpent, int **
 
     LibererTabFloat(QTable, NBRE_ETATS_APPRENTISSAGE);
 }
+
+int ExploitationQtable(int teteSi, int teteSj, int pommeI, int pommeJ, float ** Qtable){
+
+    int etat = EtatActuel(teteSi, teteSj, pommeI, pommeJ);
+    float max = Qtable[etat][0];
+    int direction = 0;
+    for(int i = 0; i < NBRE_ACTION_APPRENTISSAGE; i++){
+        if(max < Qtable[etat][i]){
+            max = Qtable[etat][i];
+            direction = i;
+        }
+    }
+
+    return direction;
+}

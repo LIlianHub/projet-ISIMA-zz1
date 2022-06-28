@@ -11,7 +11,7 @@ void end_sdl(char ok, char const *msg, SDL_Window *window, SDL_Renderer *rendere
 
 void Initialisation(SDL_bool *enJeu, SDL_bool *depart, int *iter_explo, int **serpent, int **plateau, int *taille_serpent,
                     int *direction, int *infoIter, int *etat_markov, int *vitesse_markov, int *score, int *multiplicateur, long *lastTick,
-                    int *teteSerpent, int *nbItePosMur, SDL_bool *dansJeu, SDL_bool *dansMenu);
+                    int *teteSerpent, int *nbItePosMur, SDL_bool *dansJeu, SDL_bool *dansMenu, SDL_bool *AI_mode, int * posPommeI, int * posPommeJ);
 void PassageTableauCoor(int i, int j, int *x, int *y);
 
 extern int vitesseParEtat[5];

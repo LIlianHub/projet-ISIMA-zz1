@@ -8,6 +8,7 @@
 #include "GraphiqueMenu.h"
 #include "GraphiqueEnJeu.h"
 #include "Graphique.h"
+#include "QTable.h"
 
 
 /*Global Markov*/
@@ -169,7 +170,7 @@ void GenereTabExplosion(SDL_Rect etats[25], SDL_Texture *explosion)
 /*Initialisation*/
 void Initialisation(SDL_bool *enJeu, SDL_bool *depart, int *iter_explo, int **serpent, int **plateau, int *taille_serpent,
                     int *direction, int *infoIter, int *etat_markov, int *vitesse_markov, int *score, int *multiplicateur, long *lastTick,
-                    int *teteSerpent, int *nbItePosMur, SDL_bool *dansJeu, SDL_bool *dansMenu)
+                    int *teteSerpent, int *nbItePosMur, SDL_bool *dansJeu, SDL_bool *dansMenu, SDL_bool *AI_mode, int * posPommeI, int * posPommeJ)
 {
     *enJeu = SDL_FALSE;
     *depart = SDL_TRUE;
@@ -187,9 +188,10 @@ void Initialisation(SDL_bool *enJeu, SDL_bool *depart, int *iter_explo, int **se
     *nbItePosMur = 0;
     InitPlateau(plateau);
     ClearMap(plateau);
-    posPomme(plateau, serpent, *taille_serpent, *teteSerpent);
+    posPommeAvecCo(plateau, serpent, *taille_serpent, *teteSerpent, posPommeI, posPommeJ);
     *dansJeu = SDL_FALSE;
     *dansMenu = SDL_TRUE;
+    *AI_mode = SDL_FALSE;
 }
 
 
@@ -210,6 +212,7 @@ void GestionEvenement(SDL_Renderer *renderer, TTF_Font *font,
     SDL_Event event;
     SDL_bool dansJeu;
     SDL_bool dansMenu;
+    SDL_bool AI_mode;
 
     /*Gestion animation explosion*/
     SDL_Rect etats[25];
@@ -242,9 +245,19 @@ void GestionEvenement(SDL_Renderer *renderer, TTF_Font *font,
     int multiplicateur;
     long lastTick;
 
+    /*position pomme a chaque iteration*/
+    int posPommeI;
+    int posPommeJ;
+
+    /*init apprentissage*/
+    float ** Qtable = NULL;
+    Qtable = GenereTabFloat(NBRE_ETATS_APPRENTISSAGE, NBRE_ACTION_APPRENTISSAGE);
+    RecupQtable(Qtable, NBRE_ETATS_APPRENTISSAGE, NBRE_ACTION_APPRENTISSAGE);
+
+    //initialisation du jeu
     Initialisation(&enJeu, &depart, &iter_explo, serpent, plateau, &taille_serpent, &direction, &infoIter,
                    &etat_markov, &vitesse_prog, &score,
-                   &multiplicateur, &lastTick, &teteSerpent, &nbItePosMur, &dansJeu, &dansMenu);
+                   &multiplicateur, &lastTick, &teteSerpent, &nbItePosMur, &dansJeu, &dansMenu, &AI_mode, &posPommeI, &posPommeJ);
 
     while (activation)
     {
@@ -259,20 +272,20 @@ void GestionEvenement(SDL_Renderer *renderer, TTF_Font *font,
             case SDL_KEYDOWN:
                 switch (event.key.keysym.sym)
                 {
-                case SDLK_LEFT:
-                    if (direction != 2 && enJeu)
+                case SDLK_LEFT: //on bouge seulement en mode joueur
+                    if (direction != 2 && enJeu && !AI_mode)
                         direction = 3;
                     break;
                 case SDLK_RIGHT:
-                    if (direction != 3 && enJeu)
+                    if (direction != 3 && enJeu && !AI_mode)
                         direction = 2;
                     break;
                 case SDLK_UP:
-                    if (direction != 1 && enJeu)
+                    if (direction != 1 && enJeu && !AI_mode)
                         direction = 0;
                     break;
                 case SDLK_DOWN:
-                    if (direction != 0 && enJeu)
+                    if (direction != 0 && enJeu && !AI_mode)
                         direction = 1;
                     break;
                 case SDLK_SPACE:
@@ -291,7 +304,8 @@ void GestionEvenement(SDL_Renderer *renderer, TTF_Font *font,
                     if (dansMenu)
                     {
                         ChoixMenu(event.button.x, event.button.y, &dansJeu, &dansMenu, &enJeu, &depart, &iter_explo, serpent, plateau, &taille_serpent,
-                                  &direction, &infoIter, &etat_markov, &vitesse_prog, &score, &multiplicateur, &lastTick, &teteSerpent, &nbItePosMur);
+                                  &direction, &infoIter, &etat_markov, &vitesse_prog, &score, &multiplicateur, &lastTick, &teteSerpent, &nbItePosMur, &AI_mode,
+                                  &posPommeI, &posPommeJ);
                     }
                 }
                 break;
@@ -307,6 +321,11 @@ void GestionEvenement(SDL_Renderer *renderer, TTF_Font *font,
         {
             AffichageGrillage(renderer, pomme, plateau, etats_serpent, table_serpent);
             AffichageMenuJeu(renderer, font, logoMenu, meilleurScore, score);
+
+            if(AI_mode){ //si en mode AI on calcul la direction avec la qtable
+                direction = ExploitationQtable(serpent[teteSerpent][0], serpent[teteSerpent][1], posPommeI, posPommeJ, Qtable);
+            }
+
             if (depart) // menu demarrage on attend l'appuie sur espace
             {
                 AffichageSerpent(serpent, renderer, taille_serpent, teteSerpent, direction, table_serpent, etats_serpent, etat_markov);
@@ -329,4 +348,7 @@ void GestionEvenement(SDL_Renderer *renderer, TTF_Font *font,
         SDL_Delay(vitesse_prog);
         SDL_RenderPresent(renderer);
     }
+
+    //Libération de la mémoire
+    LibererTabFloat(Qtable, NBRE_ETATS_APPRENTISSAGE);
 }
