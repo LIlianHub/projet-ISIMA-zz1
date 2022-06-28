@@ -4,9 +4,8 @@
 
 
 #define DIMENSION_TAB_JEU 10
-#define NBRE_ETATS 16
-#define ALPHA 0.1
-#define LAMBDA 10
+#define NBRE_ETATS 9
+#define EPSILON
 
 
 
@@ -198,10 +197,11 @@ int quelAction (etat etatActuel)
 
 void explorationSerpent(int *pos_x_tete, int *pos_y_tete, int *pos_x_pomme, int *pos_y_pomme, etat *
 			listeEtats , int ** listeAction_Gain, int tailleMax, int *taille_serpent,
-			int **plateau, int ** serpent/*Q_table*/)
+			int **plateau, int ** serpent, float ** Q_Table)
 {
   int i = 0;
-  int tmp;
+  float alpha = 0.1;
+  int tmp, fin, max;
   
   while(i < tailleMax)
     {
@@ -221,21 +221,28 @@ void explorationSerpent(int *pos_x_tete, int *pos_y_tete, int *pos_x_pomme, int 
       else
 	{
 	  listeAction_Gain[i][1] = -1;
+	  fin = i;
 	  i = tailleMax;
 	}
       i ++;
     }
-  if(i == tailleMax +1) {
-    //normal on s'arrete à la fin de la run
-    
-  }
-  else{
+  if(i == tailleMax) {
     //veut dire que l'on s'est arrété parce que on a dépassé la tailleMax d'états
     //on alloue aussi mais avec un epsilon alpha (moins représentatif)
+    fin = tailleMax;
+    alpha = 0.05;
   }
+
   //       ===> On update la Q_Table avec les états 
-  
-  
+  Q_Table[fin - 1 ][listeAction_Gain[fin - 1 ][0]] += EPSILON * (listeAction_Gain[fin - 1 ][1]  -
+  Q_Table[fin - 1 ][listeAction_Gain[fin - 1 ][0]]   )  ;
+
+  for ( i = fin-2 ; i >= 0 ; i --)
+    {
+      
+      max = 
+      
+    }
 }
 
 

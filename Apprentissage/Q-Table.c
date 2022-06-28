@@ -5,7 +5,8 @@
 
 #define DIMENSION_TAB_JEU 10
 #define NBRE_ETATS 9
-#define EPSILON
+#define GAMMA 0.5
+
 
 
 
@@ -14,6 +15,29 @@ typedef struct etat{
   int ouest_est;
 }etat;
 
+
+void genereTableauEtat(etat * liste_etats)
+{
+    liste_etats = (etat *)malloc(sizeof(etat) * 9);
+    liste_etats[0].nord_sud = -1;
+    liste_etats[0].ouest_est = -1;
+    liste_etats[1].nord_sud = -1;
+    liste_etats[1].ouest_est = 0;
+    liste_etats[2].nord_sud = -1;
+    liste_etats[2].ouest_est = 1;
+    liste_etats[3].nord_sud = 0;
+    liste_etats[3].ouest_est = -1;
+    liste_etats[4].nord_sud = 0;
+    liste_etats[4].ouest_est = 0;
+    liste_etats[5].nord_sud = 0;
+    liste_etats[5].ouest_est = 1;
+    liste_etats[6].nord_sud = 1;
+    liste_etats[6].ouest_est = -1;
+    liste_etats[7].nord_sud = 1;
+    liste_etats[7].ouest_est = 0;
+    liste_etats[8].nord_sud = 1;
+    liste_etats[8].ouest_est = 1;
+}
 
 void afficher_tableau(float **tableau, int nb_lignes, int nb_colonnes)
 {
@@ -53,17 +77,17 @@ void liberer_tableau(int **tableau, int nb_lignes)
 
 /*La Q_Table : 
  *elle est de la forme :                                                  ACTIONS
- *                             Q_Table       |     Haut      |     Bas       |    Droite     |    Gauche     |
- *                   -----------------------------------------------------------------------------------------
- * orientation :    état0:     (-1,-1)       |               |               |               |               |
- *                  état1:     (-1,0 )       |               |               |               |               |
- *                  état2:     (-1,1 )       |               |               |               |               |
- *    ETATS         état3:     ( 0,-1)       |               |               |               |               |
- *   (9 états)      état4:     ( 0,0 )       |               |               |               |               |
- *                  état5:     ( 0,1 )       |               |               |               |               |
- *                  état6:     ( 1,-1)       |               |               |               |               |
- *                  état7:     ( 1,0 )       |               |               |               |               |
- *                  état8:     ( 1,1 )       |               |               |               |               |
+ *                                       Q_Table       |     Haut      |     Bas       |    Droite     |    Gauche     |
+ *                   ---------------------------------------------------------------------------------------------------
+ * orientation :    état0: S-E           (-1,-1)       |               |               |               |               |
+ *                  état1: S             (-1,0 )       |               |               |               |               |
+ *                  état2: S-O           (-1,1 )       |               |               |               |               |
+ *    ETATS         état3: E             ( 0,-1)       |               |               |               |               |
+ *   (9 états)      état4:               ( 0,0 )       |               |               |               |               |
+ *                  état5: O             ( 0,1 )       |               |               |               |               |
+ *                  état6: N-E           ( 1,-1)       |               |               |               |               |
+ *                  état7: N             ( 1,0 )       |               |               |               |               |
+ *                  état8: N-O           ( 1,1 )       |               |               |               |               |
  */
 
 /* un épisode est une partie
@@ -110,6 +134,63 @@ etat calculEtat(int pos_x_tete, int pos_y_tete, int pos_x_pomme, int pos_y_pomme
 
   
   return etatActuel;
+}
+
+
+
+int EtatActuel(int teteSx, int teteSy, int pommex, int pommey)
+{
+    int directionX = teteSx - pommex; // si positif : ouest sinon est
+    int directionY = teteSy - pommey; // si positif : nord sinon su
+    int etat = 4;
+
+    if (directionX > 0) // ouest
+    {
+        if (directionY > 0)
+        {
+            etat = 8; // nord ouest
+        }
+        else if (directionY < 0)
+        {
+            etat = 2; // sud ouest
+        }
+        else
+        {
+            etat = 5; // ouest
+        }
+    }
+    else if (directionX < 0) // est
+    {
+        if (directionY > 0)
+        {
+            etat = 6; // nord est
+        }
+        else if (directionY < 0)
+        {
+            etat = 0; // sud est
+        }
+        else
+        {
+            etat = 3; // est
+        }
+    }
+    else // juste nord ou sud
+    {
+        if (directionY > 0)
+        {
+            etat = 7; // nord
+        }
+        else if (directionY < 0)
+        {
+            etat = 1; // sud
+        }
+        else
+        {
+            etat = 4; // sur la pomme
+        }
+    }
+
+    return etat;
 }
 
 int quelAction (etat etatActuel)
@@ -195,32 +276,35 @@ int quelAction (etat etatActuel)
 
 
 
-void explorationSerpent(int *pos_x_tete, int *pos_y_tete, int *pos_x_pomme, int *pos_y_pomme, etat *
-			listeEtats , int ** listeAction_Gain, int tailleMax, int *taille_serpent,
-			int **plateau, int ** serpent, float ** Q_Table)
+void explorationSerpent(int *pos_x_tete, int *pos_y_tete, int *pos_x_pomme, int *pos_y_pomme, int *
+   			listeEtats , int * listeActions, int * listeRecompense, int tailleMax, int *taille_serpent,
+			int **plateau, int ** serpent, float ** Q_Table, etat * liste_etats)
 {
   int i = 0;
-  float alpha = 0.1;
-  int tmp, fin, max;
+  float epsilon = 0.1;
+  float gamma  = 0;
+  int fin = 0;
+  int max = 0;
+  int tmp, j;
   
   while(i < tailleMax)
     {
-      listeEtats[i] = calculEtat(*pos_x_tete, *pos_y_tete, *pos_x_pomme, *pos_y_pomme);
+      listeEtats[i] = EtatActuel(*pos_x_tete, *pos_y_tete, *pos_x_pomme, *pos_y_pomme);
       
-      listeAction_Gain[i][0] = quelAction(listeEtats[i]);
-      tmp = TestDeplacement(serpent,listeAction_Gain[i][0],taille_serpent, plateau, pos_x_tete, pos_y_tete);
+      listeActions[i] = quelAction( liste_etats [ listeEtats [i] ] );
+      tmp = TestDeplacement(serpent,listeActions[i],taille_serpent, plateau, pos_x_tete, pos_y_tete);
 
       if(tmp == 2)
 	{
-	  listeAction_Gain[i][1] = 0;
+	  listeRecompense [i] = 0;
 	}
       else if(tmp == 1)
 	{
-	  listeAction_Gain[i][1] = 1 ; 
+	  listeRecompense [i] = 1 ; 
 	}
       else
 	{
-	  listeAction_Gain[i][1] = -1;
+	  listeRecompense [i] = -1;
 	  fin = i;
 	  i = tailleMax;
 	}
@@ -228,19 +312,27 @@ void explorationSerpent(int *pos_x_tete, int *pos_y_tete, int *pos_x_pomme, int 
     }
   if(i == tailleMax) {
     //veut dire que l'on s'est arrété parce que on a dépassé la tailleMax d'états
-    //on alloue aussi mais avec un epsilon alpha (moins représentatif)
-    fin = tailleMax;
-    alpha = 0.05;
+    //on alloue aussi mais avec un epsilon epsilon (moins représentatif)
+    fin = tailleMax ;
+    epsilon = 0.05;
   }
 
   //       ===> On update la Q_Table avec les états 
-  Q_Table[fin - 1 ][listeAction_Gain[fin - 1 ][0]] += EPSILON * (listeAction_Gain[fin - 1 ][1]  -
-  Q_Table[fin - 1 ][listeAction_Gain[fin - 1 ][0]]   )  ;
+  Q_Table[listeEtats[fin - 1]] [listeActions[fin -1]] += epsilon * (listeRecompense[fin -1] -
+  Q_Table[listeEtats[fin - 1]] [listeActions[fin -1]]);
 
-  for ( i = fin-2 ; i >= 0 ; i --)
+  for ( i = fin -2 ; i >= 0 ; i ++ )
     {
-      
-      max = 
+      for( j = 0 ; j < 4 ; j++ )
+	{
+	  if (max < Q_Table[listeEtats[i+1]][j])
+	    {
+	      max  = Q_Table[listeEtats[i+1]][j];
+	    }
+	  Q_Table[listeEtats[i]][listeActions[i]] += epsilon * (listeRecompense[i] + (gamma * max) - Q_Table[listeEtats[i]][listeActions[i]]);
+	    
+	}
+
       
     }
 }
@@ -268,7 +360,9 @@ void explorationSerpent(int *pos_x_tete, int *pos_y_tete, int *pos_x_pomme, int 
 int main (){
 
   srand(time(NULL)); 
- 
+  etat * liste_etats;
+  genereTableauEtat(liste_etats);
+
   
   return 0;
   }
