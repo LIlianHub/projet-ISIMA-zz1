@@ -1,4 +1,5 @@
 // Trouvez ici tous les defines de configs du programme
+
 #ifndef CONFIG_H
 #define CONFIG_H
 
@@ -17,6 +18,6 @@
 
 #define SERPENT_DEMARRAGE 3
 
-#define AVEC_CACTUS 0
+#define AVEC_CACTUS 1
 
 #endif
