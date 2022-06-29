@@ -328,7 +328,7 @@ void explorationSerpent(int *pos_i_pomme, int *pos_j_pomme,
   initPile(&PileDonnees, TAILLEMAX_APPRENTISSAGE);
 
   int i = 0;
-  int max;
+  double max;
   int action;
   int tmp, j;
   int random;
@@ -364,6 +364,7 @@ void explorationSerpent(int *pos_i_pomme, int *pos_j_pomme,
     else
     {
       data.action = quelAction(list_etat[data.etat]); // EXPLORATION
+      //data.action = rand() % 4;
     }
 
     tmp = TestDeplacement(serpent, data.action, taille_serpent, plateau, &teteSerpent);
