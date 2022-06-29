@@ -11,8 +11,6 @@ typedef struct donnees
 }donnees;
 
 
-
-
 typedef struct pile
 {
   int taille;

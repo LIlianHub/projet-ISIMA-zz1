@@ -1,5 +1,5 @@
 SRC=main.c
-SRC+= Graphique.c Algorithme.c GraphiqueMenu.c GraphiqueEnJeu.c QTable.c Pile.c
+SRC+= Graphique.c Algorithme.c GraphiqueMenu.c GraphiqueEnJeu.c QTableV2.c PileV2.c
 EXE=Jeu
 
 CC=gcc
