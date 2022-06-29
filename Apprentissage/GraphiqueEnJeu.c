@@ -6,6 +6,7 @@
 #include "Config.h"
 #include "Algorithme.h"
 #include "Graphique.h"
+#include "QTable.h"
 
 /*AffichageLogoMenu*/
 
@@ -298,7 +299,7 @@ void Explosion(SDL_Renderer *renderer, SDL_Texture *explosion, SDL_Rect pos, int
 
 void IterEnJeu(SDL_bool *depart, long *lastTick, int *infoIter, int *iter_explo, int *meilleurScore, int *score, SDL_bool *enJeu, int *etat_markov, int *vitesse_prog,
                int *multiplicateur, int *nbItePosMur, int *direction, int **serpent, int **plateau, int *taille_serpent, int *teteSerpent, SDL_Texture *explosion, SDL_Rect etats[25],
-               SDL_Texture *table_serpent, SDL_Rect etats_serpent[6][16], SDL_Renderer *renderer, SDL_Rect *pos_explosion, SDL_bool *dansJeu, SDL_bool *dansMenu)
+               SDL_Texture *table_serpent, SDL_Rect etats_serpent[6][16], SDL_Renderer *renderer, SDL_Rect *pos_explosion, SDL_bool *dansJeu, SDL_bool *dansMenu, int * posPommeI, int * posPommeJ)
 {
     if (*depart)
     {
@@ -344,7 +345,7 @@ void IterEnJeu(SDL_bool *depart, long *lastTick, int *infoIter, int *iter_explo,
                 // on supprime les murets et la pomme
                 ClearMap(plateau);
                 // on ajoute une nouvelle pomme
-                posPomme(plateau, serpent, *taille_serpent, *teteSerpent);
+                posPommeAvecCo(plateau, serpent, *taille_serpent, *teteSerpent, posPommeI, posPommeJ);
                 // calcul de la nouvelle vitesse possible selon markov
                 *etat_markov = passageMarkov(*etat_markov);
                 // printf("etat_markov : %d\n", etat_markov);

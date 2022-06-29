@@ -14,7 +14,7 @@
 #define TAILLE_EXPLOSION 5
 #define ITER_POUR_MUR 10
 #define SERPENT_DEMARRAGE 3
-#define AVEC_CACTUS 1
+#define AVEC_CACTUS 0
 #define NB_ETATS_MARKOV 5
 
 

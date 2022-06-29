@@ -355,9 +355,15 @@ void EcritureQtable(float **Q, int nbLigne, int nbColonne)
             }
 	  fprintf(Historique, "\n");
         }
+<<<<<<< HEAD
       fprintf(Historique, "\n");
     }
   fclose(Historique);
+=======
+        fprintf(Historique, "\n");
+        fclose(Historique);
+    }
+>>>>>>> 50651d22d8a6e2a81c53c174eac5f74f671d9b9d
 
   if ((Last = fopen("saveQTable/LastQtable.txt", "w")) != NULL)
     {
@@ -369,8 +375,12 @@ void EcritureQtable(float **Q, int nbLigne, int nbColonne)
             }
 	  fprintf(Last, "\n");
         }
+        fclose(Last);
     }
+<<<<<<< HEAD
   fclose(Last);
+=======
+>>>>>>> 50651d22d8a6e2a81c53c174eac5f74f671d9b9d
 }
 
 
@@ -388,9 +398,13 @@ void RecupQtable(float **Q, int nbLigne, int nbColonne)
 	      fscanf(Save, "%f ", &Q[i][j]);
             }
         }
+        fclose(Save);
     }
+<<<<<<< HEAD
 
   fclose(Save);
+=======
+>>>>>>> 50651d22d8a6e2a81c53c174eac5f74f671d9b9d
 }
 
 
@@ -423,6 +437,7 @@ void explorationSerpent(int *pos_i_tete, int *pos_j_tete, int *pos_i_pomme, int 
 
   while (i < TAILLEMAX_APPRENTISSAGE)
     {
+<<<<<<< HEAD
       donnees data = {0};
       data.etat = EtatActuel(*pos_j_tete, *pos_i_tete, *pos_j_pomme, *pos_i_pomme);
       random = rand()%101;
@@ -446,6 +461,15 @@ void explorationSerpent(int *pos_i_tete, int *pos_j_tete, int *pos_i_pomme, int 
       tmp = TestDeplacement(serpent, data.action, taille_serpent, plateau, &teteSerpent);
       
       if (tmp == 2)
+=======
+        listeEtats[i] = EtatActuel(*pos_j_tete, *pos_i_tete, *pos_j_pomme, *pos_i_pomme); // on update la listeEtat
+        // printf("Action actuelle : %d, %d\n", liste_etats[listeEtats[i]].nord_sud, liste_etats[listeEtats[i]].ouest_est);
+        listeActions[i] = quelAction(liste_etats[listeEtats[i]]); // on update la listeAction
+        // printf("Action actuelle : %d\n", listeActions[i]);
+        tmp = TestDeplacement(serpent, listeActions[i], taille_serpent, plateau, &teteSerpent); // on bouge le serpent
+
+        if (tmp == 2)
+>>>>>>> 50651d22d8a6e2a81c53c174eac5f74f671d9b9d
         {
 	  data.recompense = 1/(1 + exp( - i));
         }
@@ -463,6 +487,7 @@ void explorationSerpent(int *pos_i_tete, int *pos_j_tete, int *pos_i_pomme, int 
       i++; 
     }
 
+<<<<<<< HEAD
   
   //       ===> On update la Q_Table avec les états
 
@@ -489,6 +514,34 @@ void explorationSerpent(int *pos_i_tete, int *pos_j_tete, int *pos_i_pomme, int 
 
   
   LibererPile(PileDonnees);
+=======
+    if (i == TAILLEMAX_APPRENTISSAGE)
+    {
+        // veut dire que l'on s'est arrété parce que on a dépassé la tailleMax d'états
+        // on alloue aussi mais avec un epsilon epsilon (moins représentatif)
+        fin = TAILLEMAX_APPRENTISSAGE;
+        epsilon = 0.05;
+    }
+
+    //       ===> On update la Q_Table avec les états
+    printf("%d %d %d\n", listeEtats[fin - 1], listeActions[fin - 1], fin - 1);
+    printf("%f ", Q_Table[listeEtats[fin - 1]][listeActions[fin - 1]]);
+    /*Q_Table[listeEtats[fin - 1]][listeActions[fin - 1]] += epsilon * (listeRecompense[fin - 1] -
+                                                                      Q_Table[listeEtats[fin - 1]][listeActions[fin - 1]]);*/
+
+    /*for (i = fin - 2; i >= 0; i++)
+    {
+        for (j = 0; j < 4; j++)
+        {
+            if (max < Q_Table[listeEtats[i + 1]][j])
+            {
+                max = Q_Table[listeEtats[i + 1]][j];
+            }
+            Q_Table[listeEtats[i]][listeActions[i]] += epsilon * (listeRecompense[i] + (gamma * max) - Q_Table[listeEtats[i]][listeActions[i]]);
+        }
+    }*/
+    // printf("Apprentissage Fait !\n");
+>>>>>>> 50651d22d8a6e2a81c53c174eac5f74f671d9b9d
 }
 
 
@@ -513,6 +566,7 @@ void MainApprentissage(etat_t *listeEtat, int nbIteration, int **serpent, int **
         }
     }
 
+<<<<<<< HEAD
   while (iteration < nbIteration)
     {
       // Initilialisation simulation de partie sans interface graphique
@@ -528,4 +582,39 @@ void MainApprentissage(etat_t *listeEtat, int nbIteration, int **serpent, int **
     }
 
   LibererTabFloat(QTable, NBRE_ETATS_APPRENTISSAGE);
+=======
+    while (iteration <= nbIteration)
+    {
+        // Initilialisation simulation de partie sans interface graphique
+        int taille_serpent = SERPENT_DEMARRAGE;
+        InitPlateau(plateau);
+        InitialisationSerpent(serpent, &taille_serpent);
+        int teteSerpent = 0;
+        int iPomme, jPomme;
+        posPommeAvecCo(plateau, serpent, taille_serpent, teteSerpent, &iPomme, &jPomme);
+        explorationSerpent(&serpent[teteSerpent][0], &serpent[teteSerpent][1], &iPomme, &jPomme, &taille_serpent, plateau, serpent, QTable, listeEtat, 0.1, GAMMA, teteSerpent);
+        //AffichageTabFloat(QTable, NBRE_ETATS_APPRENTISSAGE, NBRE_ACTION_APPRENTISSAGE);
+        if (iteration % 100 == 0){ //ON SAVE LES Q TABLES TOUTES LES 100 ITÉRATIONS POUR Obersver l'apprentissage
+            EcritureQtable(QTable, NBRE_ETATS_APPRENTISSAGE, NBRE_ACTION_APPRENTISSAGE);
+        }
+    }
+
+
+    LibererTabFloat(QTable, NBRE_ETATS_APPRENTISSAGE);
+}
+
+int ExploitationQtable(int teteSi, int teteSj, int pommeI, int pommeJ, float ** Qtable){
+
+    int etat = EtatActuel(teteSi, teteSj, pommeI, pommeJ);
+    float max = Qtable[etat][0];
+    int direction = 0;
+    for(int i = 1; i < NBRE_ACTION_APPRENTISSAGE; i++){
+        if(max < Qtable[etat][i]){
+            max = Qtable[etat][i];
+            direction = i;
+        }
+    }
+
+    return direction;
+>>>>>>> 50651d22d8a6e2a81c53c174eac5f74f671d9b9d
 }

@@ -50,19 +50,24 @@ void OverBoutonMenu(SDL_Renderer *renderer, float x, float y)
 }
 
 void ChoixMenu(float x, float y, SDL_bool *dansJeu, SDL_bool *dansMenu, SDL_bool *enJeu, SDL_bool *depart, int *iter_explo, int **serpent, int **plateau, int *taille_serpent,
-               int *direction, int *infoIter, int *etat_markov, int *vitesse_markov, int *score, int *multiplicateur, long *lastTick, int *teteSerpent, int *nbItePosMur)
+               int *direction, int *infoIter, int *etat_markov, int *vitesse_markov, int *score, int *multiplicateur, long *lastTick, int *teteSerpent, int *nbItePosMur,
+               SDL_bool *AI_mode, int *posPommeI, int *posPommeJ)
 {
     int info = DetectBoutonMenu(x, y);
     if (info == 1)
     {
         Initialisation(enJeu, depart, iter_explo, serpent, plateau, taille_serpent, direction, infoIter, etat_markov, vitesse_markov, score,
-                       multiplicateur, lastTick, teteSerpent, nbItePosMur, dansJeu, dansMenu);
+                       multiplicateur, lastTick, teteSerpent, nbItePosMur, dansJeu, dansMenu, AI_mode, posPommeI, posPommeJ);
         *dansJeu = SDL_TRUE;
         *dansMenu = SDL_FALSE;
     }
 
     if (info == 2)
     {
-        printf("AI\n");
+        Initialisation(enJeu, depart, iter_explo, serpent, plateau, taille_serpent, direction, infoIter, etat_markov, vitesse_markov, score,
+                       multiplicateur, lastTick, teteSerpent, nbItePosMur, dansJeu, dansMenu, AI_mode, posPommeI, posPommeJ);
+        *dansJeu = SDL_TRUE;
+        *dansMenu = SDL_FALSE;
+        *AI_mode = SDL_TRUE;
     }
 }
