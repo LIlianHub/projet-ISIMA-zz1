@@ -53,17 +53,21 @@ void LibererTabFloat(double ***tab, int nb_ligne, int nb_colonne)
   printf("\n");
 }*/
 
-int EtatAutourActuel(int teteSx, int teteSy, int **serpent)
+int EtatAutourActuel(int teteSx, int teteSy, int **serpent, int **plateau, int *tailleSerpent, int *teteSerpent)
 {
   int etatAutour = 0;
+  int ValeurDessus = TestCollisionSerpent(serpent, teteSy - 1, teteSx, tailleSerpent, teteSerpent);
+  int ValeurDessous = TestCollisionSerpent(serpent, teteSy + 1, teteSx, tailleSerpent, teteSerpent);
+  int ValeurGauche = TestCollisionSerpent(serpent, teteSy, teteSx - 1, tailleSerpent, teteSerpent);
+  int ValeurDroite = TestCollisionSerpent(serpent, teteSy, teteSx + 1, tailleSerpent, teteSerpent);
 
-  if () // la case du haut est vide  (0,*,*,*)
+  if (plateau[teteSx][teteSy - 1] == 0 && ValeurDessus == 2) // la case du haut est vide  (0,*,*,*)
   {
-    if () // la case du bas est vide   (0,0,*,*)
+    if (plateau[teteSx][teteSy + 1] == 0 && ValeurDessous == 2) // la case du bas est vide   (0,0,*,*)
     {
-      if () // la case de droite est vide (0,0,0,*)
+      if (plateau[teteSx + 1][teteSy] == 0 && ValeurDroite == 2) // la case de droite est vide (0,0,0,*)
       {
-        if () // la case de gauche est vide (0,0,0,0)
+        if (plateau[teteSx - 1][teteSy] == 0 && ValeurGauche == 2) // la case de gauche est vide (0,0,0,0)
         {
           etatAutour = 0;
         }
@@ -74,7 +78,7 @@ int EtatAutourActuel(int teteSx, int teteSy, int **serpent)
       }
       else // (0,0,1,*)
       {
-        if () // (0,0,1,0)
+        if (plateau[teteSx - 1][teteSy] == 0 && ValeurGauche == 2) // (0,0,1,0)
         {
           etatAutour = 2;
         }
@@ -86,9 +90,9 @@ int EtatAutourActuel(int teteSx, int teteSy, int **serpent)
     }
     else // la case du haut est vide  (0,1,*,*)
     {
-      if () // la case de droite est vide (0,1,0,*)
+      if (plateau[teteSx + 1][teteSy] == 0 && ValeurDroite == 2) // la case de droite est vide (0,1,0,*)
       {
-        if () // la case de gauche est vide (0,1,0,0)
+        if (plateau[teteSx - 1][teteSy] == 0 && ValeurGauche == 2) // la case de gauche est vide (0,1,0,0)
         {
           etatAutour = 4;
         }
@@ -99,7 +103,7 @@ int EtatAutourActuel(int teteSx, int teteSy, int **serpent)
       }
       else // (0,1,1,*)
       {
-        if () // (0,1,1,0)
+        if (plateau[teteSx - 1][teteSy] == 0 && ValeurGauche == 2) // (0,1,1,0)
         {
           etatAutour = 6;
         }
@@ -112,11 +116,11 @@ int EtatAutourActuel(int teteSx, int teteSy, int **serpent)
   }
   else // la case du haut est pleine (1,*,*,*)
   {
-    if () // la case du bas est vide   (1,0,*,*)
+    if (plateau[teteSx][teteSy + 1] == 0 && ValeurDessous == 2) // la case du bas est vide   (1,0,*,*)
     {
-      if () // la case de droite est vide (1,0,0,*)
+      if (plateau[teteSx + 1][teteSy] == 0 && ValeurDroite == 2) // la case de droite est vide (1,0,0,*)
       {
-        if () // la case de gauche est vide (1,0,0,0)
+        if (plateau[teteSx - 1][teteSy] == 0 && ValeurGauche == 2) // la case de gauche est vide (1,0,0,0)
         {
           etatAutour = 8;
         }
@@ -127,7 +131,7 @@ int EtatAutourActuel(int teteSx, int teteSy, int **serpent)
       }
       else // (1,0,1,*)
       {
-        if () // (1,0,1,0)
+        if (plateau[teteSx - 1][teteSy] == 0 && ValeurGauche == 2) // (1,0,1,0)
         {
           etatAutour = 10;
         }
@@ -139,9 +143,9 @@ int EtatAutourActuel(int teteSx, int teteSy, int **serpent)
     }
     else // la case du haut est vide  (1,1,*,*)
     {
-      if () // la case de droite est vide (1,1,0,*)
+      if (plateau[teteSx + 1][teteSy] == 0 && ValeurDroite == 2) // la case de droite est vide (1,1,0,*)
       {
-        if () // la case de gauche est vide (1,1,0,0)
+        if (plateau[teteSx - 1][teteSy] == 0 && ValeurGauche == 2) // la case de gauche est vide (1,1,0,0)
         {
           etatAutour = 12;
         }
@@ -152,7 +156,7 @@ int EtatAutourActuel(int teteSx, int teteSy, int **serpent)
       }
       else // (1,1,1,*)
       {
-        if () // (1,1,1,0)
+        if (plateau[teteSx - 1][teteSy] == 0 && ValeurGauche == 2) // (1,1,1,0)
         {
           etatAutour = 14;
         }
@@ -355,7 +359,7 @@ int EtatActuel(int teteSx, int teteSy, int pommex, int pommey)
 
 void explorationSerpent(int *pos_i_pomme, int *pos_j_pomme,
                         int *taille_serpent, int **plateau, int **serpent, double ***Q_Table,
-                        int epsilon_Greedy, int teteSerpent)
+                        int epsilon_Greedy, int *teteSerpent)
 {
   pile_t *PileDonnees;
   initPile(&PileDonnees, TAILLEMAX_APPRENTISSAGE);
@@ -370,8 +374,8 @@ void explorationSerpent(int *pos_i_pomme, int *pos_j_pomme,
   while (i < TAILLEMAX_APPRENTISSAGE)
   {
     donnees data = {0};
-    data.etat = EtatActuel(serpent[teteSerpent][1], serpent[teteSerpent][0], *pos_j_pomme, *pos_i_pomme);
-    data.etatAutour = EtatAutourActuel(serpent[teteSerpent][1], serpent[teteSerpent][0], serpent); // finir la fonction
+    data.etat = EtatActuel(serpent[*teteSerpent][1], serpent[*teteSerpent][0], *pos_j_pomme, *pos_i_pomme);
+    data.etatAutour = EtatAutourActuel(serpent[*teteSerpent][1], serpent[*teteSerpent][0], serpent, plateau, taille_serpent, teteSerpent); // finir la fonction
 
     random = rand() % 101;
     if (random > epsilon_Greedy) // EXPLOITATION
@@ -394,7 +398,7 @@ void explorationSerpent(int *pos_i_pomme, int *pos_j_pomme,
       data.action = rand() % 4; // EXPLORATION
     }
 
-    tmp = TestDeplacement(serpent, data.action, taille_serpent, plateau, &teteSerpent);
+    tmp = TestDeplacement(serpent, data.action, taille_serpent, plateau, teteSerpent);
 
     if (tmp == 2)
     {
@@ -404,7 +408,7 @@ void explorationSerpent(int *pos_i_pomme, int *pos_j_pomme,
     {
       data.recompense = 1;
       ClearMap(plateau);
-      posPommeAvecCo(plateau, serpent, *taille_serpent, teteSerpent, pos_i_pomme, pos_j_pomme);
+      posPommeAvecCo(plateau, serpent, *taille_serpent, *teteSerpent, pos_i_pomme, pos_j_pomme);
     }
     else
     {
@@ -450,7 +454,7 @@ void MainApprentissage(int nbIteration, int **serpent, int **plateau)
   QTable = GenereTabFloat(NBRE_ETATS_APPRENTISSAGE, NBRE_ACTION_APPRENTISSAGE, NBRE_ETAT_AUTOUR);
   // RecupQtable(QTable, NBRE_ETATS_APPRENTISSAGE, NBRE_ACTION_APPRENTISSAGE);
 
-  for (int i = 0; i < NBRE_ETATS_APPRENTISSAGE; i++)
+  /*for (int i = 0; i < NBRE_ETATS_APPRENTISSAGE; i++)
   {
     for (int j = 0; j < NBRE_ACTION_APPRENTISSAGE; j++)
     {
@@ -459,9 +463,9 @@ void MainApprentissage(int nbIteration, int **serpent, int **plateau)
         QTable[i][j][k] = 0;
       }
     }
-  }
+  }*/
 
-  while (iteration <= nbIteration)
+  /*while (iteration <= nbIteration)
 
   {
     // Initilialisation simulation de partie sans interface graphique
@@ -476,7 +480,7 @@ void MainApprentissage(int nbIteration, int **serpent, int **plateau)
     int iPomme, jPomme;
     posPommeAvecCo(plateau, serpent, taille_serpent, teteSerpent, &iPomme, &jPomme);
 
-    explorationSerpent(&iPomme, &jPomme, &taille_serpent, plateau, serpent, QTable, epsilon_greedy, teteSerpent);
+    explorationSerpent(&iPomme, &jPomme, &taille_serpent, plateau, serpent, QTable, epsilon_greedy, &teteSerpent);
 
     if (iteration % nbSave == 0)
     {
@@ -489,7 +493,7 @@ void MainApprentissage(int nbIteration, int **serpent, int **plateau)
       epsilon_greedy--;
     }
     iteration++;
-  }
+  }*/
 
   LibererTabFloat(QTable, NBRE_ETATS_APPRENTISSAGE, NBRE_ACTION_APPRENTISSAGE);
 }
