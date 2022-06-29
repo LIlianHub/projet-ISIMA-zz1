@@ -8,6 +8,34 @@
 #include "QTable.h"
 #include "Pile.h"
 
+
+etat_t * genereTableauEtat()
+{
+  etat_t * liste_etats = (etat_t *)malloc(sizeof(etat_t) * NBRE_ETATS_APPRENTISSAGE);
+  liste_etats[0].nord_sud = -1;
+  liste_etats[0].ouest_est = -1;
+  liste_etats[1].nord_sud = -1;
+  liste_etats[1].ouest_est = 0;
+  liste_etats[2].nord_sud = -1;
+  liste_etats[2].ouest_est = 1;
+  liste_etats[3].nord_sud = 0;
+  liste_etats[3].ouest_est = -1;
+  liste_etats[4].nord_sud = 0;
+  liste_etats[4].ouest_est = 0;
+  liste_etats[5].nord_sud = 0;
+  liste_etats[5].ouest_est = 1;
+  liste_etats[6].nord_sud = 1;
+  liste_etats[6].ouest_est = -1;
+  liste_etats[7].nord_sud = 1;
+  liste_etats[7].ouest_est = 0;
+  liste_etats[8].nord_sud = 1;
+  liste_etats[8].ouest_est = 1;
+
+  return liste_etats;
+}
+
+
+
 /*Fonctions sur les tableaux float*/
 
 double **GenereTabFloat(int nb_ligne, int nb_colonne)
@@ -44,31 +72,64 @@ void AffichageTabFloat(double **tab, int nb_ligne, int nb_colonne)
   printf("\n");
 }
 
-/*Fonction sur le jeu du SNAKE  */
 
-etat_t *genereTableauEtat()
+
+
+int quelAction(etat_t etatActuel)
 {
-  etat_t *liste_etats = (etat_t *)malloc(sizeof(etat_t) * NBRE_ETATS_APPRENTISSAGE);
-  liste_etats[0].nord_sud = -1;
-  liste_etats[0].ouest_est = -1;
-  liste_etats[1].nord_sud = -1;
-  liste_etats[1].ouest_est = 0;
-  liste_etats[2].nord_sud = -1;
-  liste_etats[2].ouest_est = 1;
-  liste_etats[3].nord_sud = 0;
-  liste_etats[3].ouest_est = -1;
-  liste_etats[4].nord_sud = 0;
-  liste_etats[4].ouest_est = 0;
-  liste_etats[5].nord_sud = 0;
-  liste_etats[5].ouest_est = 1;
-  liste_etats[6].nord_sud = 1;
-  liste_etats[6].ouest_est = -1;
-  liste_etats[7].nord_sud = 1;
-  liste_etats[7].ouest_est = 0;
-  liste_etats[8].nord_sud = 1;
-  liste_etats[8].ouest_est = 1;
+  int tmp;
+  int actionActuel = 4;
 
-  return liste_etats;
+  if ((abs(etatActuel.nord_sud) + abs(etatActuel.ouest_est)) == 2) // 2 directions possibles
+  {
+    tmp = rand() % 2; // représente notre proba aléatoire uniforme
+
+    if (tmp == 0) // on dit que si ==0 alors on agira sur la ligne
+    {
+      if (etatActuel.nord_sud > 0)
+      {
+        actionActuel = 0;
+      }
+      else
+      {
+        actionActuel = 1;
+      }
+    }
+    else // sinon ce sera la colonne
+    {
+      if (etatActuel.ouest_est > 0)
+      {
+        actionActuel = 3;
+      }
+      else
+      {
+        actionActuel = 2;
+      }
+    }
+  }
+  else if (abs(etatActuel.nord_sud) == 1) // bonne colonne - mauvaise ligne
+  {
+    if (etatActuel.nord_sud > 0)
+    {
+      actionActuel = 0;
+    }
+    else
+    {
+      actionActuel = 1;
+    }
+  }
+  else if (abs(etatActuel.ouest_est) == 1) // bonne ligne - mauvaise colonne
+  {
+    if (etatActuel.ouest_est > 0)
+    {
+      actionActuel = 3;
+    }
+    else
+    {
+      actionActuel = 2;
+    }
+  }
+  return actionActuel;
 }
 
 void posPommeAvecCo(int **plateau,
@@ -257,9 +318,11 @@ void RecupQtable(double **Q, int nbLigne, int nbColonne)
   }
 }
 
+
+
 void explorationSerpent(int *pos_i_pomme, int *pos_j_pomme,
                         int *taille_serpent, int **plateau, int **serpent, double **Q_Table,
-                        int epsilon_Greedy, int teteSerpent)
+                        int epsilon_Greedy, int teteSerpent, etat_t * list_etat)
 {
   pile_t *PileDonnees;
   initPile(&PileDonnees, TAILLEMAX_APPRENTISSAGE);
@@ -300,7 +363,7 @@ void explorationSerpent(int *pos_i_pomme, int *pos_j_pomme,
 
     else
     {
-      data.action = rand() % 4; // EXPLORATION
+      data.action = quelAction(list_etat[data.etat]); // EXPLORATION
     }
 
     tmp = TestDeplacement(serpent, data.action, taille_serpent, plateau, &teteSerpent);
@@ -308,7 +371,7 @@ void explorationSerpent(int *pos_i_pomme, int *pos_j_pomme,
 
     if (tmp == 2)
     {
-      data.recompense = /*1 / (1 + exp(-i * 0.1))*/ 0;
+      data.recompense = 1 / (1 + exp(-i * 0.1));
     }
     else if (tmp == 1)
     {
@@ -358,15 +421,17 @@ void MainApprentissage(int nbIteration, int **serpent, int **plateau)
   int nbSave = nbIteration / 10;
   int updateEpsGreedy = nbIteration / 100;
   QTable = GenereTabFloat(NBRE_ETATS_APPRENTISSAGE, NBRE_ACTION_APPRENTISSAGE);
-  RecupQtable(QTable, NBRE_ETATS_APPRENTISSAGE, NBRE_ACTION_APPRENTISSAGE);
+  //RecupQtable(QTable, NBRE_ETATS_APPRENTISSAGE, NBRE_ACTION_APPRENTISSAGE);
 
-  /*for (int i = 0; i < NBRE_ETATS_APPRENTISSAGE; i++)
+  for (int i = 0; i < NBRE_ETATS_APPRENTISSAGE; i++)
   {
     for (int j = 0; j < NBRE_ACTION_APPRENTISSAGE; j++)
     {
       QTable[i][j] = 0.5;
     }
-  }*/
+  }
+
+  etat_t *list_etat = genereTableauEtat();
 
   while (iteration <= nbIteration)
 
@@ -385,7 +450,7 @@ void MainApprentissage(int nbIteration, int **serpent, int **plateau)
     posPommeAvecCo(plateau, serpent, taille_serpent, teteSerpent, &iPomme, &jPomme);
 
 
-    explorationSerpent(&iPomme, &jPomme, &taille_serpent, plateau, serpent, QTable, epsilon_greedy, teteSerpent);
+    explorationSerpent(&iPomme, &jPomme, &taille_serpent, plateau, serpent, QTable, epsilon_greedy, teteSerpent, list_etat);
 
 
     if (iteration % nbSave == 0)

@@ -196,7 +196,6 @@ int TestDeplacement(int **serpent, int direction, int *taille_serpent, int **pla
     else
     {
         info = TestCollisionSerpent(serpent, TeteI, TeteJ, taille_serpent, teteSerpent);
-        info = 2;
     }
 
     UpdateSerpent(serpent, info, taille_serpent, teteSerpent, TeteI, TeteJ);
@@ -232,57 +231,6 @@ int MeilleurScore(int ScoreActuel)
     return bestscore;
 }
 
-/*GestionPomme*/
-
-void posPomme(int **plateau,
-              int **serpent,
-              int tailleSerpent,
-              int teteSerpent)
-{
-    //printf("tete: %d\n", teteSerpent);
-    int i, j, m;
-    int compteur = 0;
-    int caseVide;
-
-    int caseDispo = ((DIMENSION_TAB_JEU - 2) * (DIMENSION_TAB_JEU - 2)) - tailleSerpent;
-    // printf("caseDispo : %d\n", caseDispo);
-    int placement = (rand() % caseDispo) + 1;
-    // printf("placement : %d\n\n", placement);
-
-    for (i = 1; i < DIMENSION_TAB_JEU - 1; i++)
-    {
-
-        for (j = 1; j < DIMENSION_TAB_JEU - 1; j++)
-        {
-            // printf("compteur : %d\n", compteur);
-            caseVide = 1;
-            int courant = teteSerpent;
-
-            for (m = 0; m < tailleSerpent; m++)
-            {
-                if ((i == serpent[courant][0] && j == serpent[courant][1]))
-                {
-                    caseVide = 0;
-                }
-                courant = courant + 1;
-                courant %= DIMENSION_TAB_POS;
-            }
-            if (caseVide == 1)
-            {
-
-                compteur++;
-            }
-            if (compteur == placement)
-            {
-
-                plateau[i][j] = 1;
-                i = DIMENSION_TAB_JEU; // on incrémente i et j de sorte qu'on sorte de la boucle
-                j = DIMENSION_TAB_JEU;
-            }
-            // printf("compteurFinBoucle : %d\n", compteur);
-        }
-    }
-}
 
 /*GestionMuret*/
 
