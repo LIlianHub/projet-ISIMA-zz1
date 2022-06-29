@@ -60,21 +60,18 @@ int **creer_tableau(int nb_lignes, int nb_colonnes)
 // placement bordure
 void InitPlateau(int **plateau)
 {
-    for (int j = 0; j < DIMENSION_TAB_JEU; j++)
+    for(int i = 0; i < DIMENSION_TAB_JEU; i++)
     {
-        plateau[0][j] = 2;
-    }
-    for (int i = 0; i < DIMENSION_TAB_JEU; i++)
-    {
-        plateau[i][0] = 2;
-    }
-    for (int j = 0; j < DIMENSION_TAB_JEU; j++)
-    {
-        plateau[DIMENSION_TAB_JEU - 1][j] = 2;
-    }
-    for (int i = 0; i < DIMENSION_TAB_JEU; i++)
-    {
-        plateau[i][DIMENSION_TAB_JEU - 1] = 2;
+        for(int j = 0; j < DIMENSION_TAB_JEU; j++){
+            if(i == 0 || i == DIMENSION_TAB_JEU - 1 || j == 0 || j == DIMENSION_TAB_JEU - 1)
+            {
+                plateau[i][j] = 2;
+            }
+            else
+            {
+                plateau[i][j] = 0;
+            }
+        }
     }
 }
 
@@ -98,7 +95,10 @@ void afficher_tableau(int **tableau, int nb_lignes, int nb_colonnes)
 
         for (j = 0; j < nb_colonnes; j++)
         {
-            printf("%d ", tableau[i][j]);
+            if(tableau[i][j])
+                printf("%d ", tableau[i][j]);
+            else
+                printf("  ");
         }
         printf("\n");
     }
@@ -345,9 +345,7 @@ void posMuret(int **plateau,
 void ClearMap(int ** plateau){
     for(int i = 1; i < DIMENSION_TAB_JEU - 1; i++){ //on compte pas les bordures
         for(int j = 1; j < DIMENSION_TAB_JEU - 1; j++){
-            if(plateau[i][j] != 0){ //on supprime tous les murs et la pomme mangée
-                plateau[i][j] = 0;
-            }
+            plateau[i][j] = 0;
         }
     }
 }

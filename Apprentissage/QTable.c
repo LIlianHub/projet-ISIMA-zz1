@@ -305,7 +305,8 @@ void RecupQtable(float **Q, int nbLigne, int nbColonne)
       for (int j = 0; j < nbColonne; j++)
       {
         info = fscanf(Save, "%f ", &Q[i][j]);
-        if(info == 0){
+        if (info == 0)
+        {
           printf("Erreur de lecture\n");
         }
       }
@@ -318,20 +319,16 @@ void explorationSerpent(int *pos_i_tete, int *pos_j_tete, int *pos_i_pomme, int 
                         int *taille_serpent, int **plateau, int **serpent, float **Q_Table,
                         etat_t *liste_etats, int epsilon_Greedy, int teteSerpent)
 {
-  /*int listeEtats[TAILLEMAX_APPRENTISSAGE] = {0};
-    int listeActions[TAILLEMAX_APPRENTISSAGE] = {0};
-    int listeRecompense[TAILLEMAX_APPRENTISSAGE] = {0};*/
-
   pile_t *PileDonnees;
   initPile(&PileDonnees, TAILLEMAX_APPRENTISSAGE);
 
   int i = 0;
-  int max = 0;
-  int action = 0;
+  int max;
+  int action;
   int tmp, j;
   int random;
 
-  float gamma = 0.5;
+  float gamma = GAMMA;
   float epsilon = 0.1;
 
   while (i < TAILLEMAX_APPRENTISSAGE)
@@ -341,16 +338,19 @@ void explorationSerpent(int *pos_i_tete, int *pos_j_tete, int *pos_i_pomme, int 
     random = rand() % 101;
     if (random > epsilon_Greedy) // EXPLOITATION
     {
-      for (j = 0; j < 4; j++)
+      max = Q_Table[data.etat][0];
+      action = 0;
+      for (j = 1; j < 4; j++)
       {
         if (max < Q_Table[data.etat][j])
         {
           max = Q_Table[data.etat][j];
           action = j;
         }
-        data.action = action; // On prend la plus grande valeur de la ligne de l'état
       }
+      data.action = action; // On prend la plus grande valeur de la ligne de l'état
     }
+
     else
     {
       data.action = quelAction(liste_etats[data.etat]); // EXPLORATION
@@ -365,6 +365,7 @@ void explorationSerpent(int *pos_i_tete, int *pos_j_tete, int *pos_i_pomme, int 
     else if (tmp == 1)
     {
       data.recompense = 1;
+      ClearMap(plateau);
       posPommeAvecCo(plateau, serpent, *taille_serpent, teteSerpent, pos_i_pomme, pos_j_pomme);
     }
     else
@@ -380,16 +381,16 @@ void explorationSerpent(int *pos_i_tete, int *pos_j_tete, int *pos_i_pomme, int 
 
   // on met le dernier état dans la Q_Table
   donnees ite;
-  Depiler(PileDonnees, &ite); // -> ça vient de là le seg fault
+  Depiler(PileDonnees, &ite);
   Q_Table[ite.etat][ite.action] += epsilon * (ite.recompense - Q_Table[ite.etat][ite.action]);
 
   // On dépile tant que la pile n'est pas vide et à chaque fois on remplis la Q_Table
   while (!PileVide(PileDonnees))
   {
     Depiler(PileDonnees, &ite);
+    max = Q_Table[ite.etat][0];
     for (j = 1; j < 4; j++)
     {
-      max = Q_Table[ite.etat][1];
       if (max < Q_Table[ite.etat][j])
       {
         max = Q_Table[ite.etat][j];
@@ -397,7 +398,6 @@ void explorationSerpent(int *pos_i_tete, int *pos_j_tete, int *pos_i_pomme, int 
       Q_Table[ite.etat][ite.action] += epsilon * (ite.recompense + (gamma * max) - Q_Table[ite.etat][ite.action]);
     }
   }
-
   LibererPile(PileDonnees);
 }
 
@@ -409,7 +409,7 @@ void MainApprentissage(etat_t *listeEtat, int nbIteration, int **serpent, int **
   int nbSave = nbIteration / 10;
   int updateEpsGreedy = nbIteration / 100;
   QTable = GenereTabFloat(NBRE_ETATS_APPRENTISSAGE, NBRE_ACTION_APPRENTISSAGE);
-  //RecupQtable(QTable, NBRE_ETATS_APPRENTISSAGE, NBRE_ACTION_APPRENTISSAGE);
+  // RecupQtable(QTable, NBRE_ETATS_APPRENTISSAGE, NBRE_ACTION_APPRENTISSAGE);
 
   for (int i = 0; i < NBRE_ETATS_APPRENTISSAGE; i++)
   {
@@ -419,7 +419,7 @@ void MainApprentissage(etat_t *listeEtat, int nbIteration, int **serpent, int **
     }
   }
 
-  while (iteration < nbIteration)
+  while (iteration <= nbIteration)
 
   {
     // Initilialisation simulation de partie sans interface graphique
@@ -429,7 +429,8 @@ void MainApprentissage(etat_t *listeEtat, int nbIteration, int **serpent, int **
     int teteSerpent = 0;
     int iPomme, jPomme;
     posPommeAvecCo(plateau, serpent, taille_serpent, teteSerpent, &iPomme, &jPomme);
-    explorationSerpent(&serpent[teteSerpent][0], &serpent[teteSerpent][1], &iPomme, &jPomme, &taille_serpent, plateau, serpent, QTable, listeEtat, epsilon_greedy, teteSerpent);
+    explorationSerpent(&serpent[teteSerpent][0], &serpent[teteSerpent][1], &iPomme, &jPomme, &taille_serpent, plateau, serpent, QTable, 
+                    listeEtat, epsilon_greedy, teteSerpent);
     if (iteration % nbSave == 0)
     {
       EcritureQtable(QTable, NBRE_ETATS_APPRENTISSAGE, NBRE_ACTION_APPRENTISSAGE);
