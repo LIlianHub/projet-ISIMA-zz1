@@ -38,7 +38,7 @@ int main(int argc, char **argv)
         listeEtat = genereTableauEtat(listeEtat);
         int nbIteration;
         sscanf(argv[2],"%d",&nbIteration);
-        MainApprentissage(listeEtat, nbIteration, plateau, position_snake);
+        MainApprentissage(listeEtat, nbIteration, position_snake, plateau);
         free(listeEtat);
 
     }
