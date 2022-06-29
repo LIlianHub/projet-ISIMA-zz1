@@ -406,15 +406,15 @@ void MainApprentissage(etat_t *listeEtat, int nbIteration, int **serpent, int **
   int nbSave = nbIteration / 10;
   int updateEpsGreedy = nbIteration / 100;
   QTable = GenereTabFloat(NBRE_ETATS_APPRENTISSAGE, NBRE_ACTION_APPRENTISSAGE);
-  // RecupQtable(QTable, NBRE_ETATS_APPRENTISSAGE, NBRE_ACTION_APPRENTISSAGE);
+  RecupQtable(QTable, NBRE_ETATS_APPRENTISSAGE, NBRE_ACTION_APPRENTISSAGE);
 
-  for (int i = 0; i < NBRE_ETATS_APPRENTISSAGE; i++)
+  /*for (int i = 0; i < NBRE_ETATS_APPRENTISSAGE; i++)
   {
     for (int j = 0; j < NBRE_ACTION_APPRENTISSAGE; j++)
     {
       QTable[i][j] = 0.5;
     }
-  }
+  }*/
 
   while (iteration < nbIteration)
 
