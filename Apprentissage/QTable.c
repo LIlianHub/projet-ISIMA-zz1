@@ -357,7 +357,7 @@ void explorationSerpent(int *pos_i_tete, int *pos_j_tete, int *pos_i_pomme, int 
 
     if (tmp == 2)
     {
-      data.recompense = 1 / (1 + exp(-i));
+      data.recompense = 1 / (1 + exp(-i * 0.1));
     }
     else if (tmp == 1)
     {
@@ -394,7 +394,6 @@ void explorationSerpent(int *pos_i_tete, int *pos_j_tete, int *pos_i_pomme, int 
       Q_Table[ite.etat][ite.action] += epsilon * (ite.recompense + (gamma * max) - Q_Table[ite.etat][ite.action]);
     }
   }
-  printf("Apprentissage Fait %d!\n", epsilon_Greedy);
 
   LibererPile(PileDonnees);
 }
@@ -402,10 +401,20 @@ void explorationSerpent(int *pos_i_tete, int *pos_j_tete, int *pos_i_pomme, int 
 void MainApprentissage(etat_t *listeEtat, int nbIteration, int **serpent, int **plateau)
 {
   int iteration = 0;
-  int epsilon_greedy = nbIteration;
+  int epsilon_greedy = 100;
   float **QTable = NULL;
+  int nbSave = nbIteration / 10;
+  int updateEpsGreedy = nbIteration / 100;
   QTable = GenereTabFloat(NBRE_ETATS_APPRENTISSAGE, NBRE_ACTION_APPRENTISSAGE);
-  RecupQtable(QTable, NBRE_ETATS_APPRENTISSAGE, NBRE_ACTION_APPRENTISSAGE);
+  // RecupQtable(QTable, NBRE_ETATS_APPRENTISSAGE, NBRE_ACTION_APPRENTISSAGE);
+
+  for (int i = 0; i < NBRE_ETATS_APPRENTISSAGE; i++)
+  {
+    for (int j = 0; j < NBRE_ACTION_APPRENTISSAGE; j++)
+    {
+      QTable[i][j] = 0;
+    }
+  }
 
   while (iteration < nbIteration)
   {
@@ -417,12 +426,17 @@ void MainApprentissage(etat_t *listeEtat, int nbIteration, int **serpent, int **
     int iPomme, jPomme;
     posPommeAvecCo(plateau, serpent, taille_serpent, teteSerpent, &iPomme, &jPomme);
     explorationSerpent(&serpent[teteSerpent][0], &serpent[teteSerpent][1], &iPomme, &jPomme, &taille_serpent, plateau, serpent, QTable, listeEtat, epsilon_greedy, teteSerpent);
-    if(iteration % 1000 == 0){
+    if (iteration % nbSave == 0)
+    {
       EcritureQtable(QTable, NBRE_ETATS_APPRENTISSAGE, NBRE_ACTION_APPRENTISSAGE);
       AffichageTabFloat(QTable, NBRE_ETATS_APPRENTISSAGE, NBRE_ACTION_APPRENTISSAGE);
     }
-    iteration ++;
-    epsilon_greedy--;
+
+    if (iteration % updateEpsGreedy == 0)
+    {
+      epsilon_greedy--;
+    }
+    iteration++;
   }
 
   LibererTabFloat(QTable, NBRE_ETATS_APPRENTISSAGE);
