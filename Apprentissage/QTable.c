@@ -8,58 +8,39 @@
 #include "QTable.h"
 #include "Pile.h"
 
-
-etat_t * genereTableauEtat()
-{
-  etat_t * liste_etats = (etat_t *)malloc(sizeof(etat_t) * NBRE_ETATS_APPRENTISSAGE);
-  liste_etats[0].nord_sud = -1;
-  liste_etats[0].ouest_est = -1;
-  liste_etats[1].nord_sud = -1;
-  liste_etats[1].ouest_est = 0;
-  liste_etats[2].nord_sud = -1;
-  liste_etats[2].ouest_est = 1;
-  liste_etats[3].nord_sud = 0;
-  liste_etats[3].ouest_est = -1;
-  liste_etats[4].nord_sud = 0;
-  liste_etats[4].ouest_est = 0;
-  liste_etats[5].nord_sud = 0;
-  liste_etats[5].ouest_est = 1;
-  liste_etats[6].nord_sud = 1;
-  liste_etats[6].ouest_est = -1;
-  liste_etats[7].nord_sud = 1;
-  liste_etats[7].ouest_est = 0;
-  liste_etats[8].nord_sud = 1;
-  liste_etats[8].ouest_est = 1;
-
-  return liste_etats;
-}
-
-
-
 /*Fonctions sur les tableaux float*/
 
-double **GenereTabFloat(int nb_ligne, int nb_colonne)
+double ***GenereTabFloat(int nb_ligne, int nb_colonne, int nb_profondeur)
 {
-  double **tab = NULL;
-  tab = (double **)malloc(nb_ligne * sizeof(double *));
-  for (int i = 0; i < nb_ligne; i++)
+  double ***tab = NULL;
+  tab = (double ***)malloc(nb_ligne * sizeof(double **));
+
+  for (int i = 0; i < nb_colonne; i++)
   {
-    tab[i] = (double *)calloc(nb_colonne, sizeof(double));
+    tab[i] = (double **)malloc(nb_colonne * sizeof(double *));
+    for (int j = 0; j < nb_profondeur; j++)
+    {
+      tab[i][j] = (double *)calloc(nb_profondeur, sizeof(double));
+    }
   }
 
   return tab;
 }
 
-void LibererTabFloat(double **tab, int nb_ligne)
+void LibererTabFloat(double ***tab, int nb_ligne, int nb_colonne)
 {
   for (int i = 0; i < nb_ligne; i++)
   {
+    for (int j = 0; j < nb_colonne; j++)
+    {
+      free(tab[i][j]);
+    }
     free(tab[i]);
   }
   free(tab);
 }
 
-void AffichageTabFloat(double **tab, int nb_ligne, int nb_colonne)
+/*void AffichageTabFloat(double **tab, int nb_ligne, int nb_colonne)
 {
   for (int i = 0; i < nb_ligne; i++)
   {
@@ -70,66 +51,120 @@ void AffichageTabFloat(double **tab, int nb_ligne, int nb_colonne)
     printf("\n");
   }
   printf("\n");
-}
+}*/
 
-
-
-
-int quelAction(etat_t etatActuel)
+int EtatAutourActuel(int teteSx, int teteSy, int **serpent)
 {
-  int tmp;
-  int actionActuel = 4;
+  int etatAutour = 0;
 
-  if ((abs(etatActuel.nord_sud) + abs(etatActuel.ouest_est)) == 2) // 2 directions possibles
+  if () // la case du haut est vide  (0,*,*,*)
   {
-    tmp = rand() % 2; // représente notre proba aléatoire uniforme
+    if () // la case du bas est vide   (0,0,*,*)
+    {
+      if () // la case de droite est vide (0,0,0,*)
+      {
+        if () // la case de gauche est vide (0,0,0,0)
+        {
+          etatAutour = 0;
+        }
+        else // (0,0,0,1)
+        {
+          etatAutour = 1;
+        }
+      }
+      else // (0,0,1,*)
+      {
+        if () // (0,0,1,0)
+        {
+          etatAutour = 2;
+        }
+        else // (0,0,1,1)
+        {
+          etatAutour = 3;
+        }
+      }
+    }
+    else // la case du haut est vide  (0,1,*,*)
+    {
+      if () // la case de droite est vide (0,1,0,*)
+      {
+        if () // la case de gauche est vide (0,1,0,0)
+        {
+          etatAutour = 4;
+        }
+        else // (0,1,0,1)
+        {
+          etatAutour = 5;
+        }
+      }
+      else // (0,1,1,*)
+      {
+        if () // (0,1,1,0)
+        {
+          etatAutour = 6;
+        }
+        else // (0,1,1,1)
+        {
+          etatAutour = 7;
+        }
+      }
+    }
+  }
+  else // la case du haut est pleine (1,*,*,*)
+  {
+    if () // la case du bas est vide   (1,0,*,*)
+    {
+      if () // la case de droite est vide (1,0,0,*)
+      {
+        if () // la case de gauche est vide (1,0,0,0)
+        {
+          etatAutour = 8;
+        }
+        else // (1,0,0,1)
+        {
+          etatAutour = 9;
+        }
+      }
+      else // (1,0,1,*)
+      {
+        if () // (1,0,1,0)
+        {
+          etatAutour = 10;
+        }
+        else // (1,0,1,1)
+        {
+          etatAutour = 11;
+        }
+      }
+    }
+    else // la case du haut est vide  (1,1,*,*)
+    {
+      if () // la case de droite est vide (1,1,0,*)
+      {
+        if () // la case de gauche est vide (1,1,0,0)
+        {
+          etatAutour = 12;
+        }
+        else // (1,1,0,1)
+        {
+          etatAutour = 13;
+        }
+      }
+      else // (1,1,1,*)
+      {
+        if () // (1,1,1,0)
+        {
+          etatAutour = 14;
+        }
+        else // (1,1,1,1)
+        {
+          etatAutour = 15;
+        }
+      }
+    }
+  }
 
-    if (tmp == 0) // on dit que si ==0 alors on agira sur la ligne
-    {
-      if (etatActuel.nord_sud > 0)
-      {
-        actionActuel = 0;
-      }
-      else
-      {
-        actionActuel = 1;
-      }
-    }
-    else // sinon ce sera la colonne
-    {
-      if (etatActuel.ouest_est > 0)
-      {
-        actionActuel = 3;
-      }
-      else
-      {
-        actionActuel = 2;
-      }
-    }
-  }
-  else if (abs(etatActuel.nord_sud) == 1) // bonne colonne - mauvaise ligne
-  {
-    if (etatActuel.nord_sud > 0)
-    {
-      actionActuel = 0;
-    }
-    else
-    {
-      actionActuel = 1;
-    }
-  }
-  else if (abs(etatActuel.ouest_est) == 1) // bonne ligne - mauvaise colonne
-  {
-    if (etatActuel.ouest_est > 0)
-    {
-      actionActuel = 3;
-    }
-    else
-    {
-      actionActuel = 2;
-    }
-  }
-  return actionActuel;
+  return etatAutour;
 }
 
 void posPommeAvecCo(int **plateau,
@@ -255,14 +290,14 @@ int EtatActuel(int teteSx, int teteSy, int pommex, int pommey)
     else
     {
       etat = 4; // sur la pomme
-      //etat impossible
+      // etat impossible
     }
   }
 
   return etat;
 }
 
-void EcritureQtable(double **Q, int nbLigne, int nbColonne)
+/*void EcritureQtable(double **Q, int nbLigne, int nbColonne)
 {
   FILE *Historique;
   FILE *Last;
@@ -295,9 +330,9 @@ void EcritureQtable(double **Q, int nbLigne, int nbColonne)
     }
     fclose(Last);
   }
-}
+}*/
 
-void RecupQtable(double **Q, int nbLigne, int nbColonne)
+/*void RecupQtable(double **Q, int nbLigne, int nbColonne)
 {
   FILE *Save;
   int info;
@@ -316,23 +351,19 @@ void RecupQtable(double **Q, int nbLigne, int nbColonne)
     }
     fclose(Save);
   }
-}
-
-
+}*/
 
 void explorationSerpent(int *pos_i_pomme, int *pos_j_pomme,
-                        int *taille_serpent, int **plateau, int **serpent, double **Q_Table,
-                        int epsilon_Greedy, int teteSerpent, etat_t * list_etat)
+                        int *taille_serpent, int **plateau, int **serpent, double ***Q_Table,
+                        int epsilon_Greedy, int teteSerpent)
 {
   pile_t *PileDonnees;
   initPile(&PileDonnees, TAILLEMAX_APPRENTISSAGE);
 
   int i = 0;
-  int max;
+  double max;
   int action;
-  int tmp, j;
-  int random;
-
+  int tmp, j, random;
   float gamma = GAMMA;
   float epsilon = 0.1;
 
@@ -340,21 +371,18 @@ void explorationSerpent(int *pos_i_pomme, int *pos_j_pomme,
   {
     donnees data = {0};
     data.etat = EtatActuel(serpent[teteSerpent][1], serpent[teteSerpent][0], *pos_j_pomme, *pos_i_pomme);
-
-    if(data.etat == 4){
-      afficher_tableau(plateau, DIMENSION_TAB_JEU, DIMENSION_TAB_JEU);
-    }
+    data.etatAutour = EtatAutourActuel(serpent[teteSerpent][1], serpent[teteSerpent][0], serpent); // finir la fonction
 
     random = rand() % 101;
     if (random > epsilon_Greedy) // EXPLOITATION
     {
-      max = Q_Table[data.etat][0];
+      max = Q_Table[data.etat][0][data.etatAutour];
       action = 0;
       for (j = 1; j < 4; j++)
       {
-        if (max < Q_Table[data.etat][j])
+        if (max < Q_Table[data.etat][j][data.etatAutour])
         {
-          max = Q_Table[data.etat][j];
+          max = Q_Table[data.etat][j][data.etatAutour];
           action = j;
         }
       }
@@ -363,11 +391,10 @@ void explorationSerpent(int *pos_i_pomme, int *pos_j_pomme,
 
     else
     {
-      data.action = quelAction(list_etat[data.etat]); // EXPLORATION
+      data.action = rand() % 4; // EXPLORATION
     }
 
     tmp = TestDeplacement(serpent, data.action, taille_serpent, plateau, &teteSerpent);
-
 
     if (tmp == 2)
     {
@@ -393,21 +420,21 @@ void explorationSerpent(int *pos_i_pomme, int *pos_j_pomme,
   // on met le dernier état dans la Q_Table
   donnees ite;
   Depiler(PileDonnees, &ite);
-  Q_Table[ite.etat][ite.action] += epsilon * (ite.recompense - Q_Table[ite.etat][ite.action]);
-  //Q_Table[ite.etat][ite.action] = ite.recompense;
+  Q_Table[ite.etat][ite.action][ite.etatAutour] += epsilon * (ite.recompense -
+                                                              Q_Table[ite.etat][ite.action][ite.etatAutour]);
 
   // On dépile tant que la pile n'est pas vide et à chaque fois on remplis la Q_Table
   while (!PileVide(PileDonnees))
   {
     Depiler(PileDonnees, &ite);
-    max = Q_Table[ite.etat][0];
+    max = Q_Table[ite.etat][0][ite.etatAutour];
     for (j = 1; j < 4; j++)
     {
-      if (max < Q_Table[ite.etat][j])
+      if (max < Q_Table[ite.etat][j][ite.etatAutour])
       {
-        max = Q_Table[ite.etat][j];
+        max = Q_Table[ite.etat][j][ite.etatAutour];
       }
-      Q_Table[ite.etat][ite.action] += epsilon * (ite.recompense + (gamma * max) - Q_Table[ite.etat][ite.action]);
+      Q_Table[ite.etat][ite.action][ite.etatAutour] += epsilon * (ite.recompense + (gamma * max) - Q_Table[ite.etat][ite.action][ite.etatAutour]);
     }
   }
   LibererPile(PileDonnees);
@@ -417,27 +444,27 @@ void MainApprentissage(int nbIteration, int **serpent, int **plateau)
 {
   int iteration = 0;
   int epsilon_greedy = 100;
-  double **QTable = NULL;
+  double ***QTable = NULL;
   int nbSave = nbIteration / 10;
   int updateEpsGreedy = nbIteration / 100;
-  QTable = GenereTabFloat(NBRE_ETATS_APPRENTISSAGE, NBRE_ACTION_APPRENTISSAGE);
-  //RecupQtable(QTable, NBRE_ETATS_APPRENTISSAGE, NBRE_ACTION_APPRENTISSAGE);
+  QTable = GenereTabFloat(NBRE_ETATS_APPRENTISSAGE, NBRE_ACTION_APPRENTISSAGE, NBRE_ETAT_AUTOUR);
+  // RecupQtable(QTable, NBRE_ETATS_APPRENTISSAGE, NBRE_ACTION_APPRENTISSAGE);
 
   for (int i = 0; i < NBRE_ETATS_APPRENTISSAGE; i++)
   {
     for (int j = 0; j < NBRE_ACTION_APPRENTISSAGE; j++)
     {
-      QTable[i][j] = 0.5;
+      for (int k = 0; k < NBRE_ETAT_AUTOUR; k++)
+      {
+        QTable[i][j][k] = 0;
+      }
     }
   }
-
-  etat_t *list_etat = genereTableauEtat();
 
   while (iteration <= nbIteration)
 
   {
     // Initilialisation simulation de partie sans interface graphique
-    
 
     InitPlateau(plateau);
     ClearMap(plateau);
@@ -449,14 +476,12 @@ void MainApprentissage(int nbIteration, int **serpent, int **plateau)
     int iPomme, jPomme;
     posPommeAvecCo(plateau, serpent, taille_serpent, teteSerpent, &iPomme, &jPomme);
 
-
-    explorationSerpent(&iPomme, &jPomme, &taille_serpent, plateau, serpent, QTable, epsilon_greedy, teteSerpent, list_etat);
-
+    explorationSerpent(&iPomme, &jPomme, &taille_serpent, plateau, serpent, QTable, epsilon_greedy, teteSerpent);
 
     if (iteration % nbSave == 0)
     {
-      EcritureQtable(QTable, NBRE_ETATS_APPRENTISSAGE, NBRE_ACTION_APPRENTISSAGE);
-      AffichageTabFloat(QTable, NBRE_ETATS_APPRENTISSAGE, NBRE_ACTION_APPRENTISSAGE);
+      // EcritureQtable(QTable, NBRE_ETATS_APPRENTISSAGE, NBRE_ACTION_APPRENTISSAGE);
+      // AffichageTabFloat(QTable, NBRE_ETATS_APPRENTISSAGE, NBRE_ACTION_APPRENTISSAGE);
     }
 
     if (iteration % updateEpsGreedy == 0)
@@ -466,10 +491,10 @@ void MainApprentissage(int nbIteration, int **serpent, int **plateau)
     iteration++;
   }
 
-  LibererTabFloat(QTable, NBRE_ETATS_APPRENTISSAGE);
+  LibererTabFloat(QTable, NBRE_ETATS_APPRENTISSAGE, NBRE_ACTION_APPRENTISSAGE);
 }
 
-int UtilisationQTable(int teteSi, int teteSj, int pommeI, int pommeJ, double **Qtable)
+/*int UtilisationQTable(int teteSi, int teteSj, int pommeI, int pommeJ, double **Qtable)
 {
 
   int etat = EtatActuel(teteSj, teteSi, pommeJ, pommeI);
@@ -485,4 +510,4 @@ int UtilisationQTable(int teteSi, int teteSj, int pommeI, int pommeJ, double **Q
   }
 
   return direction;
-}
+}*/
