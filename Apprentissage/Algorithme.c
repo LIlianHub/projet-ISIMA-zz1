@@ -60,21 +60,15 @@ int **creer_tableau(int nb_lignes, int nb_colonnes)
 // placement bordure
 void InitPlateau(int **plateau)
 {
-    for (int j = 0; j < DIMENSION_TAB_JEU; j++)
-    {
-        plateau[0][j] = 2;
-    }
-    for (int i = 0; i < DIMENSION_TAB_JEU; i++)
-    {
-        plateau[i][0] = 2;
-    }
-    for (int j = 0; j < DIMENSION_TAB_JEU; j++)
-    {
-        plateau[DIMENSION_TAB_JEU - 1][j] = 2;
-    }
-    for (int i = 0; i < DIMENSION_TAB_JEU; i++)
-    {
-        plateau[i][DIMENSION_TAB_JEU - 1] = 2;
+    for(int i = 0; i < DIMENSION_TAB_JEU; i++){
+        for(int j = 0; j < DIMENSION_TAB_JEU; j++){
+            if(i == 0 || i == DIMENSION_TAB_JEU - 1 || j == 0 || j == DIMENSION_TAB_JEU - 1){
+                plateau[i][j] = 2;
+            }
+            else{
+                plateau[i][j] = 0;
+            }
+        }
     }
 }
 

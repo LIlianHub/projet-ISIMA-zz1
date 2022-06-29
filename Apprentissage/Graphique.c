@@ -339,8 +339,8 @@ void GestionEvenement(SDL_Renderer *renderer, TTF_Font *font,
             IterMenu(renderer, menuTexture);
             OverBoutonMenu(renderer, event.motion.x, event.motion.y);
         }
-
         SDL_Delay(vitesse_prog);
+
         SDL_RenderPresent(renderer);
     }
 

@@ -10,7 +10,7 @@ typedef struct etat
 
 
 etat_t * genereTableauEtat();
-void MainApprentissage(etat_t *listeEtat, int nbIteration, int **serpent, int **plateau);
+void MainApprentissage(etat_t *listeEtat, int nbIteration, int **plateau, int **serpent);
 int UtilisationQTable(int teteSi, int teteSj, int pommeI, int pommeJ, float ** Qtable);
 void LibererTabFloat(float **tab, int nb_ligne);
 float **GenereTabFloat(int nb_ligne, int nb_colonne);

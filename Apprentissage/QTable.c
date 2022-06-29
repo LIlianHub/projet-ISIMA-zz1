@@ -305,7 +305,8 @@ void RecupQtable(float **Q, int nbLigne, int nbColonne)
       for (int j = 0; j < nbColonne; j++)
       {
         info = fscanf(Save, "%f ", &Q[i][j]);
-        if(info == 0){
+        if (info == 0)
+        {
           printf("Erreur de lecture\n");
         }
       }
@@ -318,10 +319,6 @@ void explorationSerpent(int *pos_i_tete, int *pos_j_tete, int *pos_i_pomme, int 
                         int *taille_serpent, int **plateau, int **serpent, float **Q_Table,
                         etat_t *liste_etats, int epsilon_Greedy, int teteSerpent)
 {
-  /*int listeEtats[TAILLEMAX_APPRENTISSAGE] = {0};
-    int listeActions[TAILLEMAX_APPRENTISSAGE] = {0};
-    int listeRecompense[TAILLEMAX_APPRENTISSAGE] = {0};*/
-
   pile_t *PileDonnees;
   initPile(&PileDonnees, TAILLEMAX_APPRENTISSAGE);
 
@@ -365,6 +362,7 @@ void explorationSerpent(int *pos_i_tete, int *pos_j_tete, int *pos_i_pomme, int 
     else if (tmp == 1)
     {
       data.recompense = 1;
+      //ClearMap(plateau); // on repose une pomme
       posPommeAvecCo(plateau, serpent, *taille_serpent, teteSerpent, pos_i_pomme, pos_j_pomme);
     }
     else
@@ -401,7 +399,7 @@ void explorationSerpent(int *pos_i_tete, int *pos_j_tete, int *pos_i_pomme, int 
   LibererPile(PileDonnees);
 }
 
-void MainApprentissage(etat_t *listeEtat, int nbIteration, int **serpent, int **plateau)
+void MainApprentissage(etat_t *listeEtat, int nbIteration, int **plateau, int **serpent)
 {
   int iteration = 0;
   int epsilon_greedy = 100;
@@ -409,17 +407,17 @@ void MainApprentissage(etat_t *listeEtat, int nbIteration, int **serpent, int **
   int nbSave = nbIteration / 10;
   int updateEpsGreedy = nbIteration / 100;
   QTable = GenereTabFloat(NBRE_ETATS_APPRENTISSAGE, NBRE_ACTION_APPRENTISSAGE);
-  RecupQtable(QTable, NBRE_ETATS_APPRENTISSAGE, NBRE_ACTION_APPRENTISSAGE);
+  // RecupQtable(QTable, NBRE_ETATS_APPRENTISSAGE, NBRE_ACTION_APPRENTISSAGE);
 
-  /*for (int i = 0; i < NBRE_ETATS_APPRENTISSAGE; i++)
+  for (int i = 0; i < NBRE_ETATS_APPRENTISSAGE; i++)
   {
     for (int j = 0; j < NBRE_ACTION_APPRENTISSAGE; j++)
     {
       QTable[i][j] = 0.5;
     }
-  }*/
+  }
 
-  while (iteration < nbIteration)
+  while (iteration <= nbIteration)
 
   {
     // Initilialisation simulation de partie sans interface graphique
@@ -428,8 +426,9 @@ void MainApprentissage(etat_t *listeEtat, int nbIteration, int **serpent, int **
     InitialisationSerpent(serpent, &taille_serpent);
     int teteSerpent = 0;
     int iPomme, jPomme;
-    posPommeAvecCo(plateau, serpent, taille_serpent, teteSerpent, &iPomme, &jPomme);
-    explorationSerpent(&serpent[teteSerpent][0], &serpent[teteSerpent][1], &iPomme, &jPomme, &taille_serpent, plateau, serpent, QTable, listeEtat, epsilon_greedy, teteSerpent);
+    posPommeAvecCo(plateau, serpent, taille_serpent, teteSerpent, &iPomme, &jPomme); //premiere pomme
+    explorationSerpent(&serpent[teteSerpent][0], &serpent[teteSerpent][1], &iPomme, &jPomme, &taille_serpent, plateau,
+                       serpent, QTable, listeEtat, epsilon_greedy, teteSerpent);
     if (iteration % nbSave == 0)
     {
       EcritureQtable(QTable, NBRE_ETATS_APPRENTISSAGE, NBRE_ACTION_APPRENTISSAGE);
@@ -441,6 +440,7 @@ void MainApprentissage(etat_t *listeEtat, int nbIteration, int **serpent, int **
       epsilon_greedy--;
     }
     iteration++;
+    //printf("%d\n", iteration);
   }
 
   LibererTabFloat(QTable, NBRE_ETATS_APPRENTISSAGE);
