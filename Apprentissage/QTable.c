@@ -412,11 +412,12 @@ void MainApprentissage(etat_t *listeEtat, int nbIteration, int **serpent, int **
   {
     for (int j = 0; j < NBRE_ACTION_APPRENTISSAGE; j++)
     {
-      QTable[i][j] = 0;
+      QTable[i][j] = 0.5;
     }
   }
 
   while (iteration < nbIteration)
+
   {
     // Initilialisation simulation de partie sans interface graphique
     int taille_serpent = SERPENT_DEMARRAGE;
@@ -445,7 +446,7 @@ void MainApprentissage(etat_t *listeEtat, int nbIteration, int **serpent, int **
 int UtilisationQTable(int teteSi, int teteSj, int pommeI, int pommeJ, float **Qtable)
 {
 
-  int etat = EtatActuel(teteSi, teteSj, pommeI, pommeJ);
+  int etat = EtatActuel(teteSj, teteSi, pommeJ, pommeI);
   float max = Qtable[etat][0];
   int direction = 0;
   for (int i = 1; i < NBRE_ACTION_APPRENTISSAGE; i++)

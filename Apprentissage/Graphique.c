@@ -324,6 +324,10 @@ void GestionEvenement(SDL_Renderer *renderer, TTF_Font *font,
 
             if(AI_mode){ //si en mode AI on calcul la direction avec la qtable
                 direction = UtilisationQTable(serpent[teteSerpent][0], serpent[teteSerpent][1], posPommeI, posPommeJ, Qtable);
+                printf("direction : %d\n", direction);
+                printf("posPommeI : %d\n", posPommeI);
+                printf("posPommeJ : %d\n", posPommeJ);
+                printf("teteSerpent : i: %d, j: %d\n", serpent[teteSerpent][0], serpent[teteSerpent][1]);
             }
 
             if (depart) // menu demarrage on attend l'appuie sur espace
