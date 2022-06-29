@@ -323,7 +323,7 @@ void GestionEvenement(SDL_Renderer *renderer, TTF_Font *font,
             AffichageMenuJeu(renderer, font, logoMenu, meilleurScore, score);
 
             if(AI_mode){ //si en mode AI on calcul la direction avec la qtable
-                direction = ExploitationQtable(serpent[teteSerpent][0], serpent[teteSerpent][1], posPommeI, posPommeJ, Qtable);
+                direction = UtilisationQTable(serpent[teteSerpent][0], serpent[teteSerpent][1], posPommeI, posPommeJ, Qtable);
             }
 
             if (depart) // menu demarrage on attend l'appuie sur espace

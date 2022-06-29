@@ -131,5 +131,5 @@ int main(int argc, char **argv)
 
     // Liberation des tableaux
     liberer_tableau(plateau, DIMENSION_TAB_JEU);
-    liberer_tableau(position_snake, DIMENSION_TAB_POS);
+    //liberer_tableau(position_snake, DIMENSION_TAB_POS);
 }
