@@ -297,14 +297,17 @@ void EcritureQtable(float **Q, int nbLigne, int nbColonne)
 void RecupQtable(float **Q, int nbLigne, int nbColonne)
 {
   FILE *Save;
-
+  int info;
   if ((Save = fopen("saveQTable/LastQtable.txt", "r")) != NULL)
   {
     for (int i = 0; i < nbLigne; i++)
     {
       for (int j = 0; j < nbColonne; j++)
       {
-        fscanf(Save, "%f ", &Q[i][j]);
+        info = fscanf(Save, "%f ", &Q[i][j]);
+        if(info == 0){
+          printf("Erreur de lecture\n");
+        }
       }
     }
     fclose(Save);
