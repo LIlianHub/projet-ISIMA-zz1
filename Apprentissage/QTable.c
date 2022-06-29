@@ -319,6 +319,10 @@ void explorationSerpent(int *pos_i_tete, int *pos_j_tete, int *pos_i_pomme, int 
                         int *taille_serpent, int **plateau, int **serpent, float **Q_Table,
                         etat_t *liste_etats, int epsilon_Greedy, int teteSerpent)
 {
+  /*int listeEtats[TAILLEMAX_APPRENTISSAGE] = {0};
+    int listeActions[TAILLEMAX_APPRENTISSAGE] = {0};
+    int listeRecompense[TAILLEMAX_APPRENTISSAGE] = {0};*/
+
   pile_t *PileDonnees;
   initPile(&PileDonnees, TAILLEMAX_APPRENTISSAGE);
 
@@ -362,7 +366,6 @@ void explorationSerpent(int *pos_i_tete, int *pos_j_tete, int *pos_i_pomme, int 
     else if (tmp == 1)
     {
       data.recompense = 1;
-      //ClearMap(plateau); // on repose une pomme
       posPommeAvecCo(plateau, serpent, *taille_serpent, teteSerpent, pos_i_pomme, pos_j_pomme);
     }
     else
@@ -426,7 +429,7 @@ void MainApprentissage(etat_t *listeEtat, int nbIteration, int **plateau, int **
     InitialisationSerpent(serpent, &taille_serpent);
     int teteSerpent = 0;
     int iPomme, jPomme;
-    posPommeAvecCo(plateau, serpent, taille_serpent, teteSerpent, &iPomme, &jPomme); //premiere pomme
+    posPommeAvecCo(plateau, serpent, taille_serpent, teteSerpent, &iPomme, &jPomme); // premiere pomme
     explorationSerpent(&serpent[teteSerpent][0], &serpent[teteSerpent][1], &iPomme, &jPomme, &taille_serpent, plateau,
                        serpent, QTable, listeEtat, epsilon_greedy, teteSerpent);
     if (iteration % nbSave == 0)
@@ -440,7 +443,7 @@ void MainApprentissage(etat_t *listeEtat, int nbIteration, int **plateau, int **
       epsilon_greedy--;
     }
     iteration++;
-    //printf("%d\n", iteration);
+    // printf("%d\n", iteration);
   }
 
   LibererTabFloat(QTable, NBRE_ETATS_APPRENTISSAGE);
