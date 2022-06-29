@@ -196,6 +196,7 @@ int TestDeplacement(int **serpent, int direction, int *taille_serpent, int **pla
     else
     {
         info = TestCollisionSerpent(serpent, TeteI, TeteJ, taille_serpent, teteSerpent);
+        info = 2;
     }
 
     UpdateSerpent(serpent, info, taille_serpent, teteSerpent, TeteI, TeteJ);

@@ -244,7 +244,7 @@ void GestionEvenement(SDL_Renderer *renderer, TTF_Font *font,
     int posPommeJ;
 
     /*init apprentissage*/
-    float **Qtable = NULL;
+    double **Qtable = NULL;
     Qtable = GenereTabFloat(NBRE_ETATS_APPRENTISSAGE, NBRE_ACTION_APPRENTISSAGE);
     RecupQtable(Qtable, NBRE_ETATS_APPRENTISSAGE, NBRE_ACTION_APPRENTISSAGE);
 
