@@ -308,6 +308,7 @@ void explorationSerpent(int *pos_i_pomme, int *pos_j_pomme,
   int action;
   int tmp, j, random;
   float epsilon = 0.1;
+  int sigmo = 0;
 
   while (i < TAILLEMAX_APPRENTISSAGE)
     {
@@ -340,25 +341,20 @@ void explorationSerpent(int *pos_i_pomme, int *pos_j_pomme,
 
       if (tmp == 2)
 	{
-	  if(i > 40)
-	    {
-	      data.recompense = 1 / (1 + exp(-i * 0.1));
+	      data.recompense = -(1 / (1 + exp(-sigmo * 0.1)));
 	      //data.recompense = 0;
-	    }
-	  else
-	    {
-	      data.recompense = 0;
-	    }
+	      sigmo ++;
 	}
       else if (tmp == 1)
 	{
-	  data.recompense = 1;
+	  data.recompense = 10;
+	  sigmo = 0;
 	  ClearMap(plateau);
 	  posPommeAvecCo(plateau, serpent, *taille_serpent, *teteSerpent, pos_i_pomme, pos_j_pomme);
 	}
       else
 	{
-	  data.recompense = -1;
+	  data.recompense = -10;
 	  i = TAILLEMAX_APPRENTISSAGE;
 	}
       Empiler(PileDonnees, data);
