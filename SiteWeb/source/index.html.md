@@ -80,6 +80,50 @@ Avancé | Membre | Tâche
 ✔️| BALLEJOS Lilian | Remplissage du site pour la présentation de vendredi
 ✔️| Commun |  Finalisation du Chef d'Oeuvre
 
+### 23/06/22 (Vendredi)
+
+Avancé | Membre | Tâche
+-------------- | -------------- | --------------
+✔️| Commun | Soutenance
+✔️| Commun | Recherche sur l'apprentissage par renforcement
+✔️| Commun | Répartition des tâches pour le jeu avec apprentissage par renforcement
+
+### 27/06/22 (Lundi)
+
+
+Avancé | Membre | Tâche
+-------------- | -------------- | --------------
+✔️| BALLEJOS Lilian & CORNUEZ Charlotte | Amélioration de l'animation du jeu
+✔️| LEGER Bertrand | Commencement de l'apprentissage
+
+### 28/06/22 (Mardi)
+
+Avancé | Membre | Tâche
+-------------- | -------------- | --------------
+✔️| BALLEJOS Lilian | Création d'un menu
+✔️| LEGER Bertrand | Ecriture du code d'exploration
+✔️| BALLEJOS Lilian & CORNUEZ Charlotte | Ecriture du code d'exploitation 
+
+### 29/06/22 (Mercredi)
+
+Avancé | Membre | Tâche
+-------------- | -------------- | --------------
+✔️| Commun | Mise en commun des différents codes
+✔️| Commun | Débugage du code
+
+### 30/06/22 (Jeudi)
+
+Avancé | Membre | Tâche
+-------------- | -------------- | --------------
+✔️| BALLEJOS Lilian & LEGER Bertrand | Débugage du code
+✔️| CORNUEZ Charlotte | Mise à jour du site
+
+###  1/07/22 (Vendredi)
+
+Avancé | Membre | Tâche
+-------------- | -------------- | --------------
+✔️| Commun | Finalisation du code
+✔️| Commun | Soutenance
 
 # Xfenetré
 
@@ -1400,3 +1444,36 @@ Voici quelques idées de choses à améliorer sur notre projet si nous avions eu
 * Rajouter des murs de manières aléatoires si le joueur ne ramasse pas de pomme
 * Permettre de rejouer après une défaite
 * Rajouter un sprite de tête pour le serpent
+
+# Jeu avec apprentissage par renforcement
+
+## Présentation
+
+Nous avons repris notre jeu **Snake**, le but ici était donc d'apprendre au serpent à se déplacer tout seul et à survivre le plus longtemps pour avoir le meilleur score.
+
+### Amélioration et partie graphique
+
+Nous avons d'abord commencé par reprendre les idées d'amélioration que nous avions eu pour notre jeu de départ. Nous avons rajouté des cactus aléatoirement entre chaque pomme prise, ceci permet de forcer l'utilisateur à prendre des pommes plutôt que de "tourner en rond" pour gagner du temps. Ensuite nous avons amélioré la partie graphique en rajoutant un sprite sur tout le corps du serpent, en modifiant le fond, les bordures et le cactus. 
+Nous avons ensuite créé un menu afin de permettre à l'utilisateur de pouvoir plus tard choisir entre le mode classique et le mode IA. Ce menu permet aussi au joueur de relancer une partie sans avoir à quitter le jeu.
+
+### Apprentissage par renforcement
+
+Pour nous, l'apprentissage se fait une partie, il apprend tant qu'il n'est pas mort. En premier, nous avons implémenté l'apprentissage uniquement sur la partie détection de pomme. Pour cela, le serpent devait regarder où la pomme se trouvait par rapport à lui. Les états sont composés de Nord (1), même ligne (0), Sud(-1), Ouest(1), même colonne(0) et Est (-1). Les actions sont elles de la forme : Haut, Bas, Droite et Gauche. La QTable utilisée pour ce cas initialement, implémentée par Bertrand, est donc de cette forme :
+
+| Haut(0) | Bas(1) | Droite(2) | Gauche(3)
+----------------- | ----------------- | -----------------|----------------- | ----------------- 
+Etat 0 : Sud-Est (-1,-1) | 0.5 | 0.5 | 0.5 | 0.5 |
+Etat 1 : Sud (-1,0) | 0.5 | 0.5 | 0.5 | 0.5 |
+Etat 2 : Sud-Ouest (-1,1) | 0.5 | 0.5 | 0.5 | 0.5 |
+Etat 3 : Est (0,1) | 0.5 | 0.5 | 0.5 | 0.5 |
+Etat 4 : Sur la pomme (0,0) | 0.5 | 0.5 | 0.5 | 0.5 |
+Etat 5 : Ouest (0,1) | 0.5 | 0.5 | 0.5 | 0.5 |
+Etat 6 : Nord-Est (1,-1) | 0.5 | 0.5 | 0.5 | 0.5 |
+Etat 7 : Nord (1,0) | 0.5 | 0.5 | 0.5 | 0.5 |
+Etat 8 : Nord-Ouest (1,1) | 0.5 | 0.5 | 0.5 | 0.5 |
+
+Cette QTable évolue donc au fil des parties grâce aux mouvements du serpent.
+
+Après avoir fait cette première implémentation, le serpent n'avait pas la conscience de lui même. Nous avons donc améliorer l'apprentissage en lui apprenant à avoir conscience de son corps mais aussi des cactus et des bordures. Pour lui, son corps, les cactus et les bordures sont des éléments qui vont le tuer donc il doit les éviter. Pour cela, nous regardons si autour de la tête du serpent (en haut, en bas, à gauche, à droite), il y a un des trois éléments cités avant. La QTable prend alors trois dimensions : les états, les actions et la perception de ce qui l'entoure. 
+
+## Vidéo
