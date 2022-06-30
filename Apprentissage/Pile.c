@@ -5,6 +5,7 @@
 
 /*Partie PILE*/
 
+//on initialise la pile
 int initPile(pile_t **newPile, int taille)
 {
   int sortie = 1;
@@ -30,22 +31,26 @@ int initPile(pile_t **newPile, int taille)
   return sortie;
 }
 
+//on libere la pile
 void LibererPile(pile_t *pile)
 {
   free(pile->base);
   free(pile);
 }
 
+//vrai si la pile est vide faux sinon
 int PileVide(pile_t *pile)
 {
   return (pile->nb_element == 0);
 }
 
+//vrai si la pile est pleine faux sinon
 int PilePleine(pile_t *pile)
 {
   return (pile->nb_element == pile->taille);
 }
 
+//on empile un element si c'est possible sinon on informe l'utilisateur
 int Empiler(pile_t *pile, donnees ajout)
 {
   int sortie = 0;
@@ -60,6 +65,7 @@ int Empiler(pile_t *pile, donnees ajout)
   return sortie;
 }
 
+//on depile un element si c'est possible sinon on informe l'utilisateur
 int Depiler(pile_t *pile, donnees *element)
 {
   int sortie = 0;

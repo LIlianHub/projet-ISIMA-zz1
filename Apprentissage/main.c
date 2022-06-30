@@ -33,7 +33,7 @@ int main(int argc, char **argv)
     if (argc == 3 && !strcmp(argv[1], "apprend"))
     {
         printf("Mode Apprentissage\n");
-        //init liste etat possible apprentissage
+        //recuperation du nombre d'iteration a faire en argument
         int nbIteration;
         sscanf(argv[2],"%d",&nbIteration);
         MainApprentissage(nbIteration, position_snake, plateau);
@@ -115,7 +115,6 @@ int main(int argc, char **argv)
         int meilleurScore = MeilleurScore(0);
 
         /*Appel de la fonction qui gère les événments*/
-
         GestionEvenement(renderer, policeTitre, position_snake, plateau, meilleurScore, logoMenu, pomme, explosion, table_serpent, menu);
 
         // LIbération SDL

@@ -23,12 +23,13 @@ float markov[5][5] = {{0.4, 0.1, 0.3, 0.15, 0.05},
 // passer d'un état à un autre
 // avec mon idée
 
+// Passage d'un etat markov à l'autre
 int passageMarkov(int EtatPrec)
 {
     int i;
     int pourcent = (rand() % 101);
-    // printf("pourcentage : %d \n",pourcent);
-
+    // On calcul le pourcentage cumulé jusqu'a atteindre la valeur
+    // du nombre random tité
     int cumul = 0;
     for (i = 0; i < NB_ETATS_MARKOV; i++)
     {
@@ -44,7 +45,8 @@ int passageMarkov(int EtatPrec)
 }
 
 /*Création tableau*/
-
+// Création d'un tableau en 2D de int avec le nombre de colonne et ligne voulu
+// Utile pour le tableau du serpent et plateau
 int **creer_tableau(int nb_lignes, int nb_colonnes)
 {
     int **tableau = (int **)malloc(nb_lignes * sizeof(int *));
@@ -57,13 +59,15 @@ int **creer_tableau(int nb_lignes, int nb_colonnes)
 }
 
 /*INit du plateau*/
-// placement bordure
+// placement bordure et on met toutes la map
+// au milieu à 0
 void InitPlateau(int **plateau)
 {
-    for(int i = 0; i < DIMENSION_TAB_JEU; i++)
+    for (int i = 0; i < DIMENSION_TAB_JEU; i++)
     {
-        for(int j = 0; j < DIMENSION_TAB_JEU; j++){
-            if(i == 0 || i == DIMENSION_TAB_JEU - 1 || j == 0 || j == DIMENSION_TAB_JEU - 1)
+        for (int j = 0; j < DIMENSION_TAB_JEU; j++)
+        {
+            if (i == 0 || i == DIMENSION_TAB_JEU - 1 || j == 0 || j == DIMENSION_TAB_JEU - 1)
             {
                 plateau[i][j] = 2;
             }
@@ -76,7 +80,7 @@ void InitPlateau(int **plateau)
 }
 
 /*LIberation tableau*/
-
+// Libération d'un tableau 2D de int
 void liberer_tableau(int **tableau, int nb_lignes)
 {
     int i;
@@ -87,6 +91,7 @@ void liberer_tableau(int **tableau, int nb_lignes)
     free(tableau);
 }
 
+// Affiche un tableau en 2D de int
 void afficher_tableau(int **tableau, int nb_lignes, int nb_colonnes)
 {
     int i, j;
@@ -95,7 +100,7 @@ void afficher_tableau(int **tableau, int nb_lignes, int nb_colonnes)
 
         for (j = 0; j < nb_colonnes; j++)
         {
-            if(tableau[i][j])
+            if (tableau[i][j])
                 printf("%d ", tableau[i][j]);
             else
                 printf("  ");
@@ -107,7 +112,7 @@ void afficher_tableau(int **tableau, int nb_lignes, int nb_colonnes)
 
 /* Création du serpent au milieu du cadre */
 void InitialisationSerpent(int **tableau, int *tailleSerpent)
-{
+{ // on met la tete au milieu et le corps du la droite de cette tête
     int i;
     for (i = 0; i < (*tailleSerpent); i++)
     {
@@ -116,8 +121,8 @@ void InitialisationSerpent(int **tableau, int *tailleSerpent)
     }
 }
 
-/* Création des probabilités de changement de place de la pomme : matrice de Markov */
-
+/*on utilise un systeme de file avec à chaque itération l'enfilage de la nouvelle tête car le corps lui est inchangé
+Si le serpent a mangé on ne défile pas la queue car le serpent à grandit sinon on defile la queue*/
 void UpdateSerpent(int **serpent, int aManger, int *taille_serpent, int *teteSerpent, int TeteI, int TeteJ)
 {
     // update de la tete
@@ -140,9 +145,8 @@ void UpdateSerpent(int **serpent, int aManger, int *taille_serpent, int *teteSer
 /* test sur serpent */
 // verifie si le serpent s'auto touche
 // 2 si ok et 0 si mort
-
 int TestCollisionSerpent(int **serpent, int TeteI, int TeteJ, int *taille_serpent, int *teteSerpent)
-{
+{ // on parcourt tout le tableau du serpent en verifiant que la tete ne touche pas le corps
     int retour = 2;
     int cpt = 0;
     int parcours = *teteSerpent;
@@ -163,10 +167,11 @@ int TestCollisionSerpent(int **serpent, int TeteI, int TeteJ, int *taille_serpen
 int TestDeplacement(int **serpent, int direction, int *taille_serpent, int **plateau, int *teteSerpent)
 {
     int info = 2; // tout est bon en supposition
+    // on recupere la tete du serpent
     int TeteI = serpent[*teteSerpent][0];
     int TeteJ = serpent[*teteSerpent][1];
 
-    /*on regarde ce qui se passe*/
+    /*on simule le mouvement calcul la futur position de la tete*/
     switch (direction)
     {
     case 0: // haut
@@ -194,46 +199,45 @@ int TestDeplacement(int **serpent, int direction, int *taille_serpent, int **pla
         info = 0; // meurt par mur ou cactus
     }
     else
-    {
+    { // renvoie 0 si il se touche 2 si non
         info = TestCollisionSerpent(serpent, TeteI, TeteJ, taille_serpent, teteSerpent);
     }
-
+    // dans tous les cas on deplace la serpent pour avoir l'animation de mort sur l'endroit de la collision
     UpdateSerpent(serpent, info, taille_serpent, teteSerpent, TeteI, TeteJ);
 
     return info;
 }
 
-/*score*/
-
+// change le meilleur score dans le fichier si le score actuel est meilleur et renvoie le plus grand dans tt les cas
 int MeilleurScore(int ScoreActuel)
 {
     int bestscore;
     char PremiereLigne[20];
-
-    FILE *score = fopen("score/score.txt", "r+");
-    if (score == NULL)
+    // on ouvre le fichier de score
+    FILE *score = NULL;
+    if ((score = fopen("score/score.txt", "r+")) != NULL)
     {
-        printf("erreur de fichier");
-        exit(1);
+        bestscore = atoi(fgets(PremiereLigne, 20, score));
+        // si le nouveau score est mieux on ecrase le contenu
+        if (bestscore < ScoreActuel)
+        {
+            bestscore = ScoreActuel;
+            rewind(score);
+            fprintf(score, "%d", bestscore);
+        }
+        else
+        {
+            // pour le retour
+            ScoreActuel = bestscore;
+        }
+
+        fclose(score);
     }
-
-    bestscore = atoi(fgets(PremiereLigne, 20, score));
-
-    if (bestscore < ScoreActuel)
-    {
-
-        bestscore = ScoreActuel;
-        rewind(score);
-        fprintf(score, "%d", bestscore);
-    }
-
-    fclose(score);
-    return bestscore;
+    return ScoreActuel;
 }
 
-
 /*GestionMuret*/
-
+// Placement des cactus pour gener l'utilisateur et l'obliger à jouer la pomme
 void posMuret(int **plateau,
               int **serpent,
               int tailleSerpent,
@@ -243,21 +247,18 @@ void posMuret(int **plateau,
     int i, j, m;
     int compteur = 0;
     int caseVide;
-
+    // case ou on peut poser la pomme
     int caseDispo = ((DIMENSION_TAB_JEU - 2) * (DIMENSION_TAB_JEU - 2)) - tailleSerpent - 1;
-
     int placement = (rand() % caseDispo) + 1;
 
     for (i = 1; i < DIMENSION_TAB_JEU - 1; i++)
     {
         for (j = 1; j < DIMENSION_TAB_JEU - 1; j++)
         {
-
             caseVide = 1;
 
             if (plateau[i][j] == 1) // on vérifie si la case est occupé par la pomme
             {
-
                 caseVide = 0;
             }
             else
@@ -276,13 +277,11 @@ void posMuret(int **plateau,
             }
             if (caseVide == 1)
             {
-
                 compteur++;
             }
             if (compteur == placement)
             {
-
-                plateau[i][j] = 3;    // en partant du principe qu'un muret au milieu du plateau = 10
+                plateau[i][j] = 3;     // en partant du principe qu'un muret au milieu du plateau = 10
                 i = DIMENSION_TAB_JEU; // on incrémente i et j de sorte qu'on sorte de la boucle
                 j = DIMENSION_TAB_JEU;
             }
@@ -290,10 +289,13 @@ void posMuret(int **plateau,
     }
 }
 
-
-void ClearMap(int ** plateau){
-    for(int i = 1; i < DIMENSION_TAB_JEU - 1; i++){ //on compte pas les bordures
-        for(int j = 1; j < DIMENSION_TAB_JEU - 1; j++){
+//on nettoie toute la map de muret et pomme (on touche pas les bordures)
+void ClearMap(int **plateau)
+{
+    for (int i = 1; i < DIMENSION_TAB_JEU - 1; i++)
+    { // on compte pas les bordures
+        for (int j = 1; j < DIMENSION_TAB_JEU - 1; j++)
+        {
             plateau[i][j] = 0;
         }
     }

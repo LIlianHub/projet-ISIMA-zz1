@@ -8,8 +8,7 @@
 #include "Graphique.h"
 #include "QTable.h"
 
-/*AffichageLogoMenu*/
-
+/*Affichage du logo de serpent dans le menu de jeu*/
 void AffichageLogo(SDL_Renderer *renderer, SDL_Texture *my_texture)
 {
     SDL_Rect boite_logo, image;
@@ -26,6 +25,7 @@ void AffichageLogo(SDL_Renderer *renderer, SDL_Texture *my_texture)
     SDL_RenderCopy(renderer, my_texture, &image, &boite_logo);
 }
 
+// Affichage dans le menu de jeu du score actuel et du meilleur score
 void AffichageScore(SDL_Renderer *renderer, TTF_Font *police, int score, int meilleurScore)
 {
     SDL_Color colorBest = {255, 0, 0, 255};
@@ -66,7 +66,7 @@ void AffichageScore(SDL_Renderer *renderer, TTF_Font *police, int score, int mei
     SDL_DestroyTexture(text_score);
 }
 
-/*Menu en haut*/
+// Affichage du fond du menu de jeu (appel affiche logo et affichage score)
 void AffichageMenuJeu(SDL_Renderer *renderer, TTF_Font *police, SDL_Texture *logo, int meilleurScore, int score)
 {
     SDL_Rect fond_menu;
@@ -80,8 +80,7 @@ void AffichageMenuJeu(SDL_Renderer *renderer, TTF_Font *police, SDL_Texture *log
     AffichageScore(renderer, police, score, meilleurScore);
 }
 
-/*Grille*/
-
+/*affichage de la texture de pomme à la position voulu sur la grille dans les bonnes dimmensions*/
 void AffichagePomme(SDL_Renderer *renderer, SDL_Texture *pomme, SDL_Rect pos)
 {
     SDL_Rect image = {0};
@@ -89,13 +88,16 @@ void AffichagePomme(SDL_Renderer *renderer, SDL_Texture *pomme, SDL_Rect pos)
     SDL_RenderCopy(renderer, pomme, &image, &pos);
 }
 
+// Affichage de la grille de jeu
 void AffichageGrillage(SDL_Renderer *renderer, SDL_Texture *pomme, int **plateau, SDL_Rect etats_serpent[6][16], SDL_Texture *table_serpent)
 {
     SDL_Rect element_grillage;
+    // calcul de la taille d'un element par rapport à la taille de la fenetre et de la grille de jeu
     element_grillage.x = 0;
     element_grillage.y = TAILLE_MENU;
     element_grillage.w = FENETREWIDTH / DIMENSION_TAB_JEU;
     element_grillage.h = (FENETREHEIGHT - TAILLE_MENU) / DIMENSION_TAB_JEU;
+
     int random;
 
     for (int i = 0; i < DIMENSION_TAB_JEU; i++)
@@ -104,19 +106,19 @@ void AffichageGrillage(SDL_Renderer *renderer, SDL_Texture *pomme, int **plateau
         {
 
             // sol
-            random = rand() % 4; // random entre les 4 frames de sol
+            random = rand() % 4; // random entre les 4 frames de sol possible pour animer le fond
             SDL_RenderCopy(renderer, table_serpent, &etats_serpent[0][random], &element_grillage);
-            // si bordure
+            // si bordure on place la texture de bordure
             if (plateau[i][j] == 2)
             {
                 SDL_RenderCopy(renderer, table_serpent, &etats_serpent[0][9], &element_grillage);
             }
-
-            if (plateau[i][j] == 3) // cactus
+            // si cactus on place la texture de cactus
+            if (plateau[i][j] == 3)
             {
                 SDL_RenderCopy(renderer, table_serpent, &etats_serpent[0][15], &element_grillage);
             }
-
+            // si c'est une pomme on l'affiche
             if (plateau[i][j] == 1)
             {
                 AffichagePomme(renderer, pomme, element_grillage);
@@ -128,9 +130,10 @@ void AffichageGrillage(SDL_Renderer *renderer, SDL_Texture *pomme, int **plateau
     }
 }
 
-/* LE SERPENT*/
+// Affichage de la tete du serpent
 void PlaceTeteSerpent(SDL_Renderer *renderer, int direction, SDL_Texture *table_serpent, SDL_Rect etats_serpent[6][16], SDL_Rect pos, int etat)
 {
+    // texture differente en fonction de la direction et de l'état de markov !
     switch (direction)
     {
     case 0:
@@ -150,6 +153,7 @@ void PlaceTeteSerpent(SDL_Renderer *renderer, int direction, SDL_Texture *table_
     }
 }
 
+// Affichage du corps de serpent selon ses voisins (textures d'angle, droite ....)
 void PlaceCorpsSerpent(SDL_Renderer *renderer, int courant, SDL_Texture *table_serpent, SDL_Rect etats_serpent[6][16], SDL_Rect pos, int **serpent)
 {
     /*ON a besoin du precedent et du suivant*/
@@ -183,7 +187,7 @@ void PlaceCorpsSerpent(SDL_Renderer *renderer, int courant, SDL_Texture *table_s
         }
     }
     else if (courI == precI)
-    { // on reste sur la mÃªme ligne
+    { // on reste sur la même ligne
         if (courJ == (precJ + 1))
         {
             if (suivI == (courI + 1))
@@ -232,9 +236,10 @@ void PlaceCorpsSerpent(SDL_Renderer *renderer, int courant, SDL_Texture *table_s
     }
 }
 
+// Placement de la queue du serpent
 void PlaceQueueSerpent(SDL_Renderer *renderer, int courant, SDL_Texture *table_serpent, SDL_Rect etats_serpent[6][16], SDL_Rect pos, int **serpent)
 {
-    /*on a besoin du prec et du suivant*/
+    /*on a besoin du prec et du courant*/
     int prec = courant - 1;
     if (prec < 0)
         prec = DIMENSION_TAB_POS - 1;
@@ -263,8 +268,10 @@ void PlaceQueueSerpent(SDL_Renderer *renderer, int courant, SDL_Texture *table_s
     }
 }
 
+// Affichage du serpent (appel affichetete, affichecorps et affiche queue selon le cas)
 void AffichageSerpent(int **serpent, SDL_Renderer *renderer, int taille_serpent, int teteSerpent, int direction, SDL_Texture *table_serpent, SDL_Rect etats_serpent[6][16], int etat)
 {
+    // taille de la texture du serpent selon la taille de la grille et de la fenetre
     SDL_Rect element_serpent = {0};
     element_serpent.w = FENETREWIDTH / DIMENSION_TAB_JEU;
     element_serpent.h = (FENETREHEIGHT - TAILLE_MENU) / DIMENSION_TAB_JEU;
@@ -276,11 +283,11 @@ void AffichageSerpent(int **serpent, SDL_Renderer *renderer, int taille_serpent,
         PassageTableauCoor(serpent[parcours][0], serpent[parcours][1], &x, &y);
         element_serpent.x = x;
         element_serpent.y = y;
-        if (j == 0)
+        if (j == 0) // on place la tete
             PlaceTeteSerpent(renderer, direction, table_serpent, etats_serpent, element_serpent, etat);
-        else if (j == taille_serpent - 1)
+        else if (j == taille_serpent - 1) // on place la queue
             PlaceQueueSerpent(renderer, parcours, table_serpent, etats_serpent, element_serpent, serpent);
-        else
+        else // sinon c'est le corps
             PlaceCorpsSerpent(renderer, parcours, table_serpent, etats_serpent, element_serpent, serpent);
 
         parcours = (parcours + 1);
@@ -288,6 +295,7 @@ void AffichageSerpent(int **serpent, SDL_Renderer *renderer, int taille_serpent,
     }
 }
 
+// Placement de la frame de l'explosion à l'état voulu à l'endroit voulu
 void Explosion(SDL_Renderer *renderer, SDL_Texture *explosion, SDL_Rect pos, int etat, SDL_Rect etats[25])
 {
     /*recentrage explosion car coordonnées en haut a gauche*/
@@ -297,12 +305,12 @@ void Explosion(SDL_Renderer *renderer, SDL_Texture *explosion, SDL_Rect pos, int
 }
 
 /*Iteration enJeu*/
-
+// Une itération de jeu
 void IterEnJeu(SDL_bool *depart, long *lastTick, int *infoIter, int *iter_explo, int *meilleurScore, int *score, SDL_bool *enJeu, int *etat_markov, int *vitesse_prog,
                int *multiplicateur, int *nbItePosMur, int *direction, int **serpent, int **plateau, int *taille_serpent, int *teteSerpent, SDL_Texture *explosion, SDL_Rect etats[25],
                SDL_Texture *table_serpent, SDL_Rect etats_serpent[6][16], SDL_Renderer *renderer, SDL_Rect *pos_explosion, SDL_bool *dansJeu, SDL_bool *dansMenu, int *posPommeI, int *posPommeJ)
 {
-    if (*depart)
+    if (*depart) // si c'est le depart on declare que ça ne l'est plus et on recupere le premier temps pour le score selon le temps
     {
         *depart = !(*depart);
         *lastTick = SDL_GetTicks();
@@ -312,42 +320,43 @@ void IterEnJeu(SDL_bool *depart, long *lastTick, int *infoIter, int *iter_explo,
     if (*infoIter == 0) // fin de jeu
     {
         if (*iter_explo == 0)
-        { // premiere frame on calcul position
+        { // premiere frame explosion on calcul position
             int x_explo, y_explo;
             PassageTableauCoor(serpent[*teteSerpent][0], serpent[*teteSerpent][1], &x_explo, &y_explo);
             pos_explosion->x = x_explo;
             pos_explosion->y = y_explo;
             *meilleurScore = MeilleurScore(*score);
         }
-        if (*iter_explo < 25)
+        if (*iter_explo < 25) // on affiche les 25 frames d'explosions pour avoir l'animation
         {
             Explosion(renderer, explosion, *pos_explosion, *iter_explo, etats);
             (*iter_explo)++;
         }
         if (*iter_explo == 25)
-        { // on a fini
+        { // on a fini d'afficher les explosions on sort du mode jeu FIN DE PARTIE
             *enJeu = SDL_FALSE;
             *dansJeu = SDL_FALSE;
             *dansMenu = SDL_TRUE;
         }
     }
 
-    else // en vie
+    else // on est en vie
     {
-        // Calcul du score en fonction du temps ecoulé
-        *score += ((SDL_GetTicks() - (*lastTick)) / 25) * (*multiplicateur); // en mili sec donc /1000 pour sec
-        *lastTick = SDL_GetTicks();
+        // Calcul du score en fonction du temps ecoulé à la derniere itérations
+        *score += ((SDL_GetTicks() - (*lastTick)) / 25) * (*multiplicateur);
+        *lastTick = SDL_GetTicks(); // on recupere le temps pour la prochaine iteration
 
         if (*etat_markov != 4)
-        { // pas endormi
+        { // si le serpent est reveillé
+            // on recupere l'info de si le serpent a touché quelque chose ou non et on le deplace
             *infoIter = TestDeplacement(serpent, *direction, taille_serpent, plateau, teteSerpent);
             if (*infoIter == 1) // il a mangé
             {
-                // on supprime les murets et la pomme
+                // on supprime les murets et la pomme car le joueur a fait son job
                 ClearMap(plateau);
                 // on ajoute une nouvelle pomme
                 posPommeAvecCo(plateau, serpent, *taille_serpent, *teteSerpent, posPommeI, posPommeJ);
-                // calcul de la nouvelle vitesse possible selon markov
+                // calcul du nouvel etat de markov à chaque fois qu'on mange et de sa vitesse associée
                 *etat_markov = passageMarkov(*etat_markov);
                 // printf("etat_markov : %d\n", etat_markov);
                 *vitesse_prog = vitesseParEtat[*etat_markov];
@@ -358,6 +367,7 @@ void IterEnJeu(SDL_bool *depart, long *lastTick, int *infoIter, int *iter_explo,
             {
                 if (AVEC_CACTUS) // possible de jouer avec ou sans cactus selon config.h
                 {
+                    // on pose un mur toutes les "nbItePosMur"
                     *nbItePosMur += 1;
                     if (*nbItePosMur == ITER_POUR_MUR)
                     {
@@ -368,11 +378,13 @@ void IterEnJeu(SDL_bool *depart, long *lastTick, int *infoIter, int *iter_explo,
             }
         }
         else
-        { // endormi juste on fait des trirages mais le serpent bouge po
+        { // endormi on iter toujours et on rechange d'etat de markov à chaque itération pour le reveiller
             *etat_markov = passageMarkov(*etat_markov);
             *vitesse_prog = vitesseParEtat[*etat_markov];
             // printf("etat_markov : %d\n", etat_markov);
+            // on iter toujours pour toujours update le score du serpent !
         }
+        // on affiche le serpent
         AffichageSerpent(serpent, renderer, *taille_serpent, *teteSerpent, *direction, table_serpent, etats_serpent, *etat_markov);
     }
 }
