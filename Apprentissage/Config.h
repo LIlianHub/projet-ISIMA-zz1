@@ -14,7 +14,7 @@
 #define TAILLE_EXPLOSION 5
 #define ITER_POUR_MUR 10
 #define SERPENT_DEMARRAGE 3
-#define AVEC_CACTUS 0
+#define AVEC_CACTUS 1
 #define NB_ETATS_MARKOV 5
 
 
@@ -23,6 +23,6 @@
 #define NBRE_ETATS_APPRENTISSAGE 9
 #define NBRE_ACTION_APPRENTISSAGE 4
 #define NBRE_ETAT_AUTOUR 16
-#define GAMMA 0.5
+#define GAMMA 1.0
 
 #endif

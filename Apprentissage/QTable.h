@@ -17,10 +17,11 @@ typedef struct etatAutour
 } etatAutour;
 
 void MainApprentissage(int nbIteration, int **serpent, int **plateau);
-int UtilisationQTable(int teteSi, int teteSj, int pommeI, int pommeJ, double ***Qtable);
-void LibererTabFloat(double ***tab, int nb_ligne, int nb_colonne);
-double ***GenereTabFloat(int nb_ligne, int nb_colonne, int nb_profondeur);
-void RecupQtable(double ***Q, int nbLigne, int nbColonne);
 void posPommeAvecCo(int **plateau, int **serpent, int tailleSerpent, int teteSerpent, int *posI, int *posJ);
+void AfficherQTAble(double Q[NBRE_ETATS_APPRENTISSAGE][NBRE_ACTION_APPRENTISSAGE][NBRE_ETAT_AUTOUR], int ligne, int colonne, int profondeur);
+void RecupQtable(double Q[NBRE_ETATS_APPRENTISSAGE][NBRE_ACTION_APPRENTISSAGE][NBRE_ETAT_AUTOUR], int nbLigne, int nbColonne, int profondeur);
+int UtilisationQTable(int teteSi, int teteSj, int pommeI, int pommeJ, double QTable[NBRE_ETATS_APPRENTISSAGE][NBRE_ACTION_APPRENTISSAGE][NBRE_ETAT_AUTOUR],
+                      int **serpent, int **plateau, int *taille_serpent, int *teteSerpent);
+void RecupQtable(double Q[NBRE_ETATS_APPRENTISSAGE][NBRE_ACTION_APPRENTISSAGE][NBRE_ETAT_AUTOUR], int nbLigne, int nbColonne, int profondeur);
 
 #endif
