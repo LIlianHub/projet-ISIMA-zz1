@@ -37,6 +37,8 @@ Bienvenue sur le site web des membres du groupe 31 du Projet ZZ1 2022, nous somm
 
 Les programmes se trouvent tous dans le GitLab ISIMA de BALLEJOS Lilian à ce lien: [ici](https://gitlab.isima.fr/liballejos/projetzz1)
 
+Tous les programmes **à jours** sont dans la branche **MASTER**
+
 # TODO List
 ## Fonctionnement
 
@@ -122,7 +124,8 @@ Avancé | Membre | Tâche
 
 Avancé | Membre | Tâche
 -------------- | -------------- | --------------
-✔️| Commun | Finalisation du code
+✔️| Commun | Finalisation du code et du site 
+✔️| Commun | Nettoyage et "Commentation" du code 
 ✔️| Commun | Soutenance
 
 # Xfenetré
@@ -1382,7 +1385,7 @@ On détecte à chaque itération si on a pas stagné et que plus rien ne bouge !
 
 Les masques de vie et de mort sont très facilement modifiables dans le code et les règles sont visibles graphiquement sur la fenêtre SDL en haut !
 
-### Problème rencontré
+## Problème rencontré
 
 Nous avons recontré un problème que nous avons solutionné comme nous allons vous l'expliquer plus bas.
 
@@ -1466,7 +1469,7 @@ Pour le serpent, nous avons commencé par modéliser sa tête. A chaque fois que
 Pour le reste du serpent, nous avons d'abord modélisé les angles. Pour cela, nous avons regardé le premier mouvement lorsque le serpent tourne : on s'intéresse alors au courant, au précédent et au suivant. D'abord, nous regardons entre le courant et le précédent s'il y a un changement de lignes ou un changement de colonnes. Ensuite nous faisons la même chose entre le courant et le suivant. Ceci permet de différencier les différents cas et donc de savoir à quel moment, nous devons mettre quel sprite. Si nous ne différencions pas tous les cas en passant par le précédent,le courant et le suivant, nous nous retrouvons avec des angles qui sont indissociables.
 Pour le reste du corps, nous avons juste à savoir si le serpent change de colonnes ou de lignes. On raisonne de la même façon que pour les angles en regardant les itérations courantes, précédentes et suivantes. 
 
-Pour la partie décor, nous avons parcouru le plateau afin de mettre tout autour des bordures à l'aide de sprite de rochers et en fond un sprite orange qui s'anime et qui fait effet de "pierres" qui bougent.
+Pour la partie décor, nous avons parcouru le plateau afin de mettre tout autour des bordures à l'aide de sprite de rochers et en fond un sprite orange qui s'anime et qui fait effet de "sable" qui bougent.
 
 ### Menu
 
@@ -1474,9 +1477,13 @@ Nous avons ensuite créé un menu afin de permettre à l'utilisateur de pouvoir 
 
 ### Algorithme
 
-La dernière amélioration la plus importante est celle qui correspond à la gestion du serpent et de ses déplacements. Nous sommes passés d'un tableau à une file. Cette amélioration permet de ne plus avoir à faire un décalage droite lorsque le serpent se déplace. A la place, nous avons juste à connaître la place de la tête du serpent dans la file afin de la déplacer dans la file et d'entrer ses nouvelles coordonnées.
+La dernière amélioration la plus importante est celle qui correspond à la gestion du serpent et de ses déplacements. Nous sommes passés d'un tableau à une file. Cette amélioration permet de ne plus avoir à faire un décalage droite de tout le tableau (ce qui est coûteux) lorsque le serpent se déplace. A la place, nous avons juste à connaître la place de la tête du serpent dans la file afin de la déplacer dans la file et d'entrer ses nouvelles coordonnées. Ainsi à chaque itération on enfile la nouvelle tête et on défile la queue si le serpent n'a pas mangé. Si il a mangé, on ne déile par la la taille grandit !
 
 ## Apprentissage par renforcement n°1
+
+### Introduction
+
+Nous avons tout d'abbord implémenté un premier apprentissage avec seulement la perception de la tête du serpent et la position de la pomme.
 
 ### Explication et théorie
 
@@ -1511,6 +1518,10 @@ Pour la partie exploration,
 <p style="text-align: center;"><iframe width="80%" height="315" src="https://www.youtube.com/embed/xOpty5HOP7U" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe></p>
 
 ## Apprentissage par renforcement n°2
+
+### Introduction
+
+Nous avons décidé d'améliorer l'apprentissage par renforcement en faisant que le serpent percoit ce qu'il se passe autour de lui et ainsi évite de se tuer en se touchant ou en touchant un obstacle (cactus par exemple).
 
 ### Explication et théorie
 
