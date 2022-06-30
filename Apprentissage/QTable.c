@@ -8,176 +8,110 @@
 #include "QTable.h"
 #include "Pile.h"
 
-int EtatAutourActuel(int teteSx, int teteSy, int **serpent, int **plateau, int *tailleSerpent, int *teteSerpent)
+int EtatAutourActuel(int teteSi, int teteSj, int **serpent, int **plateau, int *tailleSerpent, int *teteSerpent)
 {
-	int etatAutour = 0;
-	int ValeurDessus = TestCollisionSerpent(serpent, teteSy - 1, teteSx, tailleSerpent, teteSerpent);
-	int ValeurDessous = TestCollisionSerpent(serpent, teteSy + 1, teteSx, tailleSerpent, teteSerpent);
-	int ValeurGauche = TestCollisionSerpent(serpent, teteSy, teteSx - 1, tailleSerpent, teteSerpent);
-	int ValeurDroite = TestCollisionSerpent(serpent, teteSy, teteSx + 1, tailleSerpent, teteSerpent);
+	int etatAutour = 0; // etat 0 impossible car toujours son corps à proximité
+	int ValeurDessus = TestCollisionSerpent(serpent, teteSi - 1, teteSj, tailleSerpent, teteSerpent);
+	int ValeurDessous = TestCollisionSerpent(serpent, teteSi + 1, teteSj, tailleSerpent, teteSerpent);
+	int ValeurGauche = TestCollisionSerpent(serpent, teteSi, teteSj - 1, tailleSerpent, teteSerpent);
+	int ValeurDroite = TestCollisionSerpent(serpent, teteSi, teteSj + 1, tailleSerpent, teteSerpent);
+	// >= 2 car bordure 2 et cactus 3
 
-	if (plateau[teteSx][teteSy - 1] == 0 && ValeurDessus == 2) // la case du haut est vide  (0,*,*,*)
+	if (ValeurDessous == 2 && ValeurDessus == 2 && ValeurDroite == 2 && ValeurGauche == 0 &&
+		plateau[teteSi - 1][teteSj] < 2 && plateau[teteSi + 1][teteSj] < 2 && plateau[teteSi][teteSj - 1] >= 2 &&
+		plateau[teteSi][teteSj + 1] < 2)
 	{
-		if (plateau[teteSx][teteSy + 1] == 0 && ValeurDessous == 2) // la case du bas est vide   (0,0,*,*)
-		{
-			if (plateau[teteSx + 1][teteSy] == 0 && ValeurDroite == 2) // la case de droite est vide (0,0,0,*)
-			{
-				if (plateau[teteSx - 1][teteSy] == 0 && ValeurGauche == 2) // la case de gauche est vide (0,0,0,0)
-				{
-					etatAutour = 0;
-				}
-				else // (0,0,0,1)
-				{
-					etatAutour = 1;
-				}
-			}
-			else // (0,0,1,*)
-			{
-				if (plateau[teteSx - 1][teteSy] == 0 && ValeurGauche == 2) // (0,0,1,0)
-				{
-					etatAutour = 2;
-				}
-				else // (0,0,1,1)
-				{
-					etatAutour = 3;
-				}
-			}
-		}
-		else // la case du haut est vide  (0,1,*,*)
-		{
-			if (plateau[teteSx + 1][teteSy] == 0 && ValeurDroite == 2) // la case de droite est vide (0,1,0,*)
-			{
-				if (plateau[teteSx - 1][teteSy] == 0 && ValeurGauche == 2) // la case de gauche est vide (0,1,0,0)
-				{
-					etatAutour = 4;
-				}
-				else // (0,1,0,1)
-				{
-					etatAutour = 5;
-				}
-			}
-			else // (0,1,1,*)
-			{
-				if (plateau[teteSx - 1][teteSy] == 0 && ValeurGauche == 2) // (0,1,1,0)
-				{
-					etatAutour = 6;
-				}
-				else // (0,1,1,1)
-				{
-					etatAutour = 7;
-				}
-			}
-		}
+		etatAutour = 1; // un element problèmatique à gauche
 	}
-	else // la case du haut est pleine (1,*,*,*)
+	else if (ValeurDessous == 2 && ValeurDessus == 2 && ValeurDroite == 0 && ValeurGauche == 2 &&
+			 plateau[teteSi - 1][teteSj] < 2 && plateau[teteSi + 1][teteSj] < 2 && plateau[teteSi][teteSj - 1] < 2 &&
+			 plateau[teteSi][teteSj + 1] >= 2)
 	{
-		if (plateau[teteSx][teteSy + 1] == 0 && ValeurDessous == 2) // la case du bas est vide   (1,0,*,*)
-		{
-			if (plateau[teteSx + 1][teteSy] == 0 && ValeurDroite == 2) // la case de droite est vide (1,0,0,*)
-			{
-				if (plateau[teteSx - 1][teteSy] == 0 && ValeurGauche == 2) // la case de gauche est vide (1,0,0,0)
-				{
-					etatAutour = 8;
-				}
-				else // (1,0,0,1)
-				{
-					etatAutour = 9;
-				}
-			}
-			else // (1,0,1,*)
-			{
-				if (plateau[teteSx - 1][teteSy] == 0 && ValeurGauche == 2) // (1,0,1,0)
-				{
-					etatAutour = 10;
-				}
-				else // (1,0,1,1)
-				{
-					etatAutour = 11;
-				}
-			}
-		}
-		else // la case du haut est vide  (1,1,*,*)
-		{
-			if (plateau[teteSx + 1][teteSy] == 0 && ValeurDroite == 2) // la case de droite est vide (1,1,0,*)
-			{
-				if (plateau[teteSx - 1][teteSy] == 0 && ValeurGauche == 2) // la case de gauche est vide (1,1,0,0)
-				{
-					etatAutour = 12;
-				}
-				else // (1,1,0,1)
-				{
-					etatAutour = 13;
-				}
-			}
-			else // (1,1,1,*)
-			{
-				if (plateau[teteSx - 1][teteSy] == 0 && ValeurGauche == 2) // (1,1,1,0)
-				{
-					etatAutour = 14;
-				}
-				else // (1,1,1,1)
-				{
-					etatAutour = 15;
-				}
-			}
-		}
+		etatAutour = 2; // un element problèmatique à droite
+	}
+	else if (ValeurDessous == 2 && ValeurDessus == 2 && ValeurDroite == 0 && ValeurGauche == 0 &&
+			 plateau[teteSi - 1][teteSj] < 2 && plateau[teteSi + 1][teteSj] < 2 && plateau[teteSi][teteSj - 1] >= 2 &&
+			 plateau[teteSi][teteSj + 1] >= 2)
+	{
+		etatAutour = 3; // un element problèmatique à droite et à gauche
+	}
+	else if (ValeurDessous == 0 && ValeurDessus == 2 && ValeurDroite == 2 && ValeurGauche == 2 &&
+			 plateau[teteSi - 1][teteSj] < 2 && plateau[teteSi + 1][teteSj] >= 2 && plateau[teteSi][teteSj - 1] < 2 &&
+			 plateau[teteSi][teteSj + 1] < 2)
+	{
+		etatAutour = 4; // un element problèmatique en bas
+	}
+	else if (ValeurDessous == 0 && ValeurDessus == 2 && ValeurDroite == 2 && ValeurGauche == 0 &&
+			 plateau[teteSi - 1][teteSj] < 2 && plateau[teteSi + 1][teteSj] >= 2 && plateau[teteSi][teteSj - 1] >= 2 &&
+			 plateau[teteSi][teteSj + 1] < 2)
+	{
+		etatAutour = 5; // un element problèmatique en bas et à gauche
+	}
+	else if (ValeurDessous == 0 && ValeurDessus == 2 && ValeurDroite == 0 && ValeurGauche == 2 &&
+			 plateau[teteSi - 1][teteSj] < 2 && plateau[teteSi + 1][teteSj] >= 2 && plateau[teteSi][teteSj - 1] < 2 &&
+			 plateau[teteSi][teteSj + 1] >= 2)
+	{
+		etatAutour = 6; // un element problèmatique en bas et à droite
+	}
+	else if (ValeurDessous == 0 && ValeurDessus == 2 && ValeurDroite == 0 && ValeurGauche == 0 &&
+			 plateau[teteSi - 1][teteSj] < 2 && plateau[teteSi + 1][teteSj] >= 2 && plateau[teteSi][teteSj - 1] >= 2 &&
+			 plateau[teteSi][teteSj + 1] >= 2)
+	{
+		etatAutour = 7; // un element problèmatique en bas et à droite et à gauche
+	}
+	else if (ValeurDessous == 2 && ValeurDessus == 0 && ValeurDroite == 2 && ValeurGauche == 2 &&
+			 plateau[teteSi - 1][teteSj] >= 2 && plateau[teteSi + 1][teteSj] < 2 && plateau[teteSi][teteSj - 1] < 2 &&
+			 plateau[teteSi][teteSj + 1] < 2)
+	{
+		etatAutour = 8; // un element problèmatique en haut
+	}
+	else if (ValeurDessous == 2 && ValeurDessus == 0 && ValeurDroite == 2 && ValeurGauche == 0 &&
+			 plateau[teteSi - 1][teteSj] >= 2 && plateau[teteSi + 1][teteSj] < 2 && plateau[teteSi][teteSj - 1] >= 2 &&
+			 plateau[teteSi][teteSj + 1] < 2)
+	{
+		etatAutour = 9; // un element problèmatique en haut et à gauche
+	}
+	else if (ValeurDessous == 2 && ValeurDessus == 0 && ValeurDroite == 0 && ValeurGauche == 2 &&
+			 plateau[teteSi - 1][teteSj] >= 2 && plateau[teteSi + 1][teteSj] < 2 && plateau[teteSi][teteSj - 1] < 2 &&
+			 plateau[teteSi][teteSj + 1] >= 2)
+	{
+		etatAutour = 10; // un element problèmatique en haut et à droite
+	}
+	else if (ValeurDessous == 2 && ValeurDessus == 0 && ValeurDroite == 0 && ValeurGauche == 0 &&
+			 plateau[teteSi - 1][teteSj] >= 2 && plateau[teteSi + 1][teteSj] < 2 && plateau[teteSi][teteSj - 1] >= 2 &&
+			 plateau[teteSi][teteSj + 1] >= 2)
+	{
+		etatAutour = 11; // un element problèmatique en haut et à droite et a gauche
+	}
+	else if (ValeurDessous == 0 && ValeurDessus == 0 && ValeurDroite == 2 && ValeurGauche == 2 &&
+			 plateau[teteSi - 1][teteSj] >= 2 && plateau[teteSi + 1][teteSj] >= 2 && plateau[teteSi][teteSj - 1] < 2 &&
+			 plateau[teteSi][teteSj + 1] < 2)
+	{
+		etatAutour = 12; // un element problèmatique en haut et en bas
+	}
+	else if (ValeurDessous == 0 && ValeurDessus == 0 && ValeurDroite == 2 && ValeurGauche == 0 &&
+			 plateau[teteSi - 1][teteSj] >= 2 && plateau[teteSi + 1][teteSj] >= 2 && plateau[teteSi][teteSj - 1] >= 2 &&
+			 plateau[teteSi][teteSj + 1] < 2)
+	{
+		etatAutour = 13; // un element problèmatique en haut et en bas et a gauche
+	}
+	else if (ValeurDessous == 0 && ValeurDessus == 0 && ValeurDroite == 0 && ValeurGauche == 2 &&
+			 plateau[teteSi - 1][teteSj] >= 2 && plateau[teteSi + 1][teteSj] >= 2 && plateau[teteSi][teteSj - 1] < 2 &&
+			 plateau[teteSi][teteSj + 1] >= 2)
+	{
+		etatAutour = 14; // un element problèmatique en haut et en bas et a droite
+	}
+	else if (ValeurDessous == 0 && ValeurDessus == 0 && ValeurDroite == 0 && ValeurGauche == 0 &&
+			 plateau[teteSi - 1][teteSj] >= 2 && plateau[teteSi + 1][teteSj] >= 2 && plateau[teteSi][teteSj - 1] >= 2 &&
+			 plateau[teteSi][teteSj + 1] >= 2)
+	{
+		etatAutour = 15; // un element problèmatique en haut et en bas et a droite et a gauche
 	}
 
 	return etatAutour;
 }
 
-//on pose une Pomme dans un endroit vide et on récupère ses coordonnées
-void posPommeAvecCo(int **plateau,
-					int **serpent,
-					int tailleSerpent,
-					int teteSerpent, int *posI, int *posJ)
-{
-	int i, j, m;
-	int compteur = 0;
-	int caseVide;
-
-	int caseDispo = ((DIMENSION_TAB_JEU - 2) * (DIMENSION_TAB_JEU - 2)) - tailleSerpent; /*Le
-											       nombre
-											       de
-											       case
-											       de disponible*/
-	int placement = (rand() % caseDispo) + 1;         //On va placer la pomme dans la n-ème case
-
-	for (i = 1; i < DIMENSION_TAB_JEU - 1; i++)
-	{
-
-		for (j = 1; j < DIMENSION_TAB_JEU - 1; j++)
-		{
-			caseVide = 1;
-			int courant = teteSerpent;
-
-			for (m = 0; m < tailleSerpent; m++)
-			{
-				if ((i == serpent[courant][0] && j == serpent[courant][1]))
-				{
-					caseVide = 0;
-				}
-				courant = courant + 1;
-				courant %= DIMENSION_TAB_POS;
-			}
-			if (caseVide == 1)
-			{
-				compteur++;
-			}
-			if (compteur == placement)  //on est dans la n-ème case
-			{
-
-				plateau[i][j] = 1;
-				*posI = i; // on donne les positons de où la pomme a été posé
-				*posJ = j;
-				i = DIMENSION_TAB_JEU; // on incrémente i et j de sorte qu'on sorte de la boucle
-				j = DIMENSION_TAB_JEU;
-			}
-		}
-	}
-}
-
-//On récupére l'orientation de la pomme par rapport à la tête du serpent 
+// On récupére l'orientation de la pomme par rapport à la tête du serpent
 int EtatActuel(int teteSx, int teteSy, int pommex, int pommey)
 {
 	int directionX = teteSx - pommex; // si positif : ouest sinon est
@@ -193,7 +127,7 @@ int EtatActuel(int teteSx, int teteSy, int pommex, int pommey)
 		else if (directionY < 0)
 		{
 			etat = 2; // sud ouest
-		}	  
+		}
 		else
 		{
 			etat = 5; // ouest
@@ -227,18 +161,18 @@ int EtatActuel(int teteSx, int teteSy, int pommex, int pommey)
 		else
 		{
 			etat = 4; // sur la pomme
-				  // etat impossible
+					  // etat impossible
 		}
 	}
 
 	return etat;
 }
 
-//on ecrit la Qtable dans un fichier
+// on ecrit la Qtable dans un fichier
 void EcritureQtable(double Q[NBRE_ETATS_APPRENTISSAGE][NBRE_ACTION_APPRENTISSAGE][NBRE_ETAT_AUTOUR], int nbLigne, int nbColonne, int profondeur)
 {
 	FILE *Last;
-	//la Q table est affichée dans un fichier avec 16 matrices d'états les une en dessous des autres
+	// la Q table est affichée dans un fichier avec 16 matrices d'états les une en dessous des autres
 	if ((Last = fopen("saveQTable/LastQtable.txt", "w")) != NULL)
 	{
 		for (int i = 0; i < profondeur; i++)
@@ -257,7 +191,7 @@ void EcritureQtable(double Q[NBRE_ETATS_APPRENTISSAGE][NBRE_ACTION_APPRENTISSAGE
 	}
 }
 
-//on lit la Qtable dans un fichier
+// on lit la Qtable dans un fichier
 void RecupQtable(double Q[NBRE_ETATS_APPRENTISSAGE][NBRE_ACTION_APPRENTISSAGE][NBRE_ETAT_AUTOUR], int nbLigne, int nbColonne, int profondeur)
 {
 	FILE *Save;
@@ -282,7 +216,7 @@ void RecupQtable(double Q[NBRE_ETATS_APPRENTISSAGE][NBRE_ACTION_APPRENTISSAGE][N
 	}
 }
 
-//on affiche la Qtable dans un terminal
+// on affiche la Qtable dans un terminal
 void AfficherQTAble(double Q[NBRE_ETATS_APPRENTISSAGE][NBRE_ACTION_APPRENTISSAGE][NBRE_ETAT_AUTOUR], int ligne, int colonne, int profondeur)
 {
 	for (int i = 0; i < profondeur; i++)
@@ -299,9 +233,9 @@ void AfficherQTAble(double Q[NBRE_ETATS_APPRENTISSAGE][NBRE_ACTION_APPRENTISSAGE
 	}
 }
 
-void explorationSerpent(int *pos_i_pomme, int *pos_j_pomme,
-						int *taille_serpent, int **plateau, int **serpent, double Q_Table[NBRE_ETATS_APPRENTISSAGE][NBRE_ACTION_APPRENTISSAGE][NBRE_ETAT_AUTOUR],
-						int epsilon_Greedy, int *teteSerpent, double gamma)
+void ApprentissageSerpent(int *pos_i_pomme, int *pos_j_pomme,
+						  int *taille_serpent, int **plateau, int **serpent, double Q_Table[NBRE_ETATS_APPRENTISSAGE][NBRE_ACTION_APPRENTISSAGE][NBRE_ETAT_AUTOUR],
+						  int epsilon_Greedy, int *teteSerpent, double gamma)
 {
 	pile_t *PileDonnees;
 	initPile(&PileDonnees, TAILLEMAX_APPRENTISSAGE);
@@ -317,7 +251,7 @@ void explorationSerpent(int *pos_i_pomme, int *pos_j_pomme,
 	{
 		donnees data = {0};
 		data.etat = EtatActuel(serpent[*teteSerpent][1], serpent[*teteSerpent][0], *pos_j_pomme, *pos_i_pomme);
-		data.etatAutour = EtatAutourActuel(serpent[*teteSerpent][1], serpent[*teteSerpent][0], serpent, plateau, taille_serpent, teteSerpent); // finir la fonction
+		data.etatAutour = EtatAutourActuel(serpent[*teteSerpent][0], serpent[*teteSerpent][1], serpent, plateau, taille_serpent, teteSerpent); // finir la fonction
 
 		random = rand() % 101;
 		if (random > epsilon_Greedy) // EXPLOITATION
@@ -426,7 +360,7 @@ void MainApprentissage(int nbIteration, int **serpent, int **plateau)
 		int iPomme, jPomme;
 		posPommeAvecCo(plateau, serpent, taille_serpent, teteSerpent, &iPomme, &jPomme);
 
-		explorationSerpent(&iPomme, &jPomme, &taille_serpent, plateau, serpent, QTable, epsilon_greedy, &teteSerpent, gamma);
+		ApprentissageSerpent(&iPomme, &jPomme, &taille_serpent, plateau, serpent, QTable, epsilon_greedy, &teteSerpent, gamma);
 
 		if (iteration % nbSave == 0)
 		{
@@ -444,7 +378,7 @@ void MainApprentissage(int nbIteration, int **serpent, int **plateau)
 	}
 }
 
-//On utilise la Qtable pour decider les mouvements à faire (la valeur max de l'état autour et l'état lié à la pomme actuel)
+// On utilise la Qtable pour decider les mouvements à faire (la valeur max de l'état autour et l'état lié à la pomme actuel)
 int UtilisationQTable(int teteSi, int teteSj, int pommeI, int pommeJ, double QTable[NBRE_ETATS_APPRENTISSAGE][NBRE_ACTION_APPRENTISSAGE][NBRE_ETAT_AUTOUR],
 					  int **serpent, int **plateau, int *taille_serpent, int *teteSerpent)
 {
@@ -463,3 +397,111 @@ int UtilisationQTable(int teteSi, int teteSj, int pommeI, int pommeJ, double QTa
 
 	return action;
 }
+
+/*
+if (plateau[teteSx][teteSy - 1] == 0 && ValeurDessus == 2) // la case du haut est vide  (0,*,*,*)
+	{
+		if (plateau[teteSx][teteSy + 1] == 0 && ValeurDessous == 2) // la case du bas est vide   (0,0,*,*)
+		{
+			if (plateau[teteSx + 1][teteSy] == 0 && ValeurDroite == 2) // la case de droite est vide (0,0,0,*)
+			{
+				if (plateau[teteSx - 1][teteSy] == 0 && ValeurGauche == 2) // la case de gauche est vide (0,0,0,0)
+				{
+					etatAutour = 0;
+				}
+				else // (0,0,0,1)
+				{
+					etatAutour = 1;
+				}
+			}
+			else // (0,0,1,*)
+			{
+				if (plateau[teteSx - 1][teteSy] == 0 && ValeurGauche == 2) // (0,0,1,0)
+				{
+					etatAutour = 2;
+				}
+				else // (0,0,1,1)
+				{
+					etatAutour = 3;
+				}
+			}
+		}
+		else // la case du haut est vide  (0,1,*,*)
+		{
+			if (plateau[teteSx + 1][teteSy] == 0 && ValeurDroite == 2) // la case de droite est vide (0,1,0,*)
+			{
+				if (plateau[teteSx - 1][teteSy] == 0 && ValeurGauche == 2) // la case de gauche est vide (0,1,0,0)
+				{
+					etatAutour = 4;
+				}
+				else // (0,1,0,1)
+				{
+					etatAutour = 5;
+				}
+			}
+			else // (0,1,1,*)
+			{
+				if (plateau[teteSx - 1][teteSy] == 0 && ValeurGauche == 2) // (0,1,1,0)
+				{
+					etatAutour = 6;
+				}
+				else // (0,1,1,1)
+				{
+					etatAutour = 7;
+				}
+			}
+		}
+	}
+	else // la case du haut est pleine (1,*,*,*)
+	{
+		if (plateau[teteSx][teteSy + 1] == 0 && ValeurDessous == 2) // la case du bas est vide   (1,0,*,*)
+		{
+			if (plateau[teteSx + 1][teteSy] == 0 && ValeurDroite == 2) // la case de droite est vide (1,0,0,*)
+			{
+				if (plateau[teteSx - 1][teteSy] == 0 && ValeurGauche == 2) // la case de gauche est vide (1,0,0,0)
+				{
+					etatAutour = 8;
+				}
+				else // (1,0,0,1)
+				{
+					etatAutour = 9;
+				}
+			}
+			else // (1,0,1,*)
+			{
+				if (plateau[teteSx - 1][teteSy] == 0 && ValeurGauche == 2) // (1,0,1,0)
+				{
+					etatAutour = 10;
+				}
+				else // (1,0,1,1)
+				{
+					etatAutour = 11;
+				}
+			}
+		}
+		else // la case du haut est vide  (1,1,*,*)
+		{
+			if (plateau[teteSx + 1][teteSy] == 0 && ValeurDroite == 2) // la case de droite est vide (1,1,0,*)
+			{
+				if (plateau[teteSx - 1][teteSy] == 0 && ValeurGauche == 2) // la case de gauche est vide (1,1,0,0)
+				{
+					etatAutour = 12;
+				}
+				else // (1,1,0,1)
+				{
+					etatAutour = 13;
+				}
+			}
+			else // (1,1,1,*)
+			{
+				if (plateau[teteSx - 1][teteSy] == 0 && ValeurGauche == 2) // (1,1,1,0)
+				{
+					etatAutour = 14;
+				}
+				else // (1,1,1,1)
+				{
+					etatAutour = 15;
+				}
+			}
+		}
+	}*/
