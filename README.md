@@ -8,10 +8,11 @@
 
 ## Organisation du GIT 
 
-* ProjetsIndiv: Contient nos 3 projets individuels (FenetreX, PaveSerpent et AnimationFrame)
-* JeuVie: Contient notre Jeu de la vie
-* ChefOeuvre: Contient notre chef d'oeuvre (projet de la première semaine) "Serpent"
-* SiteWeb: Contient notre site web et le logiciel qui le génère
+* ProjetsIndiv: Contient nos **3 projets individuels** (FenetreX, PaveSerpent et AnimationFrame)
+* JeuVie: Contient notre **Jeu de la *vie*
+* ChefOeuvre: Contient notre **chef d'oeuvre** (projet de la première semaine) "Serpent"
+* SiteWeb: Contient notre **site web** et le logiciel qui le génère
+* Apprentissage: Contient notre Projet sur l'**Apprentissage Renforcé**
 
 ## Support de présentation
 
