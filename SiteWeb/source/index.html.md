@@ -1517,5 +1517,15 @@ Pour la partie exploration,
 Après avoir fait cette première implémentation, le serpent n'avait pas la conscience de lui même. Nous avons donc améliorer l'apprentissage en lui apprenant à avoir conscience de son corps mais aussi des cactus et des bordures. Pour lui, son corps, les cactus et les bordures sont des éléments qui vont le tuer donc il doit les éviter. Pour cela, nous regardons si autour de la tête du serpent (en haut, en bas, à gauche, à droite), il y a un des trois éléments cités avant (mur, cactus, lui même). La QTable prend alors trois dimensions : les états liés à la pomme, les actions et la perception de ce qui l'entoure.
 Le principe du code reste alors le même c'est juste la QTable qui a changé.
 
+### Schéma de Représentation des états du code et des fichiers utilisés
+
+<p style="text-align: center;"><img style="width: 80%" src="images/schemacode.png"/></p>
+
+
+### Représentation de la QTABLE
+
+<p style="text-align: center;"><img style="width: 80%" src="images/qtable.png"/></p>
+
+
 ### Vidéo de l'apprentissage par renforcement n°2
 
