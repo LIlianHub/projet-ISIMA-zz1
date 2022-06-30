@@ -13,5 +13,6 @@ void posPomme(int **plateau, int **serpent, int tailleSerpent, int teteSerpent);
 int passageMarkov(int EtatPrec);
 void posMuret(int **plateau, int **serpent, int tailleSerpent, int teteSerpent);
 void ClearMap(int ** plateau);
+int TestCollisionSerpent(int **serpent, int TeteI, int TeteJ, int *taille_serpent, int *teteSerpent);
 
 #endif

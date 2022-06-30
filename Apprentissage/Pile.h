@@ -1,13 +1,15 @@
-#ifndef PILE_H
-#define PILE_H
+#ifndef PILEV2_H
+#define PILEV2_H
 
 typedef struct donnees
 {
   int etat;
+  int etatAutour;
   int action;
   float recompense;
   
 }donnees;
+
 
 typedef struct pile
 {

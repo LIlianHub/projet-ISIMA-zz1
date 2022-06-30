@@ -244,9 +244,8 @@ void GestionEvenement(SDL_Renderer *renderer, TTF_Font *font,
     int posPommeJ;
 
     /*init apprentissage*/
-    double **Qtable = NULL;
-    Qtable = GenereTabFloat(NBRE_ETATS_APPRENTISSAGE, NBRE_ACTION_APPRENTISSAGE);
-    RecupQtable(Qtable, NBRE_ETATS_APPRENTISSAGE, NBRE_ACTION_APPRENTISSAGE);
+    double QTable[NBRE_ETATS_APPRENTISSAGE][NBRE_ACTION_APPRENTISSAGE][NBRE_ETAT_AUTOUR];
+    RecupQtable(QTable, NBRE_ETATS_APPRENTISSAGE, NBRE_ACTION_APPRENTISSAGE, NBRE_ETAT_AUTOUR);
 
     // initialisation du jeu
     Initialisation(&enJeu, &depart, &iter_explo, serpent, plateau, &taille_serpent, &direction, &infoIter,
@@ -318,7 +317,7 @@ void GestionEvenement(SDL_Renderer *renderer, TTF_Font *font,
 
             if (AI_mode)
             { // si en mode AI on calcul la direction avec la qtable
-                direction = UtilisationQTable(serpent[teteSerpent][0], serpent[teteSerpent][1], posPommeI, posPommeJ, Qtable);
+                direction = UtilisationQTable(serpent[teteSerpent][0], serpent[teteSerpent][1], posPommeI, posPommeJ, QTable, serpent, plateau, &taille_serpent, &teteSerpent);
             }
 
             if (depart) // menu demarrage on attend l'appuie sur espace
@@ -343,7 +342,4 @@ void GestionEvenement(SDL_Renderer *renderer, TTF_Font *font,
         SDL_Delay(vitesse_prog);
         SDL_RenderPresent(renderer);
     }
-
-    // Libération de la mémoire
-    LibererTabFloat(Qtable, NBRE_ETATS_APPRENTISSAGE);
 }
