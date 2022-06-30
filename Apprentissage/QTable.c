@@ -264,12 +264,12 @@ int EtatActuel(int teteSx, int teteSy, int pommex, int pommey)
 
 void EcritureQtable(double **Q, int nbLigne, int nbColonne)
 {
-  FILE *Historique;
+  //FILE *Historique;
   FILE *Last;
   int i, j;
 
   // on ecrit l'historique dans un fichier
-  if ((Historique = fopen("saveQTable/EvolutionQTable.txt", "a+")) != NULL)
+  /*if ((Historique = fopen("saveQTable/EvolutionQTable.txt", "a+")) != NULL)
   {
     for (i = 0; i < nbLigne; i++)
     {
@@ -281,7 +281,7 @@ void EcritureQtable(double **Q, int nbLigne, int nbColonne)
     }
     fprintf(Historique, "\n");
     fclose(Historique);
-  }
+  }*/
 
   if ((Last = fopen("saveQTable/LastQtable.txt", "w")) != NULL)
   {
@@ -363,8 +363,8 @@ void explorationSerpent(int *pos_i_pomme, int *pos_j_pomme,
 
     else
     {
-      data.action = quelAction(list_etat[data.etat]); // EXPLORATION
-      //data.action = rand() % 4;
+      //data.action = quelAction(list_etat[data.etat]); // EXPLORATION
+      data.action = rand() % 4;
     }
 
     tmp = TestDeplacement(serpent, data.action, taille_serpent, plateau, &teteSerpent);
@@ -419,7 +419,7 @@ void MainApprentissage(int nbIteration, int **serpent, int **plateau)
   int iteration = 0;
   int epsilon_greedy = 100;
   double **QTable = NULL;
-  int nbSave = nbIteration / 10;
+  int nbSave = nbIteration / 10000;
   int updateEpsGreedy = nbIteration / 100;
   QTable = GenereTabFloat(NBRE_ETATS_APPRENTISSAGE, NBRE_ACTION_APPRENTISSAGE);
   //RecupQtable(QTable, NBRE_ETATS_APPRENTISSAGE, NBRE_ACTION_APPRENTISSAGE);
