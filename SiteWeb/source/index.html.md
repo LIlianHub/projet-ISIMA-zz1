@@ -1453,8 +1453,28 @@ Nous avons repris notre jeu **Snake**, le but ici était donc d'apprendre au ser
 
 ## Amélioration de la partie graphique et du "GamePlay"
 
-Nous avons d'abord commencé par reprendre les idées d'amélioration que nous avions eu pour notre jeu de départ. Nous avons rajouté des placements de cactus aléatoire entre chaque pomme prise. Ceci permet de forcer l'utilisateur à prendre des pommes plutôt que de "tourner en rond" pour gagner du temps. Ensuite nous avons amélioré la partie graphique en rajoutant un sprite sur tout le corps du serpent, en modifiant le fond, les bordures et les cactuss. 
+Nous avons d'abord commencé par reprendre les idées d'amélioration que nous avions eu pour notre jeu de départ.
+
+### Positionnement de cactus
+
+Nous avons rajouté des placements de cactus aléatoire entre chaque pomme prise, dès que le serpent prend une pomme tous les cactus posés disparaissent. Ceci permet de forcer l'utilisateur à prendre des pommes plutôt que de "tourner en rond" pour gagner du temps. Pour cela, nous générons un nombre aléatoire compris entre 0 et le nombre de cases disponibles sur le plateau. Ensuite, nous parcourons le plateau en "sautant" les cases où il y a déjà une pomme ou le serpent jusqu'à tomber sur le nombre aléatoire tiré. Nous posons alors le cactus à cet endroit. 
+
+### Serpent et décor
+
+Ensuite nous avons amélioré la partie graphique en rajoutant un sprite sur tout le corps du serpent, en modifiant le fond, les bordures et les cactus. 
+Pour le serpent, nous avons commencé par modéliser sa tête. A chaque fois que l'on change de vitesse, la tête du serpent change. Elle dépend aussi de la direction que le serpent prend. Par exemple, si le serpent va vers le haut, la tếte va regarder vers le haut. Pour cela, nous avons juste à connaître la direction.
+Pour le reste du serpent, nous avons d'abord modélisé les angles. Pour cela, nous avons regardé le premier mouvement lorsque le serpent tourne : on s'intéresse alors au courant, au précédent et au suivant. D'abord, nous regardons entre le courant et le précédent s'il y a un changement de lignes ou un changement de colonnes. Ensuite nous faisons la même chose entre le courant et le suivant. Ceci permet de différencier les différents cas et donc de savoir à quel moment, nous devons mettre quel sprite. Si nous ne différencions pas tous les cas en passant par le précédent,le courant et le suivant, nous nous retrouvons avec des angles qui sont indissociables.
+Pour le reste du corps, nous avons juste à savoir si le serpent change de colonnes ou de lignes. On raisonne de la même façon que pour les angles en regardant les itérations courantes, précédentes et suivantes. 
+
+Pour la partie décor, nous avons parcouru le plateau afin de mettre tout autour des bordures à l'aide de sprite de rochers et en fond un sprite orange qui s'anime et qui fait effet de "pierres" qui bougent.
+
+### Menu
+
 Nous avons ensuite créé un menu afin de permettre à l'utilisateur de pouvoir plus tard choisir entre le mode classique et le mode IA. Ce menu permet aussi au joueur de relancer une partie sans avoir à quitter le jeu.
+
+### Algorithme
+
+La dernière amélioration la plus importante est celle qui correspond à la gestion du serpent et de ses déplacements. Nous sommes passés d'un tableau à une file. Cette amélioration permet de ne plus avoir à faire un décalage droite lorsque le serpent se déplace. A la place, nous avons juste à connaître la place de la tête du serpent dans la file afin de la déplacer dans la file et d'entrer ses nouvelles coordonnées.
 
 ## Apprentissage par renforcement n°1
 
@@ -1476,8 +1496,25 @@ Etat 8 : Nord-Ouest (1,1) | 0.5 | 0.5 | 0.5 | 0.5 |
 
 Cette QTable évolue donc au fil des parties grâce aux mouvements du serpent.
 
-Après avoir fait cette première implémentation, le serpent n'avait pas la conscience de lui même. Nous avons donc améliorer l'apprentissage en lui apprenant à avoir conscience de son corps mais aussi des cactus et des bordures. Pour lui, son corps, les cactus et les bordures sont des éléments qui vont le tuer donc il doit les éviter. Pour cela, nous regardons si autour de la tête du serpent (en haut, en bas, à gauche, à droite), il y a un des trois éléments cités avant (mur, cactus, lui même). La QTable prend alors trois dimensions : les états liés à la pomme, les actions et la perception de ce qui l'entoure. 
+### Algorithmes
 
-## Vidéo de l'apprentissage par renforcement n°1
+Pour implémenter l'apprentissage par renforcement, nous avons eu besoin en premier de faire le lien entre le serpent et la pomme : savoir où se trouve la pomme par rapport au serpent. Pour cela, nous avions besoin de la position de la tête du serpent et la pomme. A partir de ces positions, on calcule les différences entre les coordonnées (xS,yS) du serpent et (xP,yP) de la pomme. Selon les signes de ces différences, on peut savoir si la pomme se trouve à l'est ou l'ouest et au nord ou au sud et c'est à partir de ces signes, que l'on peut savoir dans quel état actuel est le serpent.
+
+Ensuite, nous avons implémenter le lien entre l'état dans lequel le serpent est et l'action futur qu'il va faire. Cette fonction utilise donc la QTable. On regarde alors la ligne dans le tableau qui correspond à l'état du serpent. A partir de cette ligne, on cherche le coefficient maximal, ce coefficient va alors correspondre à la future action du serpent.
+
+La plus grande partie de notre algorithme se compose ensuite de deux parties : exploration et exploitation du serpent.
+Pour la partie exploration, 
+
+
+### Vidéo de l'apprentissage par renforcement n°1
 
 <p style="text-align: center;"><iframe width="80%" height="315" src="https://www.youtube.com/embed/xOpty5HOP7U" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe></p>
+
+## Apprentissage par renforcement n°2
+
+### Explication et théorie
+
+Après avoir fait cette première implémentation, le serpent n'avait pas la conscience de lui même. Nous avons donc améliorer l'apprentissage en lui apprenant à avoir conscience de son corps mais aussi des cactus et des bordures. Pour lui, son corps, les cactus et les bordures sont des éléments qui vont le tuer donc il doit les éviter. Pour cela, nous regardons si autour de la tête du serpent (en haut, en bas, à gauche, à droite), il y a un des trois éléments cités avant (mur, cactus, lui même). La QTable prend alors trois dimensions : les états liés à la pomme, les actions et la perception de ce qui l'entoure.
+
+### Vidéo de l'apprentissage par renforcement n°2
+
