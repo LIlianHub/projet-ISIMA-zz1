@@ -1451,14 +1451,16 @@ Voici quelques idées de choses à améliorer sur notre projet si nous avions eu
 
 Nous avons repris notre jeu **Snake**, le but ici était donc d'apprendre au serpent à se déplacer tout seul et à survivre le plus longtemps pour avoir le meilleur score.
 
-### Amélioration et partie graphique
+## Amélioration de la partie graphique et du "GamePlay"
 
-Nous avons d'abord commencé par reprendre les idées d'amélioration que nous avions eu pour notre jeu de départ. Nous avons rajouté des cactus aléatoirement entre chaque pomme prise, ceci permet de forcer l'utilisateur à prendre des pommes plutôt que de "tourner en rond" pour gagner du temps. Ensuite nous avons amélioré la partie graphique en rajoutant un sprite sur tout le corps du serpent, en modifiant le fond, les bordures et le cactus. 
+Nous avons d'abord commencé par reprendre les idées d'amélioration que nous avions eu pour notre jeu de départ. Nous avons rajouté des placements de cactus aléatoire entre chaque pomme prise. Ceci permet de forcer l'utilisateur à prendre des pommes plutôt que de "tourner en rond" pour gagner du temps. Ensuite nous avons amélioré la partie graphique en rajoutant un sprite sur tout le corps du serpent, en modifiant le fond, les bordures et les cactuss. 
 Nous avons ensuite créé un menu afin de permettre à l'utilisateur de pouvoir plus tard choisir entre le mode classique et le mode IA. Ce menu permet aussi au joueur de relancer une partie sans avoir à quitter le jeu.
 
-### Apprentissage par renforcement
+## Apprentissage par renforcement n°1
 
-Pour nous, l'apprentissage se fait une partie, il apprend tant qu'il n'est pas mort. En premier, nous avons implémenté l'apprentissage uniquement sur la partie détection de pomme. Pour cela, le serpent devait regarder où la pomme se trouvait par rapport à lui. Les états sont composés de Nord (1), même ligne (0), Sud(-1), Ouest(1), même colonne(0) et Est (-1). Les actions sont elles de la forme : Haut, Bas, Droite et Gauche. La QTable utilisée pour ce cas initialement, implémentée par Bertrand, est donc de cette forme :
+### Explication et théorie
+
+Pour nous, l'apprentissage se fait de telle manière; il apprend tant qu'il n'est pas mort et tant qu'on a pas atteint la limite d'apprentissage à chaque partie. En premier, nous avons implémenté l'apprentissage uniquement sur la partie détection de pomme. Pour cela, le serpent devait regarder où la pomme se trouvait par rapport à lui. Les états sont composés de Nord (1), même ligne (0), Sud(-1), Ouest(1), même colonne(0) et Est (-1). Les actions sont elles de la forme : Haut, Bas, Droite et Gauche. La QTable utilisée pour ce cas initialement, implémentée par Bertrand, est donc de cette forme :
 
  Etats/Actions | Haut(0) | Bas(1) | Droite(2) | Gauche(3)
 ----------------- | ----------------- | -----------------|----------------- | ----------------- 
@@ -1474,6 +1476,8 @@ Etat 8 : Nord-Ouest (1,1) | 0.5 | 0.5 | 0.5 | 0.5 |
 
 Cette QTable évolue donc au fil des parties grâce aux mouvements du serpent.
 
-Après avoir fait cette première implémentation, le serpent n'avait pas la conscience de lui même. Nous avons donc améliorer l'apprentissage en lui apprenant à avoir conscience de son corps mais aussi des cactus et des bordures. Pour lui, son corps, les cactus et les bordures sont des éléments qui vont le tuer donc il doit les éviter. Pour cela, nous regardons si autour de la tête du serpent (en haut, en bas, à gauche, à droite), il y a un des trois éléments cités avant. La QTable prend alors trois dimensions : les états, les actions et la perception de ce qui l'entoure. 
+Après avoir fait cette première implémentation, le serpent n'avait pas la conscience de lui même. Nous avons donc améliorer l'apprentissage en lui apprenant à avoir conscience de son corps mais aussi des cactus et des bordures. Pour lui, son corps, les cactus et les bordures sont des éléments qui vont le tuer donc il doit les éviter. Pour cela, nous regardons si autour de la tête du serpent (en haut, en bas, à gauche, à droite), il y a un des trois éléments cités avant (mur, cactus, lui même). La QTable prend alors trois dimensions : les états liés à la pomme, les actions et la perception de ce qui l'entoure. 
 
-## Vidéo
+## Vidéo de l'apprentissage par renforcement n°1
+
+<p style="text-align: center;"><iframe width="80%" height="315" src="https://www.youtube.com/embed/xOpty5HOP7U" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe></p>
