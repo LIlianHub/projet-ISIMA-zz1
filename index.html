@@ -378,6 +378,9 @@
                     <a href="#principe-implemente" class="toc-h2 toc-link" data-title="Principe implémenté">Principe implémenté</a>
                   </li>
                   <li>
+                    <a href="#probleme-rencontre" class="toc-h2 toc-link" data-title="Problème rencontré">Problème rencontré</a>
+                  </li>
+                  <li>
                     <a href="#video-10" class="toc-h2 toc-link" data-title="Video">Video</a>
                   </li>
               </ul>
@@ -434,6 +437,8 @@
 </ul>
 <h1 id='hebergement-du-projet'>Hébergement du projet</h1><h2 id='les-programmes'>Les programmes</h2>
 <p>Les programmes se trouvent tous dans le GitLab ISIMA de BALLEJOS Lilian à ce lien: <a href="https://gitlab.isima.fr/liballejos/projetzz1">ici</a></p>
+
+<p>Tous les programmes <strong>à jours</strong> sont dans la branche <strong>MASTER</strong></p>
 <h1 id='todo-list'>TODO List</h1><h2 id='fonctionnement'>Fonctionnement</h2>
 <p>Vous trouverez ici le programme de tout ce que l&#39;on va faire durant ces 2 semaines jour par jour</p>
 <h3 id='20-06-22-lundi'>20/06/22 (Lundi)</h3>
@@ -683,7 +688,12 @@
 <tr>
 <td>✔️</td>
 <td>Commun</td>
-<td>Finalisation du code</td>
+<td>Finalisation du code et du site</td>
+</tr>
+<tr>
+<td>✔️</td>
+<td>Commun</td>
+<td>Nettoyage et &quot;Commentation&quot; du code</td>
 </tr>
 <tr>
 <td>✔️</td>
@@ -1856,7 +1866,7 @@ Au démarage on clique sur les cases de l&#39;écran que l&#39;on souhaite mettr
 <p>On détecte à chaque itération si on a pas stagné et que plus rien ne bouge !</p>
 
 <p>Les masques de vie et de mort sont très facilement modifiables dans le code et les règles sont visibles graphiquement sur la fenêtre SDL en haut !</p>
-<h3 id='probleme-rencontre'>Problème rencontré</h3>
+<h2 id='probleme-rencontre'>Problème rencontré</h2>
 <p>Nous avons recontré un problème que nous avons solutionné comme nous allons vous l&#39;expliquer plus bas.</p>
 <h3 id='explication'>Explication</h3>
 <p>On a voulu faire une taille de fenêtre responsive mais lorsque l&#39;on fait cela on rencontre des problèmes car pour tracer la grille du jeu on divise la fenetre par le nombre de case de notre tableau C.
@@ -1962,12 +1972,14 @@ Pour le serpent, nous avons commencé par modéliser sa tête. A chaque fois que
 Pour le reste du serpent, nous avons d&#39;abord modélisé les angles. Pour cela, nous avons regardé le premier mouvement lorsque le serpent tourne : on s&#39;intéresse alors au courant, au précédent et au suivant. D&#39;abord, nous regardons entre le courant et le précédent s&#39;il y a un changement de lignes ou un changement de colonnes. Ensuite nous faisons la même chose entre le courant et le suivant. Ceci permet de différencier les différents cas et donc de savoir à quel moment, nous devons mettre quel sprite. Si nous ne différencions pas tous les cas en passant par le précédent,le courant et le suivant, nous nous retrouvons avec des angles qui sont indissociables.
 Pour le reste du corps, nous avons juste à savoir si le serpent change de colonnes ou de lignes. On raisonne de la même façon que pour les angles en regardant les itérations courantes, précédentes et suivantes. </p>
 
-<p>Pour la partie décor, nous avons parcouru le plateau afin de mettre tout autour des bordures à l&#39;aide de sprite de rochers et en fond un sprite orange qui s&#39;anime et qui fait effet de &quot;pierres&quot; qui bougent.</p>
+<p>Pour la partie décor, nous avons parcouru le plateau afin de mettre tout autour des bordures à l&#39;aide de sprite de rochers et en fond un sprite orange qui s&#39;anime et qui fait effet de &quot;sable&quot; qui bougent.</p>
 <h3 id='menu'>Menu</h3>
 <p>Nous avons ensuite créé un menu afin de permettre à l&#39;utilisateur de pouvoir plus tard choisir entre le mode classique et le mode IA. Ce menu permet aussi au joueur de relancer une partie sans avoir à quitter le jeu.</p>
 <h3 id='algorithme'>Algorithme</h3>
-<p>La dernière amélioration la plus importante est celle qui correspond à la gestion du serpent et de ses déplacements. Nous sommes passés d&#39;un tableau à une file. Cette amélioration permet de ne plus avoir à faire un décalage droite lorsque le serpent se déplace. A la place, nous avons juste à connaître la place de la tête du serpent dans la file afin de la déplacer dans la file et d&#39;entrer ses nouvelles coordonnées.</p>
-<h2 id='apprentissage-par-renforcement-n-1'>Apprentissage par renforcement n°1</h2><h3 id='explication-et-theorie'>Explication et théorie</h3>
+<p>La dernière amélioration la plus importante est celle qui correspond à la gestion du serpent et de ses déplacements. Nous sommes passés d&#39;un tableau à une file. Cette amélioration permet de ne plus avoir à faire un décalage droite de tout le tableau (ce qui est coûteux) lorsque le serpent se déplace. A la place, nous avons juste à connaître la place de la tête du serpent dans la file afin de la déplacer dans la file et d&#39;entrer ses nouvelles coordonnées. Ainsi à chaque itération on enfile la nouvelle tête et on défile la queue si le serpent n&#39;a pas mangé. Si il a mangé, on ne déile par la la taille grandit !</p>
+<h2 id='apprentissage-par-renforcement-n-1'>Apprentissage par renforcement n°1</h2><h3 id='introduction'>Introduction</h3>
+<p>Nous avons tout d&#39;abbord implémenté un premier apprentissage avec seulement la perception de la tête du serpent et la position de la pomme.</p>
+<h3 id='explication-et-theorie'>Explication et théorie</h3>
 <p>Pour nous, l&#39;apprentissage se fait de telle manière; il apprend tant qu&#39;il n&#39;est pas mort et tant qu&#39;on a pas atteint la limite d&#39;apprentissage à chaque partie. En premier, nous avons implémenté l&#39;apprentissage uniquement sur la partie détection de pomme. Pour cela, le serpent devait regarder où la pomme se trouvait par rapport à lui. Les états sont composés de Nord (1), même ligne (0), Sud(-1), Ouest(1), même colonne(0) et Est (-1). Les actions sont elles de la forme : Haut, Bas, Droite et Gauche. La QTable utilisée pour ce cas initialement, implémentée par Bertrand, est donc de cette forme :</p>
 
 <table><thead>
@@ -2054,8 +2066,15 @@ Pour le reste du corps, nous avons juste à savoir si le serpent change de colon
 Pour la partie exploration, </p>
 <h3 id='video-de-l-39-apprentissage-par-renforcement-n-1'>Vidéo de l&#39;apprentissage par renforcement n°1</h3>
 <p style="text-align: center;"><iframe width="80%" height="315" src="https://www.youtube.com/embed/xOpty5HOP7U" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe></p>
-<h2 id='apprentissage-par-renforcement-n-2'>Apprentissage par renforcement n°2</h2><h3 id='explication-et-theorie-2'>Explication et théorie</h3>
-<p>Après avoir fait cette première implémentation, le serpent n&#39;avait pas la conscience de lui même. Nous avons donc améliorer l&#39;apprentissage en lui apprenant à avoir conscience de son corps mais aussi des cactus et des bordures. Pour lui, son corps, les cactus et les bordures sont des éléments qui vont le tuer donc il doit les éviter. Pour cela, nous regardons si autour de la tête du serpent (en haut, en bas, à gauche, à droite), il y a un des trois éléments cités avant (mur, cactus, lui même). La QTable prend alors trois dimensions : les états liés à la pomme, les actions et la perception de ce qui l&#39;entoure.</p>
+<h2 id='apprentissage-par-renforcement-n-2'>Apprentissage par renforcement n°2</h2><h3 id='introduction-2'>Introduction</h3>
+<p>Nous avons décidé d&#39;améliorer l&#39;apprentissage par renforcement en faisant que le serpent percoit ce qu&#39;il se passe autour de lui et ainsi évite de se tuer en se touchant ou en touchant un obstacle (cactus par exemple).</p>
+<h3 id='explication-et-theorie-2'>Explication et théorie</h3>
+<p>Après avoir fait cette première implémentation, le serpent n&#39;avait pas la conscience de lui même. Nous avons donc améliorer l&#39;apprentissage en lui apprenant à avoir conscience de son corps mais aussi des cactus et des bordures. Pour lui, son corps, les cactus et les bordures sont des éléments qui vont le tuer donc il doit les éviter. Pour cela, nous regardons si autour de la tête du serpent (en haut, en bas, à gauche, à droite), il y a un des trois éléments cités avant (mur, cactus, lui même). La QTable prend alors trois dimensions : les états liés à la pomme, les actions et la perception de ce qui l&#39;entoure.
+Le principe du code reste alors le même c&#39;est juste la QTable qui a changé.</p>
+<h3 id='schema-de-representation-des-etats-du-code-et-des-fichiers-utilises'>Schéma de Représentation des états du code et des fichiers utilisés</h3>
+<p style="text-align: center;"><img style="width: 80%" src="images/schemacode-64609a55.png"/></p>
+<h3 id='representation-de-la-qtable'>Représentation de la QTABLE</h3>
+<p style="text-align: center;"><img style="width: 80%" src="images/qtable-2a429000.png"/></p>
 <h3 id='video-de-l-39-apprentissage-par-renforcement-n-2'>Vidéo de l&#39;apprentissage par renforcement n°2</h3>
       </div>
       <div class="dark-box">
