@@ -9,10 +9,10 @@ void decalagedroite(int **serpent, int direction, int aManger, int *taille_serpe
 void InitPlateau(int **plateau);
 int TestDeplacement(int **serpent, int direction, int *taille_serpent, int **plateau, int *teteSerpent);
 int MeilleurScore(int ScoreActuel);
-void posPomme(int **plateau, int **serpent, int tailleSerpent, int teteSerpent);
 int passageMarkov(int EtatPrec);
 void posMuret(int **plateau, int **serpent, int tailleSerpent, int teteSerpent);
 void ClearMap(int ** plateau);
 int TestCollisionSerpent(int **serpent, int TeteI, int TeteJ, int *taille_serpent, int *teteSerpent);
+void posPommeAvecCo(int **plateau, int **serpent, int tailleSerpent, int teteSerpent, int *posI, int *posJ);
 
 #endif
