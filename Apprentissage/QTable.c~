@@ -126,7 +126,6 @@ int EtatAutourActuel(int teteSx, int teteSy, int **serpent, int **plateau, int *
 	return etatAutour;
 }
 
-//on pose une Pomme dans un endroit vide et on récupère ses coordonnées
 void posPommeAvecCo(int **plateau,
 					int **serpent,
 					int tailleSerpent,
@@ -136,12 +135,8 @@ void posPommeAvecCo(int **plateau,
 	int compteur = 0;
 	int caseVide;
 
-	int caseDispo = ((DIMENSION_TAB_JEU - 2) * (DIMENSION_TAB_JEU - 2)) - tailleSerpent; /*Le
-											       nombre
-											       de
-											       case
-											       de disponible*/
-	int placement = (rand() % caseDispo) + 1;         //On va placer la pomme dans la n-ème case
+	int caseDispo = ((DIMENSION_TAB_JEU - 2) * (DIMENSION_TAB_JEU - 2)) - tailleSerpent;
+	int placement = (rand() % caseDispo) + 1;
 
 	for (i = 1; i < DIMENSION_TAB_JEU - 1; i++)
 	{
@@ -164,7 +159,7 @@ void posPommeAvecCo(int **plateau,
 			{
 				compteur++;
 			}
-			if (compteur == placement)  //on est dans la n-ème case
+			if (compteur == placement)
 			{
 
 				plateau[i][j] = 1;
@@ -177,7 +172,6 @@ void posPommeAvecCo(int **plateau,
 	}
 }
 
-//On récupére l'orientation de la pomme par rapport à la tête du serpent 
 int EtatActuel(int teteSx, int teteSy, int pommex, int pommey)
 {
 	int directionX = teteSx - pommex; // si positif : ouest sinon est
@@ -193,7 +187,7 @@ int EtatActuel(int teteSx, int teteSy, int pommex, int pommey)
 		else if (directionY < 0)
 		{
 			etat = 2; // sud ouest
-		}	  
+		}	  // printf("compteur : %d\n", compteur);
 		else
 		{
 			etat = 5; // ouest
@@ -227,7 +221,7 @@ int EtatActuel(int teteSx, int teteSy, int pommex, int pommey)
 		else
 		{
 			etat = 4; // sur la pomme
-				  // etat impossible
+					  // etat impossible
 		}
 	}
 
