@@ -1460,7 +1460,7 @@ Nous avons ensuite créé un menu afin de permettre à l'utilisateur de pouvoir 
 
 Pour nous, l'apprentissage se fait une partie, il apprend tant qu'il n'est pas mort. En premier, nous avons implémenté l'apprentissage uniquement sur la partie détection de pomme. Pour cela, le serpent devait regarder où la pomme se trouvait par rapport à lui. Les états sont composés de Nord (1), même ligne (0), Sud(-1), Ouest(1), même colonne(0) et Est (-1). Les actions sont elles de la forme : Haut, Bas, Droite et Gauche. La QTable utilisée pour ce cas initialement, implémentée par Bertrand, est donc de cette forme :
 
-| Haut(0) | Bas(1) | Droite(2) | Gauche(3)
+ Etats/Actions | Haut(0) | Bas(1) | Droite(2) | Gauche(3)
 ----------------- | ----------------- | -----------------|----------------- | ----------------- 
 Etat 0 : Sud-Est (-1,-1) | 0.5 | 0.5 | 0.5 | 0.5 |
 Etat 1 : Sud (-1,0) | 0.5 | 0.5 | 0.5 | 0.5 |
