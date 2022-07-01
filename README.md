@@ -18,5 +18,11 @@
 
 Notre site Web se trouve à ce lien [ici](https://perso.isima.fr/~liballejos/projetZZ1)
 
+## Apprentissage
+
+* Modification des configurations dans **Config.h**
+* ./Jeu : partie utilisateur
+* ./Jeu apprend nbItération : partie apprentissage avec les congigs du **Config.h**
+
 
 

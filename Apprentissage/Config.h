@@ -6,7 +6,7 @@
 // Commun
 #define DIMENSION_TAB_JEU 40
 #define DIMENSION_TAB_POS (DIMENSION_TAB_JEU - 2) * (DIMENSION_TAB_JEU - 2)
-#define ITER_POUR_DIM_SERPENT 25 // toutes les 50 iterations le serpent perd 1 de taille
+#define ITER_POUR_DIM_SERPENT 10 // toutes les 50 iterations le serpent perd 1 de taille
 #define AVEC_DIM_SERPENT 1       // activer le mode dim serpent
 
 // Graphique
