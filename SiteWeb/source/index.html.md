@@ -37,7 +37,7 @@ Bienvenue sur le site web des membres du groupe 31 du Projet ZZ1 2022, nous somm
 
 Les programmes se trouvent tous dans le GitLab ISIMA de BALLEJOS Lilian à ce lien: [ici](https://gitlab.isima.fr/liballejos/projetzz1)
 
-Tous les programmes **à jours** sont dans la branche **MASTER**
+Tous les programmes **à jour** sont dans la branche **MASTER**
 
 # TODO List
 ## Fonctionnement
@@ -1539,6 +1539,10 @@ Après avoir fait cette première implémentation, le serpent n'avait pas la con
 
 Le principe du code reste alors le même c'est juste la QTable qui a changé.
 
+### Schéma de Représentation des états du code et des fichiers utilisés
+
+<p style="text-align: center;"><img style="width: 80%" src="images/schemacode.png"/></p>
+
 ### Les problèmes qu'on a rencontrés
 
 On a eu plusieurs problèmes au cours de notre projet : 
@@ -1547,11 +1551,6 @@ On a eu plusieurs problèmes au cours de notre projet :
 * La perception de l'agent telle qu'on l'a implémentée lui permet d'avoir la perception de son corps et de la pomme mais elle a une limite, il peut faire des actions bénéfiques au niveau local mais pas au niveau global, pour pouvoir le rendre parfait nous pouvons lui rajouter une perception accru autour de lui pour qu'il puisse justement effectuer des actions à un niveau plus global.
 * Nous voulions implémenter l'apprentissage en générant des cactus aléatoirement sur le plateau mais l'agent ne semble pas à même de comprendre les paterns aléatoires avec un nombre de parties aussi petit.
     
-
-### Schéma de Représentation des états du code et des fichiers utilisés
-
-<p style="text-align: center;"><img style="width: 80%" src="images/schemacode.png"/></p>
-
 
 ### Représentation de la QTABLE
 
