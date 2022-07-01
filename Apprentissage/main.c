@@ -1,4 +1,5 @@
 #include <SDL2/SDL.h>
+#include <SDL2/SDL_mixer.h>
 #include <stdio.h>
 #include <SDL2/SDL_ttf.h>
 #include <SDL2/SDL_image.h>
@@ -33,9 +34,9 @@ int main(int argc, char **argv)
     if (argc == 3 && !strcmp(argv[1], "apprend"))
     {
         printf("Mode Apprentissage\n");
-        //recuperation du nombre d'iteration a faire en argument
+        // recuperation du nombre d'iteration a faire en argument
         int nbIteration;
-        sscanf(argv[2],"%d",&nbIteration);
+        sscanf(argv[2], "%d", &nbIteration);
         MainApprentissage(nbIteration, position_snake, plateau);
     }
 
@@ -113,6 +114,12 @@ int main(int argc, char **argv)
 
         /*Recupération meilleur score*/
         int meilleurScore = MeilleurScore(0);
+
+        /*Musique*/
+        SDL_Init(SDL_INIT_VIDEO | SDL_INIT_AUDIO);
+        Mix_OpenAudio(44100, MIX_DEFAULT_FORMAT, 2, 2048);
+        Mix_Music *musique_fond = Mix_LoadMUS("./music/fond.mp3"); // Chargement de la music
+        Mix_PlayMusic(musique_fond, -1);
 
         /*Appel de la fonction qui gère les événments*/
         GestionEvenement(renderer, policeTitre, position_snake, plateau, meilleurScore, logoMenu, pomme, explosion, table_serpent, menu);
