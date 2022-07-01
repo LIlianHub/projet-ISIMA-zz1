@@ -2086,8 +2086,8 @@ Pour le reste du corps, nous avons juste à savoir si le serpent change de colon
 <p>Après avoir fait cette première implémentation, le serpent n&#39;avait pas la conscience de lui même et par conséquent si son propre corps ou un cactus se trouvait entre la pomme et sa tête,le serpent fonçait vers la pomme et mourrait. Nous avons donc amélioré l&#39;apprentissage en lui apprenant à avoir conscience de ce qu&#39;il y a autour de sa tête (en haut, en bas, à gauche, à droite) et si il y a un des trois éléments (mur, cactus, lui même) il doit l&#39;éviter sinon il meurt. La QTable prend alors trois dimensions : les états liés à la pomme, les actions et la perception de ce qui entoure sa tête.</p>
 
 <p>Le principe du code reste alors le même c&#39;est juste la QTable qui a changé.</p>
-<h3 id='schema-de-representation-des-etats-du-code-et-des-fichiers-utilises'>Schéma de Représentation des états du code et des fichiers utilisés</h3>
-<p style="text-align: center;"><img style="width: 80%" src="images/schemacode-64609a55.png"/></p>
+<h3 id='representation-de-la-qtable'>Représentation de la QTABLE</h3>
+<p style="text-align: center;"><img style="width: 80%" src="images/qtable-2a429000.png"/></p>
 <h3 id='les-problemes-qu-39-on-a-rencontres'>Les problèmes qu&#39;on a rencontrés</h3>
 <p>On a eu plusieurs problèmes au cours de notre projet : </p>
 
@@ -2096,8 +2096,8 @@ Pour le reste du corps, nous avons juste à savoir si le serpent change de colon
 <li>La perception de l&#39;agent telle qu&#39;on l&#39;a implémentée lui permet d&#39;avoir la perception de son corps et de la pomme mais elle a une limite, il peut faire des actions bénéfiques au niveau local mais pas au niveau global, pour pouvoir le rendre parfait nous pouvons lui rajouter une perception accru autour de lui pour qu&#39;il puisse justement effectuer des actions à un niveau plus global.</li>
 <li>Nous voulions implémenter l&#39;apprentissage en générant des cactus aléatoirement sur le plateau mais l&#39;agent ne semble pas à même de comprendre les paterns aléatoires avec un nombre de parties aussi petit.</li>
 </ul>
-<h3 id='representation-de-la-qtable'>Représentation de la QTABLE</h3>
-<p style="text-align: center;"><img style="width: 80%" src="images/qtable-2a429000.png"/></p>
+<h3 id='schema-de-representation-des-etats-du-code-et-des-fichiers-utilises'>Schéma de Représentation des états du code et des fichiers utilisés</h3>
+<p style="text-align: center;"><img style="width: 80%" src="images/schemacode-64609a55.png"/></p>
 <h3 id='video-de-l-39-apprentissage-par-renforcement-n-2'>Vidéo de l&#39;apprentissage par renforcement n°2</h3><h3 id='demonstration-du-serpent-ayant-appris-sur-100-parties'>Démonstration du serpent ayant appris sur 100 parties</h3>
 <p>On remarque que le serpent se tue très facilement il n&#39;a pas assez appris.</p>
 
