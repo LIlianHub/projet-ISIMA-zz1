@@ -1507,20 +1507,10 @@ Cette QTable évolue donc au fil des parties grâce aux mouvements du serpent.
 
 Pour implémenter l'apprentissage par renforcement, nous avons eu besoin en premier de faire le lien entre le serpent et la pomme : savoir où se trouve la pomme par rapport au serpent. Pour cela, nous avions besoin de la position de la tête du serpent et la pomme. A partir de ces positions, on calcule les différences entre les coordonnées (xS,yS) du serpent et (xP,yP) de la pomme. Selon les signes de ces différences, on peut savoir si la pomme se trouve à l'est ou l'ouest et au nord ou au sud et c'est à partir de ces signes, que l'on peut savoir dans quel état actuel est le serpent.
 
-Concernant l'action à prendre, 2 choix, on fait varier ces choix grâce à l'epsilon-greedy (au début, il est égal à 100 et donc il y a que de l'exploration puis au fur et à mesure des runs on décrémente l'epsilon-greedy jusqu'à 0, epsilon-greedy est alors à 0) :
+Ensuite, nous avons implémenter le lien entre l'état dans lequel le serpent est et l'action futur qu'il va faire. Cette fonction utilise donc la QTable. On regarde alors la ligne dans le tableau qui correspond à l'état du serpent. A partir de cette ligne, on cherche le coefficient maximal, ce coefficient va alors correspondre à la future action du serpent.
 
-* La partie exploration consiste à faire en sorte que l'IA explore son environnement de manière complètement aléatoire, ce qui veut dire que quelque soit l'état dans lequel on est, l'action est aléatoire.
-* La partie exploitation, elle, va diverger de l'exploration dans le sens où cette fois l'agent va prendre ses décisions en fonction de la QTable et non de l'aléatoire. On regarde alors la ligne dans le tableau qui correspond à l'état du serpent. A partir de cette ligne, on cherche le coefficient maximal, ce coefficient va alors correspondre à la future action du serpent.
-
-Maintenant qu'on a l'état et l'action on va pouvoir bouger notre agent dans son environnement. Une fois qu'il a effectué un mouvement, on peut calculer la récompense qu'il reçoit, c'est-à-dire :
-
-* Si l'agent arrive sur une case occupée par une pomme, il reçoit une grande récompense.
-* Si l'agent arrive sur une case occupée par un mur/cactus, il reçoit une grande récompense mais négative.
-* Si l'agent arrive sur une case non-occupé, il reçoit une récompense en fonction du nombre d'itération selon l'opposé d'une fonction sigmoĩde.
-
-On a récupéré les données pour cette itération, on va donc les stocker dans une structure et empiler cette même strucutre et ce pour toutes les itération de la run.
-
-Une fois la run finie on dépile chaque donnée et on s'en sert pour remplir la QTable.
+La plus grande partie de notre algorithme se compose ensuite de deux parties : exploration et exploitation du serpent.
+Pour la partie exploration, 
 
 
 ### Vidéo de l'apprentissage par renforcement n°1
@@ -1535,18 +1525,8 @@ Nous avons décidé d'améliorer l'apprentissage par renforcement en faisant que
 
 ### Explication et théorie
 
-Après avoir fait cette première implémentation, le serpent n'avait pas la conscience de lui même et par conséquent si son propre corps ou un cactus se trouvait entre la pomme et sa tête,le serpent fonçait vers la pomme et mourrait. Nous avons donc amélioré l'apprentissage en lui apprenant à avoir conscience d'autour de sa tête (en haut, en bas, à gauche, à droite) et si il y a un des trois éléments (mur, cactus, lui même) il doit l'éviter sinon il meurt. La QTable prend alors trois dimensions : les états liés à la pomme, les actions et la perception de ce qui entoure sa tête.
-
+Après avoir fait cette première implémentation, le serpent n'avait pas la conscience de lui même. Nous avons donc améliorer l'apprentissage en lui apprenant à avoir conscience de son corps mais aussi des cactus et des bordures. Pour lui, son corps, les cactus et les bordures sont des éléments qui vont le tuer donc il doit les éviter. Pour cela, nous regardons si autour de la tête du serpent (en haut, en bas, à gauche, à droite), il y a un des trois éléments cités avant (mur, cactus, lui même). La QTable prend alors trois dimensions : les états liés à la pomme, les actions et la perception de ce qui l'entoure.
 Le principe du code reste alors le même c'est juste la QTable qui a changé.
-
-### Les problèmes qu'on a rencontrés
-
-On a eu plusieurs problèmes au cours de notre projet : 
-
-* Les paramètres de l'apprentissage, il y en a une multitude de paramètre à prendre en compte pour que notre agent apprenne correctement et pour ça nous avons dû comprendre à quoi sert chacun pour pouvoir les changer à notre convenance. Nous sommes arriver à une conclusion que mettre le qsi = 0.001 nous permet de lui faire apprendre moins vite mais mieux. Le gamma varie entre 1 et 0.90, on le décrémente afin que l'agent prenne un peu moins en compte les récompense en fin de partie. Le nombre d'itération maximum par run =  500 pour que notre serpent ai le temps d'apprendre, s'il survie, à réagir quand il est de taille plus grande. Enfin, le système de récompense nous a posé pas mal de problème, avec l'implémentation de la sigmoĩde quand il survivait, l'agent gagnait du temps et ne cherchait plus à manger de pommes, il bouclait souvent. On a donc décidé de faire en sorte qu'il gagne un malus selon l'oposé d'une sigmoĩde et qu'à chaque fois que il mange une pomme cette sigmoĩde se reset pour l'enjoindre à manger des pommmes et pas à gagner du temps.
-* La perception de l'agent telle qu'on l'a implémentée lui permet d'avoir la perception de son corps et de la pomme mais elle a une limite, il peut faire des actions bénéfiques au niveau local mais pas au niveau globale, pour pouvoir le rendre parfait nous pouvons lui rajouter une perception accru autour de lui pour qu'il puisse justement effectuer des actions à un niveau plus global.
-* Les cactus
-    
 
 ### Schéma de Représentation des états du code et des fichiers utilisés
 
