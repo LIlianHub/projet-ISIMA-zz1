@@ -361,6 +361,8 @@ void IterEnJeu(SDL_bool *depart, long *lastTick, int *infoIter, int *iter_explo,
                 // printf("etat_markov : %d\n", etat_markov);
                 *vitesse_prog = vitesseParEtat[*etat_markov];
                 *multiplicateur = *taille_serpent / 3; // update multiplicateur tt les 3 pommes
+                *nbItePosMur = 0;                      // on reinitialise les pos de mur
+                *IterPourDimSerp = 0;                  // on reiniatilise la diminution du serpent
 
             } // il a pas mangé
             else
