@@ -291,51 +291,51 @@ void posMuret(int **plateau,
 /*Gestion Pomme*/
 // on pose une Pomme dans un endroit vide et on récupère ses coordonnées
 void posPommeAvecCo(int **plateau,
-					int **serpent,
-					int tailleSerpent,
-					int teteSerpent, int *posI, int *posJ)
+                    int **serpent,
+                    int tailleSerpent,
+                    int teteSerpent, int *posI, int *posJ)
 {
-	int i, j, m;
-	int compteur = 0;
-	int caseVide;
-	// Le nombre de case de disponible
-	int caseDispo = ((DIMENSION_TAB_JEU - 2) * (DIMENSION_TAB_JEU - 2)) - tailleSerpent;
-	// On va placer la pomme dans la n-ème case
-	int placement = (rand() % caseDispo) + 1;
-	for (i = 1; i < DIMENSION_TAB_JEU - 1; i++)
-	{
-		for (j = 1; j < DIMENSION_TAB_JEU - 1; j++)
-		{
-			caseVide = 1;
-			int courant = teteSerpent;
+    int i, j, m;
+    int compteur = 0;
+    int caseVide;
+    // Le nombre de case de disponible
+    int caseDispo = ((DIMENSION_TAB_JEU - 2) * (DIMENSION_TAB_JEU - 2)) - tailleSerpent;
+    // On va placer la pomme dans la n-ème case
+    int placement = (rand() % caseDispo) + 1;
+    for (i = 1; i < DIMENSION_TAB_JEU - 1; i++)
+    {
+        for (j = 1; j < DIMENSION_TAB_JEU - 1; j++)
+        {
+            caseVide = 1;
+            int courant = teteSerpent;
 
-			for (m = 0; m < tailleSerpent; m++)
-			{
-				if ((i == serpent[courant][0] && j == serpent[courant][1]))
-				{
-					caseVide = 0;
-				}
-				courant = courant + 1;
-				courant %= DIMENSION_TAB_POS;
-			}
-			if (caseVide == 1)
-			{
-				compteur++;
-			}
-			if (compteur == placement) // on est dans la n-ème case
-			{
+            for (m = 0; m < tailleSerpent; m++)
+            {
+                if ((i == serpent[courant][0] && j == serpent[courant][1]))
+                {
+                    caseVide = 0;
+                }
+                courant = courant + 1;
+                courant %= DIMENSION_TAB_POS;
+            }
+            if (caseVide == 1)
+            {
+                compteur++;
+            }
+            if (compteur == placement) // on est dans la n-ème case
+            {
 
-				plateau[i][j] = 1;
-				*posI = i; // on donne les positons de où la pomme a été posé
-				*posJ = j;
-				i = DIMENSION_TAB_JEU; // on incrémente i et j de sorte qu'on sorte de la boucle
-				j = DIMENSION_TAB_JEU;
-			}
-		}
-	}
+                plateau[i][j] = 1;
+                *posI = i; // on donne les positons de où la pomme a été posé
+                *posJ = j;
+                i = DIMENSION_TAB_JEU; // on incrémente i et j de sorte qu'on sorte de la boucle
+                j = DIMENSION_TAB_JEU;
+            }
+        }
+    }
 }
 
-//on nettoie toute la map de muret et pomme (on touche pas les bordures)
+// on nettoie toute la map de muret et pomme (on touche pas les bordures)
 void ClearMap(int **plateau)
 {
     for (int i = 1; i < DIMENSION_TAB_JEU - 1; i++)
@@ -344,5 +344,13 @@ void ClearMap(int **plateau)
         {
             plateau[i][j] = 0;
         }
+    }
+}
+
+// Diminue la taille de serpent de 3
+void DiminueSerpent(int *tailleserpent)
+{
+    if((*tailleserpent) > 3){
+        (*tailleserpent) --;
     }
 }

@@ -165,7 +165,8 @@ void GenereTabExplosion(SDL_Rect etats[25], SDL_Texture *explosion)
 /*Initialisation: necessaire pour chaque nouvelle partie, permet de remettre toutes les variables comme il faut*/
 void Initialisation(SDL_bool *enJeu, SDL_bool *depart, int *iter_explo, int **serpent, int **plateau, int *taille_serpent,
                     int *direction, int *infoIter, int *etat_markov, int *vitesse_markov, int *score, int *multiplicateur, long *lastTick,
-                    int *teteSerpent, int *nbItePosMur, SDL_bool *dansJeu, SDL_bool *dansMenu, SDL_bool *AI_mode, int *posPommeI, int *posPommeJ)
+                    int *teteSerpent, int *nbItePosMur, SDL_bool *dansJeu, SDL_bool *dansMenu, SDL_bool *AI_mode, int *posPommeI, int *posPommeJ,
+                    int *IterPourDimSerp)
 {
     *enJeu = SDL_FALSE;                                                                    // on est plus en train de jouer
     *depart = SDL_TRUE;                                                                    // on est sur le depart de partie
@@ -187,6 +188,7 @@ void Initialisation(SDL_bool *enJeu, SDL_bool *depart, int *iter_explo, int **se
     *dansJeu = SDL_FALSE;                                                                  // on est plus dans le mode jeu
     *dansMenu = SDL_TRUE;                                                                  // on est dans le menu
     *AI_mode = SDL_FALSE;                                                                  // on est pas en mode AI
+    *IterPourDimSerp = 0;                                                                  // compteur pour savoir quand on diminu le serpent
 }
 
 /*Boucle Principale de Gestion d'événement*/
@@ -245,6 +247,9 @@ void GestionEvenement(SDL_Renderer *renderer, TTF_Font *font,
     int posPommeI;
     int posPommeJ;
 
+    /*gestion diminution serpent*/
+    int IterPourDimSerp;
+
     /*init apprentissage*/
     double QTable[NBRE_ETATS_APPRENTISSAGE][NBRE_ACTION_APPRENTISSAGE][NBRE_ETAT_AUTOUR];
     RecupQtable(QTable, NBRE_ETATS_APPRENTISSAGE, NBRE_ACTION_APPRENTISSAGE, NBRE_ETAT_AUTOUR);
@@ -252,7 +257,7 @@ void GestionEvenement(SDL_Renderer *renderer, TTF_Font *font,
     // initialisation du jeu
     Initialisation(&enJeu, &depart, &iter_explo, serpent, plateau, &taille_serpent, &direction, &infoIter,
                    &etat_markov, &vitesse_prog, &score,
-                   &multiplicateur, &lastTick, &teteSerpent, &nbItePosMur, &dansJeu, &dansMenu, &AI_mode, &posPommeI, &posPommeJ);
+                   &multiplicateur, &lastTick, &teteSerpent, &nbItePosMur, &dansJeu, &dansMenu, &AI_mode, &posPommeI, &posPommeJ, &IterPourDimSerp);
 
     while (activation)
     {
@@ -300,7 +305,7 @@ void GestionEvenement(SDL_Renderer *renderer, TTF_Font *font,
                     {
                         ChoixMenu(event.button.x, event.button.y, &dansJeu, &dansMenu, &enJeu, &depart, &iter_explo, serpent, plateau, &taille_serpent,
                                   &direction, &infoIter, &etat_markov, &vitesse_prog, &score, &multiplicateur, &lastTick, &teteSerpent, &nbItePosMur, &AI_mode,
-                                  &posPommeI, &posPommeJ);
+                                  &posPommeI, &posPommeJ, &IterPourDimSerp);
                     }
                 }
                 break;
@@ -318,8 +323,8 @@ void GestionEvenement(SDL_Renderer *renderer, TTF_Font *font,
             AffichageGrillage(renderer, pomme, plateau, etats_serpent, table_serpent);
             AffichageMenuJeu(renderer, font, logoMenu, meilleurScore, score);
 
-            if (AI_mode)
-            { // si en mode AI on calcul la direction avec la qtable
+            if (AI_mode && etat_markov != 4 && !depart) //! depart pour eviter que la tete soit "moche" au debut
+            {                                           // si en mode AI et qu'il dort pas on calcul la direction avec la qtable
                 direction = UtilisationQTable(serpent[teteSerpent][0], serpent[teteSerpent][1], posPommeI, posPommeJ, QTable, serpent, plateau, &taille_serpent, &teteSerpent);
             }
 
@@ -331,7 +336,7 @@ void GestionEvenement(SDL_Renderer *renderer, TTF_Font *font,
             {
                 IterEnJeu(&depart, &lastTick, &infoIter, &iter_explo, &meilleurScore, &score, &enJeu, &etat_markov,
                           &vitesse_prog, &multiplicateur, &nbItePosMur, &direction, serpent, plateau, &taille_serpent, &teteSerpent,
-                          explosion, etats, table_serpent, etats_serpent, renderer, &pos_explosion, &dansJeu, &dansMenu, &posPommeI, &posPommeJ);
+                          explosion, etats, table_serpent, etats_serpent, renderer, &pos_explosion, &dansJeu, &dansMenu, &posPommeI, &posPommeJ, &IterPourDimSerp);
             }
         }
 
@@ -343,9 +348,9 @@ void GestionEvenement(SDL_Renderer *renderer, TTF_Font *font,
             OverBoutonMenu(renderer, event.motion.x, event.motion.y);
         }
 
-        //delay selon la vitesse de markov pour le serpent se deplace + ou -vite
+        // delay selon la vitesse de markov pour le serpent se deplace + ou -vite
         SDL_Delay(vitesse_prog);
-        //on affiche le render
+        // on affiche le render
         SDL_RenderPresent(renderer);
     }
 }

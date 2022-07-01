@@ -308,7 +308,7 @@ void Explosion(SDL_Renderer *renderer, SDL_Texture *explosion, SDL_Rect pos, int
 // Une itération de jeu
 void IterEnJeu(SDL_bool *depart, long *lastTick, int *infoIter, int *iter_explo, int *meilleurScore, int *score, SDL_bool *enJeu, int *etat_markov, int *vitesse_prog,
                int *multiplicateur, int *nbItePosMur, int *direction, int **serpent, int **plateau, int *taille_serpent, int *teteSerpent, SDL_Texture *explosion, SDL_Rect etats[25],
-               SDL_Texture *table_serpent, SDL_Rect etats_serpent[6][16], SDL_Renderer *renderer, SDL_Rect *pos_explosion, SDL_bool *dansJeu, SDL_bool *dansMenu, int *posPommeI, int *posPommeJ)
+               SDL_Texture *table_serpent, SDL_Rect etats_serpent[6][16], SDL_Renderer *renderer, SDL_Rect *pos_explosion, SDL_bool *dansJeu, SDL_bool *dansMenu, int *posPommeI, int *posPommeJ, int *IterPourDimSerp)
 {
     if (*depart) // si c'est le depart on declare que ça ne l'est plus et on recupere le premier temps pour le score selon le temps
     {
@@ -373,6 +373,17 @@ void IterEnJeu(SDL_bool *depart, long *lastTick, int *infoIter, int *iter_explo,
                     {
                         posMuret(plateau, serpent, *direction, *teteSerpent);
                         *nbItePosMur = 0;
+                    }
+                }
+
+                if (AVEC_DIM_SERPENT) // possible de jouer avec ou sans cactus selon config.h
+                {
+                    // on pose un mur toutes les "nbItePosMur"
+                    *IterPourDimSerp += 1;
+                    if (*IterPourDimSerp == ITER_POUR_DIM_SERPENT)
+                    {
+                        DiminueSerpent(taille_serpent);
+                        *IterPourDimSerp = 0;
                     }
                 }
             }

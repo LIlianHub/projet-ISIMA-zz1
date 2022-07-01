@@ -14,5 +14,6 @@ void posMuret(int **plateau, int **serpent, int tailleSerpent, int teteSerpent);
 void ClearMap(int ** plateau);
 int TestCollisionSerpent(int **serpent, int TeteI, int TeteJ, int *taille_serpent, int *teteSerpent);
 void posPommeAvecCo(int **plateau, int **serpent, int tailleSerpent, int teteSerpent, int *posI, int *posJ);
+void DiminueSerpent(int *tailleserpent);
 
 #endif
