@@ -1539,9 +1539,10 @@ Après avoir fait cette première implémentation, le serpent n'avait pas la con
 
 Le principe du code reste alors le même c'est juste la QTable qui a changé.
 
-### Schéma de Représentation des états du code et des fichiers utilisés
 
-<p style="text-align: center;"><img style="width: 80%" src="images/schemacode.png"/></p>
+### Représentation de la QTABLE
+
+<p style="text-align: center;"><img style="width: 80%" src="images/qtable.png"/></p>
 
 ### Les problèmes qu'on a rencontrés
 
@@ -1552,9 +1553,9 @@ On a eu plusieurs problèmes au cours de notre projet :
 * Nous voulions implémenter l'apprentissage en générant des cactus aléatoirement sur le plateau mais l'agent ne semble pas à même de comprendre les paterns aléatoires avec un nombre de parties aussi petit.
     
 
-### Représentation de la QTABLE
+### Schéma de Représentation des états du code et des fichiers utilisés
 
-<p style="text-align: center;"><img style="width: 80%" src="images/qtable.png"/></p>
+<p style="text-align: center;"><img style="width: 80%" src="images/schemacode.png"/></p>
 
 
 ### Vidéo de l'apprentissage par renforcement n°2
