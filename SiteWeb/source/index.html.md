@@ -1460,13 +1460,13 @@ Nous avons d'abord commencé par reprendre les idées d'amélioration que nous a
 
 ### Positionnement de cactus
 
-Nous avons rajouté des placements de cactus aléatoire entre chaque pomme prise, dès que le serpent prend une pomme tous les cactus posés disparaissent. Ceci permet de forcer l'utilisateur à prendre des pommes plutôt que de "tourner en rond" pour gagner du temps. Pour cela, nous générons un nombre aléatoire compris entre 0 et le nombre de cases disponibles sur le plateau. Ensuite, nous parcourons le plateau en "sautant" les cases où il y a déjà une pomme ou le serpent jusqu'à tomber sur le nombre aléatoire tiré. Nous posons alors le cactus à cet endroit. 
+Nous avons rajouté des placements de cactus aléatoires entre chaque pomme prise, dès que le serpent prend une pomme tous les cactus posés disparaissent. Ceci permet de forcer l'utilisateur à prendre des pommes plutôt que de "tourner en rond" pour gagner du temps. Pour cela, nous générons un nombre aléatoire compris entre 0 et le nombre de cases disponibles sur le plateau. Ensuite, nous parcourons le plateau en "sautant" les cases où il y a déjà une pomme ou le serpent jusqu'à tomber sur le nombre aléatoire tiré. Nous posons alors le cactus à cet endroit. 
 
 ### Serpent et décor
 
-Ensuite nous avons amélioré la partie graphique en rajoutant un sprite sur tout le corps du serpent, en modifiant le fond, les bordures et les cactus. 
-Pour le serpent, nous avons commencé par modéliser sa tête. A chaque fois que l'on change de vitesse, la tête du serpent change. Elle dépend aussi de la direction que le serpent prend. Par exemple, si le serpent va vers le haut, la tếte va regarder vers le haut. Pour cela, nous avons juste à connaître la direction.
-Pour le reste du serpent, nous avons d'abord modélisé les angles. Pour cela, nous avons regardé le premier mouvement lorsque le serpent tourne : on s'intéresse alors au courant, au précédent et au suivant. D'abord, nous regardons entre le courant et le précédent s'il y a un changement de lignes ou un changement de colonnes. Ensuite nous faisons la même chose entre le courant et le suivant. Ceci permet de différencier les différents cas et donc de savoir à quel moment, nous devons mettre quel sprite. Si nous ne différencions pas tous les cas en passant par le précédent,le courant et le suivant, nous nous retrouvons avec des angles qui sont indissociables.
+Ensuite nous avons amélioré la partie graphique en rajoutant un sprite sur tout le corps du serpent et en modifiant le fond, les bordures et les cactus. 
+Pour le serpent, nous avons commencé par modéliser sa tête. A chaque fois que l'on change de vitesse, la tête du serpent change. Elle dépend aussi de la direction que le serpent prend. Par exemple, si le serpent va vers le haut, la tête va regarder vers le haut. Pour cela, nous avons juste à connaître la direction.
+Pour le reste du serpent, nous avons d'abord modélisé les angles. Pour cela, nous avons regardé le premier mouvement lorsque le serpent tourne : on s'intéresse alors au courant, au précédent et au suivant. D'abord, nous regardons entre le courant et le précédent s'il y a un changement de lignes ou un changement de colonnes. Ensuite nous faisons la même chose entre le courant et le suivant. Ceci permet de différencier les cas et donc de savoir à quel moment, nous devons mettre quel sprite. Si nous ne différencions pas tous les cas en passant par le précédent,le courant et le suivant, nous nous retrouvons avec des angles qui sont indissociables.
 Pour le reste du corps, nous avons juste à savoir si le serpent change de colonnes ou de lignes. On raisonne de la même façon que pour les angles en regardant les itérations courantes, précédentes et suivantes. 
 
 Pour la partie décor, nous avons parcouru le plateau afin de mettre tout autour des bordures à l'aide de sprite de rochers et en fond un sprite orange qui s'anime et qui fait effet de "sable" qui bougent.
@@ -1477,13 +1477,13 @@ Nous avons ensuite créé un menu afin de permettre à l'utilisateur de pouvoir 
 
 ### Algorithme
 
-La dernière amélioration la plus importante est celle qui correspond à la gestion du serpent et de ses déplacements. Nous sommes passés d'un tableau à une file. Cette amélioration permet de ne plus avoir à faire un décalage droite de tout le tableau (ce qui est coûteux) lorsque le serpent se déplace. A la place, nous avons juste à connaître la place de la tête du serpent dans la file afin de la déplacer dans la file et d'entrer ses nouvelles coordonnées. Ainsi à chaque itération on enfile la nouvelle tête et on défile la queue si le serpent n'a pas mangé. Si il a mangé, on ne déile par la la taille grandit !
+La dernière amélioration la plus importante est celle qui correspond à la gestion du serpent et de ses déplacements. Nous sommes passés d'un tableau à une file. Cette amélioration permet de ne plus avoir à faire un décalage droite de tout le tableau (ce qui est coûteux) lorsque le serpent se déplace. A la place, nous avons juste à connaître la place de la tête du serpent dans la file afin de la déplacer dans la file et d'entrer ses nouvelles coordonnées. Ainsi à chaque itération on enfile la nouvelle tête et on défile la queue si le serpent n'a pas mangé. Si il a mangé, on ne défile pas car la taille grandit !
 
 ## Apprentissage par renforcement n°1
 
 ### Introduction
 
-Nous avons tout d'abbord implémenté un premier apprentissage avec seulement la perception de la tête du serpent et la position de la pomme.
+Nous avons tout d'abord implémenté un premier apprentissage avec seulement la perception de la tête du serpent et la position de la pomme.
 
 ### Explication et théorie
 
@@ -1518,9 +1518,9 @@ Maintenant qu'on a l'état et l'action on va pouvoir bouger notre agent dans son
 * Si l'agent arrive sur une case occupée par un mur/cactus, il reçoit une grande récompense mais négative.
 * Si l'agent arrive sur une case non-occupé, il reçoit une récompense en fonction du nombre d'itération selon l'opposé d'une fonction sigmoĩde.
 
-On a récupéré les données pour cette itération, on va donc les stocker dans une structure et empiler cette même strucutre et ce pour toutes les itération de la run.
+On a récupéré les données pour cette itération, on va donc les stocker dans une structure et empiler cette même structure et ce pour toutes les itération de la run.
 
-Une fois la run finie on dépile chaque donnée et on s'en sert pour remplir la QTable.
+Une fois la run terminée, on dépile chaque donnée et on s'en sert pour remplir la QTable.
 
 
 ### Vidéo de l'apprentissage par renforcement n°1
@@ -1531,11 +1531,11 @@ Une fois la run finie on dépile chaque donnée et on s'en sert pour remplir la 
 
 ### Introduction
 
-Nous avons décidé d'améliorer l'apprentissage par renforcement en faisant que le serpent percoit ce qu'il se passe autour de lui et ainsi évite de se tuer en se touchant ou en touchant un obstacle (cactus par exemple).
+Nous avons décidé d'améliorer l'apprentissage par renforcement en faisant de telle sorte que le serpent puisse percevoir ce qu'il se passe autour de lui et ainsi éviter de se tuer en se touchant ou en touchant un obstacle (cactus par exemple).
 
 ### Explication et théorie
 
-Après avoir fait cette première implémentation, le serpent n'avait pas la conscience de lui même et par conséquent si son propre corps ou un cactus se trouvait entre la pomme et sa tête,le serpent fonçait vers la pomme et mourrait. Nous avons donc amélioré l'apprentissage en lui apprenant à avoir conscience d'autour de sa tête (en haut, en bas, à gauche, à droite) et si il y a un des trois éléments (mur, cactus, lui même) il doit l'éviter sinon il meurt. La QTable prend alors trois dimensions : les états liés à la pomme, les actions et la perception de ce qui entoure sa tête.
+Après avoir fait cette première implémentation, le serpent n'avait pas la conscience de lui même et par conséquent si son propre corps ou un cactus se trouvait entre la pomme et sa tête,le serpent fonçait vers la pomme et mourrait. Nous avons donc amélioré l'apprentissage en lui apprenant à avoir conscience de ce qu'il y a autour de sa tête (en haut, en bas, à gauche, à droite) et si il y a un des trois éléments (mur, cactus, lui même) il doit l'éviter sinon il meurt. La QTable prend alors trois dimensions : les états liés à la pomme, les actions et la perception de ce qui entoure sa tête.
 
 Le principe du code reste alors le même c'est juste la QTable qui a changé.
 
@@ -1543,9 +1543,9 @@ Le principe du code reste alors le même c'est juste la QTable qui a changé.
 
 On a eu plusieurs problèmes au cours de notre projet : 
 
-* Les paramètres de l'apprentissage, il y en a une multitude de paramètre à prendre en compte pour que notre agent apprenne correctement et pour ça nous avons dû comprendre à quoi sert chacun pour pouvoir les changer à notre convenance. Nous sommes arriver à une conclusion que mettre le qsi = 0.001 nous permet de lui faire apprendre moins vite mais mieux. Le gamma varie entre 1 et 0.90, on le décrémente afin que l'agent prenne un peu moins en compte les récompense en fin de partie. Le nombre d'itération maximum par run =  500 pour que notre serpent ai le temps d'apprendre, s'il survie, à réagir quand il est de taille plus grande. Enfin, le système de récompense nous a posé pas mal de problème, avec l'implémentation de la sigmoĩde quand il survivait, l'agent gagnait du temps et ne cherchait plus à manger de pommes, il bouclait souvent. On a donc décidé de faire en sorte qu'il gagne un malus selon l'oposé d'une sigmoĩde et qu'à chaque fois que il mange une pomme cette sigmoĩde se reset pour l'enjoindre à manger des pommmes et pas à gagner du temps.
-* La perception de l'agent telle qu'on l'a implémentée lui permet d'avoir la perception de son corps et de la pomme mais elle a une limite, il peut faire des actions bénéfiques au niveau local mais pas au niveau globale, pour pouvoir le rendre parfait nous pouvons lui rajouter une perception accru autour de lui pour qu'il puisse justement effectuer des actions à un niveau plus global.
-* Les cactus
+* Les paramètres de l'apprentissage : il y en a une multitude de paramètres à prendre en compte pour que notre agent apprenne correctement et pour ça nous avons dû comprendre à quoi sert chacun des paramètres pour pouvoir les changer à notre convenance. Nous sommes arrivés à une conclusion que mettre le qsi = 0.001 nous permet de lui faire apprendre moins vite mais mieux. Le gamma varie entre 1 et 0.90, on le décrémente afin que l'agent prenne un peu moins en compte les récompenses en fin de partie. Le nombre d'itération maximum par run =  500 pour que notre serpent ait le temps d'apprendre, s'il survit, à réagir quand il est de taille plus grande. Enfin, le système de récompense nous a posé pas mal de problèmes, avec l'implémentation de la sigmoĩde quand il survivait, l'agent gagnait du temps et ne cherchait plus à manger de pommes, il bouclait souvent. On a donc décidé de faire en sorte qu'il gagne un malus selon l'oposé d'une sigmoĩde et qu'à chaque fois qu'il mange une pomme cette sigmoĩde se reset pour l'enjoindre à manger des pommmes et pas à gagner du temps.
+* La perception de l'agent telle qu'on l'a implémentée lui permet d'avoir la perception de son corps et de la pomme mais elle a une limite, il peut faire des actions bénéfiques au niveau local mais pas au niveau global, pour pouvoir le rendre parfait nous pouvons lui rajouter une perception accru autour de lui pour qu'il puisse justement effectuer des actions à un niveau plus global.
+* Nous voulions implémenter l'apprentissage en générant des cactus aléatoirement sur le plateau mais l'agent ne semble pas à même de comprendre les paterns aléatoires avec un nombre de parties aussi petit.
     
 
 ### Schéma de Représentation des états du code et des fichiers utilisés
@@ -1559,4 +1559,35 @@ On a eu plusieurs problèmes au cours de notre projet :
 
 
 ### Vidéo de l'apprentissage par renforcement n°2
+
+### Démonstration du serpent ayant appris sur 100 parties
+
+On remarque que le serpent se tue très facilement il n'a pas assez appris.
+
+<p style="text-align: center;"><iframe width="80%" height="315" src="https://www.youtube.com/embed/0QCMsSLCcEA" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe></p>
+
+### Démonstration du serpent ayant appris sur 10 000 parties
+
+On commence à observer des résultats concluants mais l'agent semble encore avoir beaucoup de mal à avoir conscience de son corps.
+
+<p style="text-align: center;"><iframe width="80%" height="315" src="https://www.youtube.com/embed/VoqROh0snBs" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe></p>
+
+### Démonstration du serpent ayant appris sur 100 000 parties
+
+On remarque que l'agent a bien appris, le résultat est déjà concluant mais on peut essayer d'observer des meilleurs résultats.
+
+<p style="text-align: center;"><iframe width="80%" height="315" src="https://www.youtube.com/embed/enExig5EMQA" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe></p>
+
+### Démonstration du serpent ayant appris sur 1 000 000 parties
+
+L'agent semble avoir parfaitement conscience de son environnement, il se déplace de manière optimisée vers la pomme. La mort arrive quand un choix local (aller à gauche à un instant t semble le plus optimisé) va provoquer une erreur globale (il se retrouve coincé par son propre corps).
+
+<p style="text-align: center;"><iframe width="80%" height="315" src="https://www.youtube.com/embed/tbX4bFVUSh0" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe></p>
+
+### Démonstration du serpent ayant appris sur 1 milliard de parties
+
+Pour le plaisir de vos yeux, Bertrand a sacrifié son ordi durant 7h pour faire 1 milliard d'apprentissages et le résultat semble en valoir le coup. L'agent est très efficace dans ses mouvements comme l'illustre la vidéo.
+
+<p style="text-align: center;"><iframe width="80%" height="315" src="https://www.youtube.com/embed/UgSOmlessDw" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe></p>
+
 
