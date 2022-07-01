@@ -211,12 +211,12 @@ int TestDeplacement(int **serpent, int direction, int *taille_serpent, int **pla
 int MeilleurScore(int ScoreActuel)
 {
     int bestscore;
-    char PremiereLigne[20];
+    char PremiereLigne[40];
     // on ouvre le fichier de score
     FILE *score = NULL;
     if ((score = fopen("score/score.txt", "r+")) != NULL)
     {
-        bestscore = atoi(fgets(PremiereLigne, 20, score));
+        bestscore = atoi(fgets(PremiereLigne, 40, score));
         // si le nouveau score est mieux on ecrase le contenu
         if (bestscore < ScoreActuel)
         {
