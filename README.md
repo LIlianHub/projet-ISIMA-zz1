@@ -16,13 +16,13 @@
 
 ## Support de présentation
 
-Notre site Web se trouve à ce lien [ici](https://perso.isima.fr/~liballejos/projetZZ1)
+Notre site Web se trouve à ce lien [ici](https://perso.isima.fr/~liballejos/projetZZ1) si vous souhaitez en apprendre plus sur nos deux semaines de projet
 
 ## Apprentissage
 
 * Modification des configurations dans **Config.h**
 * ./Jeu : partie utilisateur
-* ./Jeu apprend nbItération : partie apprentissage avec les congigs du **Config.h**
+* ./Jeu apprend nbItération : partie apprentissage avec les configs du **Config.h**
 
 
 
