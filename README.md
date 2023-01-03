@@ -1,5 +1,9 @@
 # Projet ZZ1 du Groupe 31
 
+## Periode de création
+
+- Juin 2022
+
 ## Membres
 
 * BALLEJOS Lilian
